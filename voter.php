@@ -32,3 +32,4 @@ add_action('bp_activity_entry_meta', 'aheadzen_display_voting_links');
 add_action('bp_after_message_content', 'aheadzen_display_voting_links');
 add_action('bbp_theme_after_reply_content', 'aheadzen_display_voting_links');
 
+add_action('wp_footer','aheadzen_voting_login_dialog');

@@ -41,6 +41,7 @@ Features :
 7. Voting for Buddpress activity
 8. Voting for Buddpress Member Profile
 9. Voting for Woocommerce Product
+10. Login Settings
 
 == Configuration ==
 
@@ -55,5 +56,6 @@ Features :
 
 = 1.0.0.1 =
 * BBpress topics page voting features added
+* Login form & related options added
 
 

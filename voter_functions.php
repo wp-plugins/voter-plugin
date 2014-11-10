@@ -26,6 +26,12 @@ function aheadzen_voter_settings_page()
 		update_option('aheadzen_voter_for_messages',$_POST['aheadzen_voter_for_messages']);
 		update_option('aheadzen_voter_for_forum',$_POST['aheadzen_voter_for_forum']);
 		update_option('aheadzen_voter_display_options',$_POST['aheadzen_voter_display_options']);
+		update_option('aheadzen_voter_login_title',$_POST['aheadzen_voter_login_title']);
+		update_option('aheadzen_voter_login_desc',$_POST['aheadzen_voter_login_desc']);
+		update_option('aheadzen_voter_login_link',$_POST['aheadzen_voter_login_link']);
+		update_option('aheadzen_voter_register_link',$_POST['aheadzen_voter_register_link']);
+		update_option('aheadzen_voter_display_login_frm',$_POST['aheadzen_voter_display_login_frm']);		
+		   
 		echo '<script>window.location.href="'.admin_url().'options-general.php?page=voter&msg=success";</script>';
 		exit;
 	}	
@@ -121,6 +127,70 @@ function aheadzen_voter_settings_page()
 				</label>
 				</td>
 			</tr>
+			
+			<tr valign="top">
+				<td>
+				<h3><?php _e('Login Popup Settings','aheadzen');?></h3>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td>
+				<?php
+				$login_title = get_option('aheadzen_voter_login_title');
+				?>
+				<label for="aheadzen_voter_login_title">
+				<p><?php _e('Popup Title','aheadzen');?> ::<br />
+				<input type="text" id="aheadzen_voter_login_title" name="aheadzen_voter_login_title" value="<?php echo $login_title;?>" />
+				</p>
+				</label>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td>
+				<?php 
+				$login_desc = get_option('aheadzen_voter_login_desc');
+				?>
+				<label for="aheadzen_voter_login_desc">
+				<p><?php _e('Popup Content','aheadzen');?> ::<br />
+				<textarea style="width:80%;" id="aheadzen_voter_login_desc" name="aheadzen_voter_login_desc"><?php echo $login_desc;?></textarea>
+				</p>
+				</label>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td>
+				<?php
+				$login_link = get_option('aheadzen_voter_login_link');
+				?>
+				<label for="aheadzen_voter_login_link">
+				<p><?php _e('Login URL','aheadzen');?> ::<br />
+				<input type="text" id="aheadzen_voter_login_link" name="aheadzen_voter_login_link" value="<?php echo $login_link;?>" />
+				<br /><small><?php _e('default:','aheadzen'); echo ' '.wp_login_url();?></small>
+				</p>
+				</label>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td>
+				<?php
+				$register_link = get_option('aheadzen_voter_register_link');
+				?>
+				<label for="aheadzen_voter_register_link">
+				<p><?php _e('Registration URL','aheadzen');?> ::<br />
+				<input type="text" id="aheadzen_voter_register_link" name="aheadzen_voter_register_link" value="<?php echo $register_link;?>" />
+				<br /><small><?php _e('default:','aheadzen'); echo ' '.wp_registration_url();?></small>
+				</p>
+				</label>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td>
+				<label for="aheadzen_voter_display_login_frm">
+				<input type="checkbox" value="1" id="aheadzen_voter_display_login_frm" name="aheadzen_voter_display_login_frm" <?php if(get_option('aheadzen_voter_display_login_frm')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Display Login Form?','aheadzen');?>
+				<br /> <small><?php _e('By selecting the option it will display the login form with popup.','aheadzen');?></small>
+				</label>
+				</td>
+			</tr>
 			<tr valign="top">
 				<td>
 					<input type="hidden" name="page_options" value="<?php echo $value;?>" />
@@ -167,6 +237,11 @@ function aheadzen_voter_install()
 	update_option('aheadzen_voter_for_messages',1);
 	update_option('aheadzen_voter_for_forum',1);
 	update_option('aheadzen_voter_display_options',0);
+	update_option('aheadzen_voter_login_title','Please Login');
+	update_option('aheadzen_voter_login_desc','<p>This site is free and open to everyone, but our registered users get extra privileges like commenting, and voting.</p>');
+	update_option('aheadzen_voter_login_link',wp_login_url());
+	update_option('aheadzen_voter_register_link',wp_registration_url());
+	update_option('aheadzen_voter_display_login_frm',1);
 	
 	/**Vote plugin Database table**/
 	$sql = "CREATE TABLE IF NOT EXISTS `".$table_prefix."ask_votes` (
@@ -468,8 +543,8 @@ function aheadzen_get_voting_link($params)
 		$params['action']='down';
 		$url_down = esc_url(wp_nonce_url(add_query_arg($params,$linkurl),'toggle-vote_' . $post_id));
 	}else{
-		$class_up = 'vote-up-off';
-		$class_down = 'vote-down-off';
+		$class_up = 'vote-up-off aheadzen_voting_add';
+		$class_down = 'vote-down-off aheadzen_voting_add';
 		$title_up = $title_down = __('please login to vote','aheadzen');
 		$url_up = $url_down = '#';
 	}
@@ -771,4 +846,72 @@ function aheadzen_get_post_all_vote_details($arg)
 	echo '</pre>';
 	*/
 	return $return_str;
+}
+
+/*************************************************
+Login form for -- Not login user 
+*************************************************/
+function aheadzen_voting_login_dialog()
+{
+$redirect_to = get_permalink();
+$login_title = get_option('aheadzen_voter_login_title');
+$login_desc = get_option('aheadzen_voter_login_desc');
+$login_link = get_option('aheadzen_voter_login_link');
+$register_link = get_option('aheadzen_voter_register_link');
+$login_frm = get_option('aheadzen_voter_display_login_frm');
+if($login_title==''){$login_title=__('Please Login','aheadzen');}
+?>
+<div id="aheadzen_voting_login" title="<?php echo $login_title;?>">
+<?php echo $login_desc;?>
+<?php if($login_frm){?>
+<form name="loginform" id="loginform" action="<?php echo esc_url( site_url( 'wp-login.php', 'login_post' ) ); ?>" method="post">
+	<p>
+		<label for="user_login"><?php _e('Username') ?><br />
+		<input type="text" name="log" id="user_login" class="input" value="<?php echo esc_attr($user_login); ?>" size="20" /></label>
+	</p>
+	<p>
+		<label for="user_pass"><?php _e('Password') ?><br />
+		<input type="password" name="pwd" id="user_pass" class="input" value="" size="20" /></label>
+	</p>
+	
+	<p class="forgetmenot"><label for="rememberme"><input name="rememberme" type="checkbox" id="rememberme" value="forever" <?php checked( $rememberme ); ?> /> <?php esc_attr_e('Remember Me'); ?></label></p>
+	<p class="submit">
+		<input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="<?php _e('Log In','aheadzen'); ?>" />
+		<?php if($register_link){?>
+		<a href="<?php echo $register_link;?>" class="aheadzen_button_red"><?php _e('Register','aheadzen'); ?></a>
+		<?php }?>
+
+	<input type="hidden" name="redirect_to" value="<?php echo esc_attr($redirect_to); ?>" />
+		<input type="hidden" name="customize-login" value="1" />
+		<input type="hidden" name="testcookie" value="1" />
+	</p>
+</form>
+<?php }else{?>
+<?php if($register_link){?>
+<a href="<?php echo $register_link;?>" class="aheadzen_button_blue"><?php _e('Login','aheadzen'); ?></a>
+<?php }?>
+<?php if($register_link){?>
+<a href="<?php echo $register_link;?>" class="aheadzen_button_red"><?php _e('Register','aheadzen'); ?></a>
+<?php }?>
+<?php }?>
+</div>
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" /> 
+<script>
+jQuery(function() {
+	dialog = jQuery( "#aheadzen_voting_login" ).dialog({
+		autoOpen: false,
+		height: 350,
+		width: 350,
+		modal: true,
+		close: function() {
+			//alert('CLOSE');
+		}
+	});
+	jQuery( ".aheadzen_voting_add" ).click(function() {
+		jQuery( "#aheadzen_voting_login" ).dialog( "open" );
+	});
+});
+</script>
+<?php
 }
