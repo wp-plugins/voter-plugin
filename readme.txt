@@ -53,4 +53,7 @@ Features :
 = 1.0.0.0 =
 * Fresh Public Release.
 
+= 1.0.0.1 =
+* BBpress topics page voting features added
+
 

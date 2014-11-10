@@ -1,13 +1,13 @@
-.aheadzen_voter_css{background: #ccc url('../images/buttons.png') no-repeat;height: 35px!important;display: block;padding:0 !important;}
+.aheadzen_voter_css{ background-image: url('../images/buttons.png')!important; background-color: #cccccc; background-repeat:no-repeat;height: 35px!important;display: block!important;padding:0 !important;}
 .aheadzen_vote{width: 40px;}
 .aheadzen_vote .alignright {float: right;}
-.aheadzen_vote .vote-up-off{background-position:0 -35px;cursor: default;}
-.aheadzen_vote  .vote-up-on{background-position:0 0; }
-.aheadzen_vote  .vote-down-off{background-position:0 -105px; cursor: default;}
-.aheadzen_vote  .vote-down-on{background-position:0% -70px;}
+.aheadzen_vote .vote-up-off{background-position:0 -35px!important;cursor: default;}
+.aheadzen_vote  .vote-up-on{background-position:0 0 !important; }
+.aheadzen_vote  .vote-down-off{background-position:0 -105px !important; cursor: default;}
+.aheadzen_vote  .vote-down-on{background-position:0% -70px !important;}
 .aheadzen_vote  .vote-count-post{font-size: 2em;text-align: center;color: #999;margin: 0.5em;}
 .aheadzen_vote  .ajaxloading{background:url('../images/ajax-loader.gif') center center no-repeat;width: 30px;height: 30px;}
 
 .like_unlike_vote{float:none !important; display: inline-block; clear:both; margin: 0;}
-.like_unlike_vote a{background:none;height: auto !important;}
+.like_unlike_vote a{background:none !important;height: auto !important;}
 .aheadzen_vote.like_unlike_vote {width: 75px;}

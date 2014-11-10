@@ -328,11 +328,18 @@ function aheadzen_display_voting_links($content)
 		}
 	}elseif(aheadzen_is_bp_topic()) //if(function_exists('bp_get_activity_id'))
 	{
+		global $bp;
 		$activity_id = bp_get_activity_id();
 		$group_id = $bp->groups->current_group->id;
 		$member_id = $bp->displayed_user->id;
 		$component_name = "buddypress";
 		$item_id = $post->ID;
+		
+		$check_url_for_topic = $bp->unfiltered_uri;
+		if (in_array("topic", $check_url_for_topic))
+		{
+			$topic_id = 1;
+		}
 		
 		if(isset($activity_id) && $activity_id != "") //activity
 		{
