@@ -887,10 +887,10 @@ if($login_title==''){$login_title=__('Please Login','aheadzen');}
 	<p class="submit">
 		<input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="<?php _e('Log In','aheadzen'); ?>" />
 		<?php if($register_link){?>
-		<a href="<?php echo $register_link;?>" class="aheadzen_button_red"><?php _e('Register','aheadzen'); ?></a>
+		<a href="<?php echo $register_link;?>?redirect_to=<?php echo urlencode($redirect_to); ?>" class="aheadzen_button_red"><?php _e('Register','aheadzen'); ?></a>
 		<?php }?>
 
-	<input type="hidden" name="redirect_to" value="<?php echo esc_attr($redirect_to); ?>" />
+	<input type="hidden" name="redirect_to" value="<?php echo $redirect_to; ?>" />
 		<input type="hidden" name="customize-login" value="1" />
 		<input type="hidden" name="testcookie" value="1" />
 	</p>
@@ -900,7 +900,7 @@ if($login_title==''){$login_title=__('Please Login','aheadzen');}
 <a href="<?php echo $register_link;?>" class="aheadzen_button_blue"><?php _e('Login','aheadzen'); ?></a>
 <?php }?>
 <?php if($register_link){?>
-<a href="<?php echo $register_link;?>" class="aheadzen_button_red"><?php _e('Register','aheadzen'); ?></a>
+<a href="<?php echo $register_link;?>?redirect_to=<?php echo urlencode($redirect_to); ?>" class="aheadzen_button_red"><?php _e('Register','aheadzen'); ?></a>
 <?php }?>
 <?php }?>
 </div>

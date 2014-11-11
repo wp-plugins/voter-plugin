@@ -63,3 +63,7 @@ Features :
 * dialog js code will go into voter.js file
 * Manual loading for js - jquery-ui.js
 
+= 1.0.0.3 =
+* Login form css changes
+* registration page redirectin settings
+
