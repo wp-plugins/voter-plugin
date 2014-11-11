@@ -16,14 +16,16 @@ Even you can display like/unlike link option as voting in place of up & down vot
 The plugin have added option for add voting option enable/disable for pages, post, custom post types, comments, BuddyPress activity, groups, member profiles, WooCommerce products. You don't need to make any change or any thing as soon as the plugin activated related voting options will be added on with description of post, pages etc...
 Related to comments it will be appear with comment content both for normal blog and BuddyPress.
 
-Features :
-• Up & Down voting options.
-• Like & Unlike voting options.
-• Ajax based plugin so no page refresh.
-• added votes option for pages, post, custom post types, comments, BuddyPress activity, groups, member profiles, WooCommerce products etc...
-• Enable or disable voting option for specifict area like posts, pages, BuddyPress activity, groups, member profiles, WooCommerce products etc...
-• Optimum css & js code.
-• Localization ready.
+<h4>Features :</h4>
+<ul>
+<li>• Up & Down voting options. </li>
+<li>• Like & Unlike voting options.</li>
+<li>• Ajax based plugin so no page refresh.</li>
+<li>• added votes option for pages, post, custom post types, comments, BuddyPress activity, groups, member profiles, WooCommerce products etc...</li>
+<li>• Enable or disable voting option for specifict area like posts, pages, BuddyPress activity, groups, member profiles, WooCommerce products etc...</li>
+<li>• Optimum css & js code.</li>
+<li>• Localization ready.</li>
+</ul>
 
 
 == Installation ==

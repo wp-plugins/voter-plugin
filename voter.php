@@ -12,6 +12,9 @@ License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 */
 
+global $aheadzen_voter_plugin_version;
+$aheadzen_voter_plugin_version = '1.0.0.3';
+
 include(dirname(__FILE__).'/voter_functions.php');
 
 register_activation_hook(__FILE__, 'aheadzen_voter_install');
