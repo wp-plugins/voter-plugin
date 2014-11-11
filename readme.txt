@@ -58,4 +58,8 @@ Features :
 * BBpress topics page voting features added
 * Login form & related options added
 
+= 1.0.0.2 =
+* On plugin deactivation all data is lost
+* dialog js code will go into voter.js file
+* Manual loading for js - jquery-ui.js
 

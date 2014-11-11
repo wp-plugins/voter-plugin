@@ -32,3 +32,18 @@ jQuery('.aheadzen_voter_css').live("click",function(){
 		});
 	return false;
 })
+
+jQuery(function() {
+	dialog = jQuery( "#aheadzen_voting_login" ).dialog({
+		autoOpen: false,
+		height: 350,
+		width: 350,
+		modal: true,
+		close: function() {
+			//alert('CLOSE');
+		}
+	});
+	jQuery( ".aheadzen_voting_add" ).click(function() {
+		jQuery( "#aheadzen_voting_login" ).dialog( "open" );
+	});
+});

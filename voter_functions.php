@@ -30,7 +30,8 @@ function aheadzen_voter_settings_page()
 		update_option('aheadzen_voter_login_desc',$_POST['aheadzen_voter_login_desc']);
 		update_option('aheadzen_voter_login_link',$_POST['aheadzen_voter_login_link']);
 		update_option('aheadzen_voter_register_link',$_POST['aheadzen_voter_register_link']);
-		update_option('aheadzen_voter_display_login_frm',$_POST['aheadzen_voter_display_login_frm']);		
+		update_option('aheadzen_voter_display_login_frm',$_POST['aheadzen_voter_display_login_frm']);
+		update_option('aheadzen_voter_include_dialog_js',$_POST['aheadzen_voter_include_dialog_js']);		
 		   
 		echo '<script>window.location.href="'.admin_url().'options-general.php?page=voter&msg=success";</script>';
 		exit;
@@ -188,6 +189,14 @@ function aheadzen_voter_settings_page()
 				<label for="aheadzen_voter_display_login_frm">
 				<input type="checkbox" value="1" id="aheadzen_voter_display_login_frm" name="aheadzen_voter_display_login_frm" <?php if(get_option('aheadzen_voter_display_login_frm')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Display Login Form?','aheadzen');?>
 				<br /> <small><?php _e('By selecting the option it will display the login form with popup.','aheadzen');?></small>
+				</label>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td>
+				<label for="aheadzen_voter_include_dialog_js">
+				<input type="checkbox" value="1" id="aheadzen_voter_include_dialog_js" name="aheadzen_voter_include_dialog_js" <?php if(get_option('aheadzen_voter_include_dialog_js')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Do you want to disable login box js (jquery-ui.js)?','aheadzen');?>
+				<br /> <small><?php _e('The plugin including "http://code.jquery.com/ui/1.10.3/jquery-ui.js" for login dialog box In case your website already included and may creating conflict you can disable/remove it by this option.','aheadzen');?></small>
 				</label>
 				</td>
 			</tr>
@@ -895,23 +904,9 @@ if($login_title==''){$login_title=__('Please Login','aheadzen');}
 <?php }?>
 <?php }?>
 </div>
+<?php if(get_option('aheadzen_voter_include_dialog_js')){  }else{?>
 <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<?php } ?>
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" /> 
-<script>
-jQuery(function() {
-	dialog = jQuery( "#aheadzen_voting_login" ).dialog({
-		autoOpen: false,
-		height: 350,
-		width: 350,
-		modal: true,
-		close: function() {
-			//alert('CLOSE');
-		}
-	});
-	jQuery( ".aheadzen_voting_add" ).click(function() {
-		jQuery( "#aheadzen_voting_login" ).dialog( "open" );
-	});
-});
-</script>
 <?php
 }

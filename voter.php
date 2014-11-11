@@ -4,7 +4,7 @@ Plugin Name: Voter Plugin
 Plugin URI: http://aheadzen.com/
 Description: The plugin added votes option for pages, post, custom post types, comments, buddypress activity, groups, member profiles, woocommerce products etc. <br />You can control display option from <a href="options-general.php?page=voter" target="_blank"><b>Plugin Settings >></b></a>
 Author: Aheadzen Team  | <a href="options-general.php?page=voter" target="_blank">Manage Plugin Settings</a>
-Version: 1.0.0.1
+Version: 1.0.0.2
 Author URI: http://aheadzen.com/
 
 Copyright: © 2014-2015 ASK-ORACLE.COM
@@ -15,7 +15,7 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.html
 include(dirname(__FILE__).'/voter_functions.php');
 
 register_activation_hook(__FILE__, 'aheadzen_voter_install');
-register_deactivation_hook(__FILE__, 'aheadzen_voter_uninstall');
+//register_deactivation_hook(__FILE__, 'aheadzen_voter_uninstall');
 
 add_action('init', 'aheadzen_voter_init');
 
@@ -32,4 +32,4 @@ add_action('bp_activity_entry_meta', 'aheadzen_display_voting_links');
 add_action('bp_after_message_content', 'aheadzen_display_voting_links');
 add_action('bbp_theme_after_reply_content', 'aheadzen_display_voting_links');
 
-add_action('wp_footer','aheadzen_voting_login_dialog');
+add_action('wp_footer','aheadzen_voting_login_dialog',999);
