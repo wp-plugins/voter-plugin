@@ -70,4 +70,4 @@ Related to comments it will be appear with comment content both for normal blog 
 * registration page redirectin settings
 
 = 1.0.0.4 =
-* dialog should close on outside click
+* Login dialog should close on outside click
