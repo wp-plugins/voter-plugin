@@ -69,3 +69,5 @@ Related to comments it will be appear with comment content both for normal blog 
 * Login form css changes
 * registration page redirectin settings
 
+= 1.0.0.4 =
+* dialog should close on outside click

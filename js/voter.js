@@ -39,6 +39,11 @@ jQuery(function() {
 		height: 350,
 		width: 350,
 		modal: true,
+		open: function() {
+            jQuery('.ui-widget-overlay').bind('click', function() {
+                jQuery('#aheadzen_voting_login').dialog('close');
+            })
+        },
 		close: function() {
 			//alert('CLOSE');
 		}
