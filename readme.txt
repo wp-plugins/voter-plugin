@@ -71,3 +71,7 @@ Related to comments it will be appear with comment content both for normal blog 
 
 = 1.0.0.4 =
 * Login dialog should close on outside click
+
+= 1.0.0.5 =
+* Buddypress Activity & notyfication settings on forum topic voting
+* voting up/donw related api also added

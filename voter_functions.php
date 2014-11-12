@@ -225,6 +225,7 @@ Voter plugin init function
 function aheadzen_voter_init()
 {
 	load_plugin_textdomain('aheadzen', false, basename( dirname( __FILE__ ) ) . '/languages');
+	//aheadzen_voter_add_vote();
 }
 
 /*************************************************
@@ -496,6 +497,7 @@ function aheadzen_display_voting_links($content)
 		{
 			$type = "forum";
 			$secondary_item_id = $post->ID;
+			
 			if(get_option('aheadzen_voter_for_forum'))
 			{
 				$params = array(
@@ -523,6 +525,7 @@ function aheadzen_display_voting_links($content)
 		}
 	}
 	$voting_options = get_option('aheadzen_voter_display_options');
+	
 	if($voting_options==1)
 	{
 		return $content.$votestr;
@@ -540,6 +543,9 @@ function aheadzen_get_voting_link($params)
 {
 	global $current_user;
 	$votestr = '';
+	$the_result = $params['result'];
+	unset($params['result']);
+	
 	$post_id = $params['item_id'];
 	$linkurl = get_permalink($post_id);
 	
@@ -606,7 +612,18 @@ function aheadzen_get_voting_link($params)
 		
 		$votestr.= '</div>';
 	}
-	return $votestr;
+	
+	if($_REQUEST['rtype']=='json')
+	{
+		$return_arr = array();
+		$return_arr['result'] = $the_result;
+		$return_arr['total_votes'] = $total_votes;
+		$return_arr['url_up'] = $url_up;
+		$return_arr['url_down'] = $url_down;
+		return $return_arr;
+	}else{
+		return $votestr;
+	}
 }
 
 
@@ -636,11 +653,13 @@ function aheadzen_voter_add_vote($template)
 	global $wp_query,$current_user,$wpdb, $table_prefix, $post, $bp, $bbP;
 	$post_id = get_the_id();	
 	$user_id = $current_user->ID;
-	//if($user_id && ($_REQUEST['secondary_item_id']==$post_id || $_REQUEST['item_id']==$post_id) && isset($_REQUEST) && !empty($_REQUEST))
+	$result = '0';
+	
 	if($user_id && isset($_REQUEST) && !empty($_REQUEST))
 	{
 		if(isset($_REQUEST['component']) && isset($_REQUEST['type']) && isset($_REQUEST['action']) &&  isset($_REQUEST['item_id']) && isset($_REQUEST['secondary_item_id']))
 		{
+			if($_REQUEST['action']=='up'){$result='1';}elseif($_REQUEST['action']=='down'){$result='-1';}
 			$params = array(
 				'component' => $_REQUEST['component'],
 				'type' => $_REQUEST['type'],
@@ -656,6 +675,7 @@ function aheadzen_voter_add_vote($template)
 				{
 					$sql = "delete from `".$table_prefix."ask_votes` where id=\"$voted_id\"";
 					$wpdb->query($sql);
+					$result = '0';
 				}else{				
 					$sql = "update `".$table_prefix."ask_votes` set action=\"$action\" where id=\"$voted_id\"";
 					$wpdb->query($sql);
@@ -663,13 +683,95 @@ function aheadzen_voter_add_vote($template)
 			}else{
 				$sql =  "INSERT INTO `".$table_prefix."ask_votes` (user_id, component, type, action, date_recorded, item_id, secondary_item_id) VALUES ('".$user_id."', '".$_REQUEST['component']."', '".urldecode($_REQUEST['type'])."', '".$_REQUEST['action']."', '".date("Y-m-d h:i:s")."', '".$_REQUEST['item_id']."', '".$_REQUEST['secondary_item_id']."')";
 				$wpdb->query($sql);
+				aheadzen_voter_add_vote_bbpress_notification();
 			}
-			echo aheadzen_get_voting_link($params);
+			
+			if($_REQUEST['rtype']=='json')
+			{
+				$params['result'] = $result;
+				$params['user_id'] = $_REQUEST['user_id'];
+				$params['rtype'] = $_REQUEST['rtype'];
+				$return_arr = aheadzen_get_voting_link($params);
+				echo  json_encode($return_arr);
+				header('Content-Type: application/json; charset=UTF-8', true);
+				exit;
+			}else{
+				echo aheadzen_get_voting_link($params);
+			}
 			exit;
 		}
 	}
 	return $template;
 }
+
+
+function aheadzen_voter_add_vote_bbpress_notification()
+{
+	global $wpdb,$post, $bp, $current_user,$wp_query;	
+	$post_id = (int)$_REQUEST['secondary_item_id'];
+	$action = $_REQUEST['action'];
+	$check_url_for_topic = $bp->unfiltered_uri;
+	
+	if($bp && $_REQUEST['action'] == 'up' && $post_id && $action && in_array("topic", $check_url_for_topic))
+	{
+		$action = 'vote_' .$_REQUEST['action'];
+		
+		$topic_id = $post_id;
+		
+		$user_id = bp_loggedin_user_id();
+		$userlink = bp_core_get_userlink( $user_id );
+		$topic = $wp_query->queried_object;
+		$topic_slug = $topic->post_name;
+		$topic_title = $topic->post_title;
+		
+		$poster_link = bp_core_get_userlink( $post->poster_id );
+		//$topic_link = '<a href="' . bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $topic_slug . '/' . 'forum/topic/' . $topic_slug . '/">' . $topic_title . '</a>';
+		$topic_link = '<a href="' . bp_get_root_domain() . '/' . 'forum/topic/' . $topic_slug . '/">' . $topic_title . '</a>';
+		$arg_arr = array(
+					'user_id'   => $user_id,
+					'action'    => sprintf( __( "%s likes %s's post in %s", 'buddypress' ), $userlink, $poster_link, $topic_link ),
+					'component' => 'votes',
+					'item_id'           => $topic_id, 
+					'secondary_item_id' => $post_id,
+					'type'      => 'forums'
+				);
+		
+		$activity_id = bp_activity_add($arg_arr);
+		bp_core_add_notification( $topic_id, $user_id, 'votes', 'vote_up');
+		//bp_core_add_notification( $activity_id, $user_id, 'activity', 'activity_viewed');		
+		//bp_core_add_notification('100', (int)$bp->loggedin_user->id, 'activity', 'activity_viewed');
+		return true;
+		
+	}
+	return false;
+}
+
+function voter_format_notifications( $action, $item_id, $secondary_item_id, $total_items )
+{
+
+	global $bp;
+	$post = bp_forums_get_post( $secondary_item_id );
+
+	$topic_url = $bp->loggedin_user->domain . $bp->activity->slug . '/' . $bp->gifts->slug . '/';
+	$topic_id = $post->topic_id;
+
+	$topic = bp_forums_get_topic_details( $topic_id );
+	$topic_link = '<a href="' . bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $topic->object_slug . '/' . 'forum/topic/' . $topic->topic_slug . '/">' . $topic->topic_title . '</a>';
+
+	$voter_link = bp_core_get_userlink( $item_id );
+
+	$notification = "$voter_link likes your post in $topic_link";
+
+	return array( 'text' => $notification,
+				'link' => '' );
+}
+
+function voter_setup_globals()
+{
+	global $bp;
+	$bp->votes->notification_callback        = 'voter_format_notifications';
+}
+add_action( 'bp_setup_globals', 'voter_setup_globals' );
 
 /*************************************************
 Get user's voting details
@@ -700,8 +802,8 @@ function aheadzen_get_user_all_vote_details($params)
 Voting settings for API
 www.ask-oracle.com/?voterapi=1&pid=200&username=arpit123
 *************************************************/
-add_filter('template_include','aheadzen_voter_add_vote11');
-function aheadzen_voter_add_vote11($template)
+add_filter('template_include','aheadzen_voter_add_vote_api');
+function aheadzen_voter_add_vote_api($template)
 {
 	if($_GET['voterapi'])
 	{
@@ -790,10 +892,12 @@ function aheadzen_get_post_all_vote_details($arg)
 		$params['item_id'] = 0;
 		$params['secondary_item_id'] = $item_id;
 		$params['action']='up';
-		$url_up = esc_url(wp_nonce_url(add_query_arg($params,$linkurl),'toggle-vote_' . $item_id));
+		$params['rtype']='json';
+		$params['user_id']=$user_id;
+		$url_up = wp_nonce_url(add_query_arg($params,$linkurl),'toggle-vote_' . $item_id);
 		$post_vote_links['up'] = $url_up;
 		$params['action']='down';
-		$url_down = esc_url(wp_nonce_url(add_query_arg($params,$linkurl),'toggle-vote_' . $item_id));
+		$url_down = wp_nonce_url(add_query_arg($params,$linkurl),'toggle-vote_' . $item_id);
 		$post_vote_links['down'] = $url_down;
 		if($user_id && $user_error=='')
 		{
@@ -825,10 +929,12 @@ function aheadzen_get_post_all_vote_details($arg)
 				$params['item_id'] = $item_id;
 				$params['secondary_item_id'] = $resultsobj->secondary_item_id;
 				$params['action']='up';
-				$url_up = esc_url(wp_nonce_url(add_query_arg($params,$linkurl),'toggle-vote_' . $item_id));
+				$params['rtype']='json';
+				$params['user_id']=$user_id;
+				$url_up = wp_nonce_url(add_query_arg($params,$linkurl),'toggle-vote_' . $item_id);
 				$comment_vote_links['up'] = $url_up;
 				$params['action']='down';
-				$url_down = esc_url(wp_nonce_url(add_query_arg($params,$linkurl),'toggle-vote_' . $item_id));
+				$url_down = wp_nonce_url(add_query_arg($params,$linkurl),'toggle-vote_' . $item_id);
 				$comment_vote_links['down'] = $url_down;
 				$comments_arr[] = array(
 					'comment_id' => $resultsobj->secondary_item_id,
@@ -853,11 +959,7 @@ function aheadzen_get_post_all_vote_details($arg)
 	$return_arr['total_voted_comments']=$total_comments;
 	$return_arr['comments']=$comments_arr;
 	
-	$return_str = json_encode($return_arr);
-	/*echo '<pre>';
-	print_r($return_arr);
-	echo '</pre>';
-	*/
+	$return_str = json_encode($return_arr);	
 	return $return_str;
 }
 
@@ -895,7 +997,6 @@ if($login_title==''){$login_title=__('Please Login','aheadzen');}
 		<?php }?>
 
 	<input type="hidden" name="redirect_to" value="<?php echo $redirect_to; ?>" />
-		<input type="hidden" name="customize-login" value="1" />
 		<input type="hidden" name="testcookie" value="1" />
 	</p>
 </form>

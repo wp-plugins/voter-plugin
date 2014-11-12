@@ -1,9 +1,9 @@
 jQuery('.aheadzen_voter_css').live("click",function(){
-		var ajaxurl = site_url;
+		var data_object1 = new Object();
 		var data_object = new Object();
-		data_object.user_id = current_user_id;
+		data_object1.user_id = current_user_id;
 		
-		//ajaxloading
+		var ajaxurl = this.href;		
 		
 		var hashes = this.href.slice(this.href.indexOf('?') + 1).split('&');
 		for(var i = 0; i < hashes.length; i++)
@@ -21,11 +21,11 @@ jQuery('.aheadzen_voter_css').live("click",function(){
 		var voter_div_id = '#aheadzen_voting_'+data_object.secondary_item_id+'_'+data_object.item_id+'_'+data_object.component;
 		jQuery(voter_div_id+' .vote-count-post').addClass(" ajaxloading ");
 		jQuery.ajax({
-			type: 'POST',
+			type: 'GET',
 			url: ajaxurl,
-			data: data_object,
+			data: data_object1,
 			success: function(data)
-			{
+			{				
 				jQuery(voter_div_id).html(data);
 				jQuery(voter_div_id+' .vote-count-post').removeClass(" ajaxloading ");
 			}
