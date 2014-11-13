@@ -729,6 +729,8 @@ function aheadzen_voter_add_vote_bbpress_notification()
 		$topic_id = $post_id;
 		
 		$user_id = bp_loggedin_user_id();
+		if($_REQUEST['user_id']){$user_id = $_REQUEST['user_id'];}
+		
 		$userlink = bp_core_get_userlink( $user_id );
 		$topic = $wp_query->queried_object;
 		$topic_slug = $topic->post_name;
