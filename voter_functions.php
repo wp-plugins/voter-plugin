@@ -555,7 +555,10 @@ function aheadzen_get_voting_link($params)
 	$class_down = 'vote-down-on';
 	$title_up = $title_down = __('click to vote','aheadzen');
 	
-	if($current_user->ID){
+	$user_id = $current_user->ID;
+	if($params['user_id']){$user_id = $params['user_id'];}
+	
+	if($user_id){
 		$params['action']='up';
 		$url_up = esc_url(wp_nonce_url(add_query_arg($params,$linkurl),'toggle-vote_' . $post_id));
 		
@@ -653,6 +656,7 @@ function aheadzen_voter_add_vote($template)
 	global $wp_query,$current_user,$wpdb, $table_prefix, $post, $bp, $bbP;
 	$post_id = get_the_id();	
 	$user_id = $current_user->ID;
+	if($_REQUEST['user_id']){$user_id = $_REQUEST['user_id'];}
 	$result = '0';
 	
 	if($user_id && isset($_REQUEST) && !empty($_REQUEST))
@@ -704,17 +708,23 @@ function aheadzen_voter_add_vote($template)
 	return $template;
 }
 
-
+/*************************************************
+Insert voter to duddypress activity & notifications
+*************************************************/
 function aheadzen_voter_add_vote_bbpress_notification()
 {
 	global $wpdb,$post, $bp, $current_user,$wp_query;	
 	$post_id = (int)$_REQUEST['secondary_item_id'];
 	$action = $_REQUEST['action'];
 	$check_url_for_topic = $bp->unfiltered_uri;
+	$post = get_post($post_id);
+	$post_type = get_post_type($post_id);
 	
-	if($bp && $_REQUEST['action'] == 'up' && $post_id && $action && in_array("topic", $check_url_for_topic))
+	//if($bp && $_REQUEST['action'] == 'up' && $post_id && $action && in_array("topic", $check_url_for_topic))
+	if($bp && $_REQUEST['action'] == 'up' && $post_id && $action)
 	{
-		$action = 'vote_' .$_REQUEST['action'];
+	
+		$action = $_REQUEST['type'].'_vote_' .$_REQUEST['action'];
 		
 		$topic_id = $post_id;
 		
@@ -724,32 +734,74 @@ function aheadzen_voter_add_vote_bbpress_notification()
 		$topic_slug = $topic->post_name;
 		$topic_title = $topic->post_title;
 		
-		$poster_link = bp_core_get_userlink( $post->poster_id );
+		$poster_link = bp_core_get_userlink( $post->author_id );
 		//$topic_link = '<a href="' . bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $topic_slug . '/' . 'forum/topic/' . $topic_slug . '/">' . $topic_title . '</a>';
 		$topic_link = '<a href="' . bp_get_root_domain() . '/' . 'forum/topic/' . $topic_slug . '/">' . $topic_title . '</a>';
+		
+		if($_REQUEST['type']=='comment')
+		{
+			$action_content = sprintf( __( "%s likes comment on %s post %s", 'buddypress' ), $userlink, $poster_link, $topic_link );
+		}elseif($_REQUEST['type']=='profile' || $_REQUEST['type']=='groups'  || $_REQUEST['type']=='activity')
+		{
+			$topic_link = $wp_query->post->post_title;
+			$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $_REQUEST['type'], $topic_link );
+		}else{
+			//$action_content = sprintf( __( "%s likes %s's post in %s", 'buddypress' ), $userlink, $poster_link, $topic_link );
+			$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $_REQUEST['type'], $topic_link );
+		}
 		$arg_arr = array(
 					'user_id'   => $user_id,
-					'action'    => sprintf( __( "%s likes %s's post in %s", 'buddypress' ), $userlink, $poster_link, $topic_link ),
+					'action'    => $action_content,
 					'component' => 'votes',
 					'item_id'           => $topic_id, 
-					'secondary_item_id' => $post_id,
+					'secondary_item_id' => $_REQUEST['item_id'],
 					'type'      => 'forums'
 				);
 		
 		$activity_id = bp_activity_add($arg_arr);
-		bp_core_add_notification( $topic_id, $user_id, 'votes', 'vote_up');
+		bp_core_add_notification( $_REQUEST['secondary_item_id'], $user_id, 'votes', $action,$_REQUEST['item_id']);
 		//bp_core_add_notification( $activity_id, $user_id, 'activity', 'activity_viewed');		
-		//bp_core_add_notification('100', (int)$bp->loggedin_user->id, 'activity', 'activity_viewed');
 		return true;
 		
 	}
 	return false;
 }
 
-function voter_format_notifications( $action, $item_id, $secondary_item_id, $total_items )
-{
+/*************************************************
+Register Buddpress voter component
+*************************************************/
+function aheadzen_voter_filter_notifications_get_registered_components( $component_names = array() ) {
 
+ // Force $component_names to be an array
+ if ( ! is_array( $component_names ) ) {
+  $component_names = array();
+ }
+
+ // Add 'votes' component to registered components array
+ array_push( $component_names, 'votes' );
+
+ // Return component's with 'votes' appended
+ return $component_names;
+}
+
+
+/*************************************************
+Set voter buddypress componant Global
+*************************************************/
+function aheadzen_voter_setup_globals()
+{
 	global $bp;
+	$bp->votes->notification_callback = 'aheadzen_voter_format_notifications';	
+}
+
+
+/*************************************************
+Voter Notification format
+*************************************************/
+function aheadzen_voter_format_notifications( $action, $item_id, $secondary_item_id, $total_items )
+{
+	global $bp;
+	
 	$post = bp_forums_get_post( $secondary_item_id );
 
 	$topic_url = $bp->loggedin_user->domain . $bp->activity->slug . '/' . $bp->gifts->slug . '/';
@@ -759,6 +811,7 @@ function voter_format_notifications( $action, $item_id, $secondary_item_id, $tot
 	$topic_link = '<a href="' . bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $topic->object_slug . '/' . 'forum/topic/' . $topic->topic_slug . '/">' . $topic->topic_title . '</a>';
 
 	$voter_link = bp_core_get_userlink( $item_id );
+	
 
 	$notification = "$voter_link likes your post in $topic_link";
 
@@ -766,12 +819,58 @@ function voter_format_notifications( $action, $item_id, $secondary_item_id, $tot
 				'link' => '' );
 }
 
-function voter_setup_globals()
-{
-	global $bp;
-	$bp->votes->notification_callback        = 'voter_format_notifications';
+/*************************************************
+Get user's voting details
+*************************************************/
+function aheadzen_voter_notification_title_format( $component_action, $item_id, $secondary_item_id ) {
+	
+   global $bp,$wp_query;
+	$component_action_arr = explode('_',$component_action);
+	$component_action_type = $component_action_arr[0];
+	
+	$notifications = $bp->notifications->query_loop->notifications;
+	if($notifications){
+		foreach($notifications as $notifications_obj)
+		{
+			if($notifications_obj->item_id==$item_id && $notifications_obj->secondary_item_id==$secondary_item_id && $notifications_obj->component_action==$component_action)
+			{
+				$user_id = $notifications_obj->user_id;
+				$voter_link = bp_core_get_userlink( $user_id );
+				break;
+			}
+		}
+		if($component_action_type=='comment')
+		{		
+			$post = get_post($secondary_item_id);
+			$topic_url = get_permalink($secondary_item_id);
+			$title = get_the_title($secondary_item_id);
+			$topic_link = '<a href="' . $topic_url . '">' . $title . '</a>';
+			echo $notification = "$voter_link likes your $component_action_type on  $topic_link";
+		}elseif($component_action_type=='profile' || $component_action_type=='groups'  || $component_action_type=='activity')
+		{
+			$topic_link = '';
+			if($component_action_type=='groups')
+			{
+				$post = groups_get_group( array( 'group_id' => $item_id ) );
+				$group_name = $post->name;
+				$group_slug = $post->slug;
+				$topic_link = '<a href="' . bp_get_root_domain() . '/' . 'groups/' . $group_slug . '/">' . $group_name . '</a>';
+			}
+			$component_action_arr = explode('_',$component_action);
+			$component_action_type = $component_action_arr[0];
+			echo $notification = "$voter_link likes your $component_action_type $topic_link";
+		}else{
+			$post = get_post($item_id);
+			$topic_url = get_permalink($item_id);
+			$title = get_the_title($item_id);
+			$topic_link = '<a href="' . $topic_url . '">' . $title . '</a>';
+			$component_action_arr = explode('_',$component_action);
+			$component_action_type = $component_action_arr[0];
+			echo $notification = "$voter_link likes your $component_action_type $topic_link";
+		}
+		
+	}
 }
-add_action( 'bp_setup_globals', 'voter_setup_globals' );
 
 /*************************************************
 Get user's voting details

@@ -75,3 +75,7 @@ Related to comments it will be appear with comment content both for normal blog 
 = 1.0.0.5 =
 * Buddypress Activity & notyfication settings on forum topic voting
 * voting up/donw related api also added
+
+= 1.0.0.6 =
+* Buddypress Activity & notyfication for posts,pages,comments,topics,groups,profile added...
+* voting up/donw related api ERROR - for user login only - solved
