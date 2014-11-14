@@ -724,28 +724,36 @@ function aheadzen_voter_add_vote_bbpress_notification()
 	if($bp && $_REQUEST['action'] == 'up' && $post_id && $action)
 	{
 	
-		$action = $_REQUEST['type'].'_vote_' .$_REQUEST['action'];
-		
 		$topic_id = $post_id;
 		
 		$user_id = bp_loggedin_user_id();
 		if($_REQUEST['user_id']){$user_id = $_REQUEST['user_id'];}
+		
+		$action = $_REQUEST['type'].'_'.$user_id.'_vote_' .$_REQUEST['action'];
 		
 		$userlink = bp_core_get_userlink( $user_id );
 		$topic = $wp_query->queried_object;
 		$topic_slug = $topic->post_name;
 		$topic_title = $topic->post_title;
 		
-		$poster_link = bp_core_get_userlink( $post->author_id );
+		$poster_link = bp_core_get_userlink( $post->post_author );
+		$post_author = $post->post_author;
 		//$topic_link = '<a href="' . bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $topic_slug . '/' . 'forum/topic/' . $topic_slug . '/">' . $topic_title . '</a>';
 		$topic_link = '<a href="' . bp_get_root_domain() . '/' . 'forum/topic/' . $topic_slug . '/">' . $topic_title . '</a>';
 		
 		if($_REQUEST['type']=='comment')
 		{
-			$action_content = sprintf( __( "%s likes comment on %s post %s", 'buddypress' ), $userlink, $poster_link, $topic_link );
-		}elseif($_REQUEST['type']=='profile' || $_REQUEST['type']=='groups'  || $_REQUEST['type']=='activity')
+			$action_content = sprintf( __( "%s likes comment on %s's post %s", 'buddypress' ), $userlink, $poster_link, $topic_link );
+		}elseif($_REQUEST['type']=='profile' || $_REQUEST['type']=='groups')
 		{
 			$topic_link = $wp_query->post->post_title;
+			if($_REQUEST['type']=='profile')
+			{
+				$post_author = $bp->displayed_user->id;
+			}elseif($_REQUEST['type']=='groups')
+			{
+				$post_author = $bp->groups->current_group->creator_id;
+			}
 			$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $_REQUEST['type'], $topic_link );
 		}else{
 			//$action_content = sprintf( __( "%s likes %s's post in %s", 'buddypress' ), $userlink, $poster_link, $topic_link );
@@ -761,8 +769,13 @@ function aheadzen_voter_add_vote_bbpress_notification()
 				);
 		
 		$activity_id = bp_activity_add($arg_arr);
-		bp_core_add_notification( $_REQUEST['secondary_item_id'], $user_id, 'votes', $action,$_REQUEST['item_id']);
-		//bp_core_add_notification( $activity_id, $user_id, 'activity', 'activity_viewed');		
+		
+		if($_REQUEST['type']=='activity')
+		{
+			//don't send notification for activity
+		}else{
+			bp_core_add_notification( $_REQUEST['secondary_item_id'], $post_author, 'votes', $action,$_REQUEST['item_id']);
+		}
 		return true;
 		
 	}
@@ -829,14 +842,17 @@ function aheadzen_voter_notification_title_format( $component_action, $item_id, 
    global $bp,$wp_query;
 	$component_action_arr = explode('_',$component_action);
 	$component_action_type = $component_action_arr[0];
+	$poster_user_id = (int)$component_action_arr[1];
 	
 	$notifications = $bp->notifications->query_loop->notifications;
+	
 	if($notifications){
 		foreach($notifications as $notifications_obj)
 		{
+			
 			if($notifications_obj->item_id==$item_id && $notifications_obj->secondary_item_id==$secondary_item_id && $notifications_obj->component_action==$component_action)
 			{
-				$user_id = $notifications_obj->user_id;
+				$user_id = $poster_user_id;
 				$voter_link = bp_core_get_userlink( $user_id );
 				break;
 			}
@@ -1098,7 +1114,7 @@ if($login_title==''){$login_title=__('Please Login','aheadzen');}
 		<?php }?>
 
 	<input type="hidden" name="redirect_to" value="<?php echo $redirect_to; ?>" />
-		<input type="hidden" name="testcookie" value="1" />
+		<?php /*?><input type="hidden" name="testcookie" value="1" /><?php */?>
 	</p>
 </form>
 <?php }else{?>

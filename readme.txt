@@ -73,12 +73,16 @@ Related to comments it will be appear with comment content both for normal blog 
 * Login dialog should close on outside click
 
 = 1.0.0.5 =
-* Buddypress Activity & notyfication settings on forum topic voting
+* Buddypress Activity & notification settings on forum topic voting
 * voting up/donw related api also added
 
 = 1.0.0.6 =
-* Buddypress Activity & notyfication for posts,pages,comments,topics,groups,profile added...
+* Buddypress Activity & notification for posts,pages,comments,topics,groups,profile added...
 * voting up/donw related api ERROR - for user login only - solved
 
 = 1.0.0.7 =
-* Buddypress Activity & notyfication for posts,pages,comments,topics,groups,profile added. Error for API solved.
+* Buddypress Activity & notification for posts,pages,comments,topics,groups,profile added. Error for API solved.
+
+= 1.0.0.8 =
+* Notification for posts,pages,comments,topics,groups,profile related error solved. Now notification will display to poster account only.
+* Notification will not added for user buddypress activity.
