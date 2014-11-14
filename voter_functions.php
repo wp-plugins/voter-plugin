@@ -744,7 +744,7 @@ function aheadzen_voter_add_vote_bbpress_notification()
 		if($_REQUEST['type']=='comment')
 		{
 			$action_content = sprintf( __( "%s likes comment on %s's post %s", 'buddypress' ), $userlink, $poster_link, $topic_link );
-		}elseif($_REQUEST['type']=='profile' || $_REQUEST['type']=='groups')
+		}elseif($_REQUEST['type']=='profile' || $_REQUEST['type']=='groups' || $_REQUEST['type']=='activity')
 		{
 			$topic_link = $wp_query->post->post_title;
 			if($_REQUEST['type']=='profile')
@@ -773,9 +773,12 @@ function aheadzen_voter_add_vote_bbpress_notification()
 		if($_REQUEST['type']=='activity')
 		{
 			//don't send notification for activity
-		}else{
-			bp_core_add_notification( $_REQUEST['secondary_item_id'], $post_author, 'votes', $action,$_REQUEST['item_id']);
+			global $wpdb;
+			$table_name =  $bp->activity->table_name;
+			$post_author = $wpdb->get_var("select user_id from $table_name where id=\"$topic_id\"");
 		}
+		bp_core_add_notification( $_REQUEST['secondary_item_id'], $post_author, 'votes', $action,$_REQUEST['item_id']);
+		
 		return true;
 		
 	}
@@ -1092,11 +1095,15 @@ $login_link = get_option('aheadzen_voter_login_link');
 $register_link = get_option('aheadzen_voter_register_link');
 $login_frm = get_option('aheadzen_voter_display_login_frm');
 if($login_title==''){$login_title=__('Please Login','aheadzen');}
+if($login_link=='')
+{
+	 $login_link = esc_url( site_url( 'wp-login.php', 'login_post' ) );
+}
 ?>
 <div id="aheadzen_voting_login" title="<?php echo $login_title;?>">
 <?php echo $login_desc;?>
 <?php if($login_frm){?>
-<form name="loginform" id="loginform" action="<?php echo esc_url( site_url( 'wp-login.php', 'login_post' ) ); ?>" method="post">
+<form name="loginform" id="loginform" action="<?php echo $login_link; ?>" method="post">
 	<p>
 		<label for="user_login"><?php _e('Username') ?><br />
 		<input type="text" name="log" id="user_login" class="input" value="<?php echo esc_attr($user_login); ?>" size="20" /></label>

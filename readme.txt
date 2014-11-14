@@ -86,3 +86,8 @@ Related to comments it will be appear with comment content both for normal blog 
 = 1.0.0.8 =
 * Notification for posts,pages,comments,topics,groups,profile related error solved. Now notification will display to poster account only.
 * Notification will not added for user buddypress activity.
+
+
+= 1.0.0.9 =
+* Notification added for user buddypress activity.
+* Login dialog form url settings as per plugin setting options.
