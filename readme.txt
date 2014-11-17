@@ -27,11 +27,13 @@ Related to comments it will be appear with comment content both for normal blog 
 <li>• Localization ready.</li>
 </ul>
 
-<b>New Widget added for top voted listing for posts,pages,products,profile & groups.</b><br />
+<h4>Top voted Widget</h4>
+New Widget for top voted listing for posts,pages,products,profile & groups.<br />
 Widget name : "Top Listings Voter Plugin"<br />
 Go to wp-admin > widgets > Top Listings Voter Plugin (drag & drop) as per you want to display.<br /><br />
 
-<b>New Shortcode added for top voted listing for posts,pages,products,profile & groups.</b><br />
+<h4>Top voted Shotcode</h4>
+Shortcode for top voted listing for posts,pages,products,profile & groups.<br />
 Get shortcode examples ::<br />
 shortcode for posts :     [voter_plugin_top_voted type=post num=5]<br />
 shortcode for pages :     [voter_plugin_top_voted type=page num=5]<br />
