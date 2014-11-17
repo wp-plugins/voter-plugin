@@ -27,6 +27,19 @@ Related to comments it will be appear with comment content both for normal blog 
 <li>• Localization ready.</li>
 </ul>
 
+<b>New Widget added for top voted listing for posts,pages,products,profile & groups.</b><br />
+Widget name : "Top Listings Voter Plugin"<br />
+Go to wp-admin > widgets > Top Listings Voter Plugin (drag & drop) as per you want to display.<br /><br />
+
+<b>New Shortcode added for top voted listing for posts,pages,products,profile & groups.</b><br />
+Get shortcode examples ::<br />
+shortcode for posts :     [voter_plugin_top_voted type=post num=5]<br />
+shortcode for pages :     [voter_plugin_top_voted type=page num=5]<br />
+shortcode for products :  [voter_plugin_top_voted type=product num=5]<br />
+shortcode for profile :   [voter_plugin_top_voted type=profile num=5]<br />
+shortcode for groups :    [voter_plugin_top_voted type=groups num=5]<br />
+shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
+
 
 == Installation ==
 1. Unzip and upload plugin folder to your /wp-content/plugins/ directory  OR Go to wp-admin > plugins > Add new Plugin & Upload plugin zip.
@@ -97,7 +110,6 @@ Related to comments it will be appear with comment content both for normal blog 
 *New Widget added for top voted listing for posts,pages,products,profile & groups.<br />
 Widget name : "Top Listings Voter Plugin"<br />
 Go to wp-admin > widgets > Top Listings Voter Plugin (drag & drop) as per you want to display.<br /><br />
-
 
 *New Shortcode added for top voted listing for posts,pages,products,profile & groups.<br />
 Get shortcode examples ::<br />
