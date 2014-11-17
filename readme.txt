@@ -91,3 +91,19 @@ Related to comments it will be appear with comment content both for normal blog 
 = 1.0.0.9 =
 * Notification added for user buddypress activity.
 * Login dialog form url settings as per plugin setting options.
+
+
+= 1.1.0.0 =
+*New Widget added for top voted listing for posts,pages,products,profile & groups.
+Widget name : "Top Listings Voter Plugin"
+Go to wp-admin > widgets > Top Listings Voter Plugin (drag & drop) as per you want to display.
+
+*New Shortcode added for top voted listing for posts,pages,products,profile & groups.
+Get shortcode examples ::
+shortcode for posts :     [voter_plugin_top_voted type=post num=5]
+shortcode for pages :     [voter_plugin_top_voted type=page num=5]
+shortcode for products :  [voter_plugin_top_voted type=product num=5]
+shortcode for profile :   [voter_plugin_top_voted type=profile num=5]
+shortcode for groups :    [voter_plugin_top_voted type=groups num=5]
+shortcode for members :   [voter_plugin_top_voted type=profile num=5]
+
