@@ -664,7 +664,7 @@ Insert user vote to Databse
 function aheadzen_voter_add_vote($template)
 {
 	global $wp_query,$current_user,$wpdb, $table_prefix, $post, $bp, $bbP;
-	$post_id = get_the_id();	
+	$post_id = get_the_id();
 	$user_id = $current_user->ID;
 	if($_REQUEST['user_id']){$user_id = $_REQUEST['user_id'];}
 	$result = '0';
@@ -724,11 +724,10 @@ Insert voter to duddypress activity & notifications
 function aheadzen_voter_add_vote_bbpress_notification()
 {
 	global $wpdb,$post, $bp, $current_user,$wp_query;	
+	$item_id = (int)$_REQUEST['item_id'];
 	$post_id = (int)$_REQUEST['secondary_item_id'];
 	$action = $_REQUEST['action'];
 	$check_url_for_topic = $bp->unfiltered_uri;
-	$post = get_post($post_id);
-	$post_type = get_post_type($post_id);
 	
 	//if($bp && $_REQUEST['action'] == 'up' && $post_id && $action && in_array("topic", $check_url_for_topic))
 	if($bp && $_REQUEST['action'] == 'up' && $post_id && $action)
@@ -746,26 +745,34 @@ function aheadzen_voter_add_vote_bbpress_notification()
 		$topic_slug = $topic->post_name;
 		$topic_title = $topic->post_title;
 		
-		$poster_link = bp_core_get_userlink( $post->post_author );
 		$post_author = $post->post_author;
 		//$topic_link = '<a href="' . bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $topic_slug . '/' . 'forum/topic/' . $topic_slug . '/">' . $topic_title . '</a>';
 		$topic_link = '<a href="' . bp_get_root_domain() . '/' . 'forum/topic/' . $topic_slug . '/">' . $topic_title . '</a>';
 		
 		if($_REQUEST['type']=='comment')
 		{
+			$post = get_post($item_id);
+			$post_type = get_post_type($item_id);
+			$poster_link = bp_core_get_userlink( $post->post_author );	
+			$topic_link = '<a href="' . get_permalink($post->ID) .'">' . $post->post_title . '</a>';
 			$action_content = sprintf( __( "%s likes comment on %s's post %s", 'buddypress' ), $userlink, $poster_link, $topic_link );
 		}elseif($_REQUEST['type']=='profile' || $_REQUEST['type']=='groups' || $_REQUEST['type']=='activity')
 		{
 			$topic_link = $wp_query->post->post_title;
 			if($_REQUEST['type']=='profile')
 			{
+				$topic_link = '<a href="' . $bp->displayed_user->domain . '/">' . $bp->displayed_user->fullname . '</a>';
 				$post_author = $bp->displayed_user->id;
 			}elseif($_REQUEST['type']=='groups')
 			{
+				$topic_link = '<a href="' . bp_get_root_domain() . '/' . 'groups/' . $bp->groups->current_group->slug . '/">' . $bp->groups->current_group->name . '</a>';
 				$post_author = $bp->groups->current_group->creator_id;
 			}
 			$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $_REQUEST['type'], $topic_link );
 		}else{
+			$post = get_post($post_id);
+			$post_type = get_post_type($post_id);
+			$topic_link = '<a href="' . get_permalink($post->ID) .'">' . $post->post_title . '</a>';
 			//$action_content = sprintf( __( "%s likes %s's post in %s", 'buddypress' ), $userlink, $poster_link, $topic_link );
 			$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $_REQUEST['type'], $topic_link );
 		}

@@ -4,7 +4,7 @@ Plugin Name: Voter Plugin
 Plugin URI: http://aheadzen.com/
 Description: The plugin added votes option for pages, post, custom post types, comments, buddypress activity, groups, member profiles, woocommerce products etc. <br />You can control display option from <a href="options-general.php?page=voter" target="_blank"><b>Plugin Settings >></b></a>
 Author: Aheadzen Team  | <a href="options-general.php?page=voter" target="_blank">Manage Plugin Settings</a>
-Version: 1.1.0.0
+Version: 1.1.0.1
 Author URI: http://aheadzen.com/
 
 Copyright: © 2014-2015 ASK-ORACLE.COM
@@ -26,6 +26,7 @@ add_action('admin_menu', 'aheadzen_voter_admin_menu');
 add_action('wp_enqueue_scripts', 'aheadzen_voter_add_custom_scripts');
 add_action('wp_head','aheadzen_header_settings');
 add_filter('template_include','aheadzen_voter_add_vote');
+add_action('bp_init','aheadzen_voter_add_vote', 10000);
 
 add_filter('the_content', 'aheadzen_display_voting_links');
 add_filter('comment_reply_link', 'aheadzen_display_voting_links');
@@ -40,3 +41,13 @@ add_action('wp_footer','aheadzen_voting_login_dialog',999);
 add_filter( 'bp_notifications_get_registered_components', 'aheadzen_voter_filter_notifications_get_registered_components', 10 );
 add_filter('bp_notifications_get_notifications_for_user','aheadzen_voter_notification_title_format','',3);
 add_action( 'bp_setup_globals', 'aheadzen_voter_setup_globals' );
+
+
+//add_action('wp_loaded','after_setup_theme_fun');
+function after_setup_theme_fun()
+{
+	global $wp_query,$current_user;
+	echo '<pre>';
+	print_r($wp_query);
+	echo '</pre>';
+}
