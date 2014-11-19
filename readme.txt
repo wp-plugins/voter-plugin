@@ -125,3 +125,7 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 
 = 1.1.0.1 =
 * notification message changed (error solved)
+
+= 1.1.0.2 =
+* if buddypress not installed, gives some Warning - SOLVED
+

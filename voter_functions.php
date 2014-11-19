@@ -826,7 +826,10 @@ Set voter buddypress componant Global
 function aheadzen_voter_setup_globals()
 {
 	global $bp;
-	$bp->votes->notification_callback = 'aheadzen_voter_format_notifications';	
+	if($bp->votes)
+	{
+		$bp->votes->notification_callback = 'aheadzen_voter_format_notifications';
+	}
 }
 
 
