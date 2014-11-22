@@ -31,7 +31,8 @@ function aheadzen_voter_settings_page()
 		update_option('aheadzen_voter_login_link',$_POST['aheadzen_voter_login_link']);
 		update_option('aheadzen_voter_register_link',$_POST['aheadzen_voter_register_link']);
 		update_option('aheadzen_voter_display_login_frm',$_POST['aheadzen_voter_display_login_frm']);
-		update_option('aheadzen_voter_include_dialog_js',$_POST['aheadzen_voter_include_dialog_js']);		
+		update_option('aheadzen_voter_include_dialog_js',$_POST['aheadzen_voter_include_dialog_js']);
+		update_option('aheadzen_voter_exclude_pages',$_POST['exclude_pages']);		
 		   
 		echo '<script>window.location.href="'.admin_url().'options-general.php?page=voter&msg=success";</script>';
 		exit;
@@ -202,6 +203,29 @@ function aheadzen_voter_settings_page()
 			</tr>
 			<tr valign="top">
 				<td>
+				<p><?php _e('Select the page template to disable voter plugin','aheadzen');?> ::</p>
+				<ul>
+				<?php
+				$exclude_pages = get_option('aheadzen_voter_exclude_pages');
+				$templates = get_page_templates( get_post() );
+				ksort( $templates );
+				foreach ( array_keys( $templates ) as $template ) {
+					$selected = selected( $default, $templates[ $template ], false );
+					?>
+					<li style="float:left;width:32%;">
+					<label>
+					<input type="checkbox" value="<?php echo $templates[ $template ];?>" name="exclude_pages[]" <?php if($exclude_pages && in_array($templates[ $template ],$exclude_pages)){echo "checked=checked";}?>/>&nbsp;<?php echo $template;?></li>
+					</label>
+					<?php
+				}
+				?>
+				</ul>
+				<div style="width:100%; clear:both;"></div>
+				<br /> <small><?php _e('Please select the template if you want to disable the voter plugin for it.','aheadzen');?></small>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td>
 					<input type="hidden" name="page_options" value="<?php echo $value;?>" />
 					<input type="hidden" name="action" value="update" />
 					<input type="submit" value="Save settings" class="button-primary"/>
@@ -296,6 +320,11 @@ Plugin JS & CSS include
 *************************************************/	
 function aheadzen_voter_add_custom_scripts()
 {
+	$pid = get_the_ID();
+	if(aheadzen_check_voter_page_disabled($pid))
+	{
+		return $content;
+	}
 	wp_enqueue_script('aheadzen-voter-script', plugins_url('js/voter.js', __FILE__), array('jquery'));
 	wp_enqueue_style('', plugins_url('css/voter.css', __FILE__));
 }
@@ -362,12 +391,34 @@ function aheadzen_is_bp_topic()
 	return 0;
 }
 
+/*************************************************
+Check if the voter plugin disable or not
+*************************************************/
+function aheadzen_check_voter_page_disabled($pid)
+{
+	$exclude_pages = get_option('aheadzen_voter_exclude_pages');
+	if($exclude_pages)
+	{
+		$current_template = get_post_meta($pid,'_wp_page_template',true);
+		if(in_array($current_template,$exclude_pages))
+		{
+			return true;
+		}
+	}
+	return false;
+}
 
 /*************************************************
 Display voter link conditions checking function
 *************************************************/
 function aheadzen_display_voting_links($content)
 {
+	$pid = get_the_ID();
+	if(aheadzen_check_voter_page_disabled($pid))
+	{
+		return $content;
+	}
+		
 	global $post, $bp, $thread_template, $bbP, $forum_id, $wpdb, $table_prefix,$current_user;
 	$post_type = $post->post_type;
 	$comment_id = get_comment_ID();
@@ -1108,6 +1159,11 @@ Login form for -- Not login user
 *************************************************/
 function aheadzen_voting_login_dialog()
 {
+	$pid = get_the_ID();
+	if(aheadzen_check_voter_page_disabled($pid))
+	{
+		return $content;
+	}
 $redirect_to = get_permalink();
 $login_title = get_option('aheadzen_voter_login_title');
 $login_desc = get_option('aheadzen_voter_login_desc');

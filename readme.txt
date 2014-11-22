@@ -129,3 +129,6 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 = 1.1.0.2 =
 * if buddypress not installed, gives some Warning - SOLVED
 
+= 1.1.0.3 =
+* Disable voter plugin settings for specific page templates > New feature added to plugin settings page.
+
