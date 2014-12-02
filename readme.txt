@@ -132,3 +132,5 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 = 1.1.0.3 =
 * Disable voter plugin settings for specific page templates > New feature added to plugin settings page.
 
+= 1.1.0.4 =
+* Notification & activity related changed for older version of buddypress done.
