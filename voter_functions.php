@@ -414,6 +414,15 @@ Insert user vote to Databse
 function aheadzen_voter_add_vote($template)
 {
 	global $wp_query,$current_user,$wpdb, $table_prefix, $post, $bp, $bbP;
+	if($_GET['clear-all']=='notifications' && $current_user->ID)
+	{
+		aheadzen_delete_user_notifications($current_user->ID);exit;
+	}elseif($_GET['ntid'] && $current_user->ID)
+	{
+		$notification_id = $_GET['ntid'];
+		aheadzen_read_user_notifications($notification_id);
+	}
+	
 	$post_id = get_the_id();
 	$user_id = $current_user->ID;
 	if($_REQUEST['user_id']){$user_id = $_REQUEST['user_id'];}
@@ -819,4 +828,22 @@ function aheadzen_top_voted_list_groups($arg)
 		
 	}
 	return $return;
+}
+
+/*******************************
+Read all notifications on one click
+****************************/
+function aheadzen_read_user_notifications($notification_id)
+{
+	global $bp, $wpdb,$table_prefix;
+	$wpdb->query("update ".$table_prefix."bp_notifications set is_new='0' where id=\"$notification_id\"");
+}
+
+/*******************************
+Delete all notifications on one click
+****************************/
+function aheadzen_delete_user_notifications($user_id)
+{
+	global $bp, $wpdb,$table_prefix;
+	$wpdb->query("delete from ".$table_prefix."bp_notifications where user_id=\"$user_id\"");
 }

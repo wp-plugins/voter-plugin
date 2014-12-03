@@ -212,6 +212,7 @@ Email alert send while voting Up
 *************************************************/
 function aheadzen_send_author_notification($arg)
 {
+	global $bp;
 	$from_name =  get_option('blogname');
 	$from_email = get_option('admin_email');
 	
@@ -245,6 +246,7 @@ function aheadzen_send_author_notification($arg)
 			$post = groups_get_group( array( 'group_id' => $secondary_item_id ) );
 			$group_name = $post->name;
 			$group_slug = $post->slug;
+			$title = $group_name;
 			$topic_link = '<a href="' . bp_get_root_domain() . '/' . 'groups/' . $group_slug . '/">' . $group_name . '</a>';
 		}
 		$notification = "$voter_link likes your $component_action_type $topic_link";
@@ -255,10 +257,14 @@ function aheadzen_send_author_notification($arg)
 		$topic_link = '<a href="' . $topic_url . '">' . $title . '</a>';
 		$notification = "$voter_link likes your $component_action_type $topic_link";
 	}
-	$subject = "$user_display_name likes your $component_action_type";
-	$message =  $notification;
+	$subject = "$user_display_name likes your $component_action_type $title";
+	$notification_link = $bp->bp_nav['notifications']['link'];
+	$settings_link = '<a href="'.$bp->bp_nav['settings']['link'].'notifications/"> member settings</a>';
+	$message =  $notification.'<br /><br />To view all of your pending notifications: <a href="'.$notification_link.'">Click the link</a> <br /><br />Click to view '.$voter_link.'\'s profile.';
+	$message .= '<br /><br />'.sprintf( __( 'To disable these notifications please log in and go to: %s', 'aheadzen' ), $settings_link );
 	$headers = "MIME-Version: 1.0" . "\r\n";
 	$headers .= "Content-type: text/html; charset=".get_bloginfo('charset')."" . "\r\n";
 	$headers .= "From: $from_name <$from_email>" . "\r\n";
+	//echo "$to_email, $subject, $message, $headers";exit;
 	wp_mail($to_email, $subject, $message, $headers);
 }
