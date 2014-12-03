@@ -11,7 +11,10 @@ Voter plugin init function
 function aheadzen_voter_init()
 {
 	load_plugin_textdomain('aheadzen', false, basename( dirname( __FILE__ ) ) . '/languages');
-	//aheadzen_voter_add_vote();
+	if ( current_user_can( 'delete_posts' ) )
+	{
+        add_action( 'delete_post', 'aheadzen_delete_post_related_data', 10 );
+	}
 }
 
 /*************************************************
@@ -416,7 +419,7 @@ function aheadzen_voter_add_vote($template)
 	global $wp_query,$current_user,$wpdb, $table_prefix, $post, $bp, $bbP;
 	if($_GET['clear-all']=='notifications' && $current_user->ID)
 	{
-		aheadzen_delete_user_notifications($current_user->ID);exit;
+		aheadzen_delete_user_notifications($current_user->ID);
 	}elseif($_GET['ntid'] && $current_user->ID)
 	{
 		$notification_id = $_GET['ntid'];
@@ -846,4 +849,101 @@ function aheadzen_delete_user_notifications($user_id)
 {
 	global $bp, $wpdb,$table_prefix;
 	$wpdb->query("delete from ".$table_prefix."bp_notifications where user_id=\"$user_id\"");
+}
+
+/*******************************
+Read all user post notifications on while visit the page
+****************************/
+function aheadzen_read_user_post_notifications($pid,$uid)
+{
+	global $wpdb,$table_prefix;
+	$wpdb->query("update ".$table_prefix."bp_notifications set is_new='0' where item_id=\"$pid\" and user_id=\"$uid\"");
+}
+
+function aheadzen_update_user_notification()
+{
+	global $wp_query,$post, $bp, $thread_template, $bbP, $forum_id, $wpdb, $table_prefix,$current_user;
+	$post_type = $post->post_type;
+	if(($post_type || $post_type == "page" || $post_type == "post" || $post_type == "product") && !aheadzen_is_bp_topic()) //check for page or post without buddpress topic
+	{
+		$uid = $wp_query->queried_object->post_author;
+		$pid = $post->ID;
+		if($current_user->ID == $uid)
+		{
+			aheadzen_read_user_post_notifications($pid,$uid);
+		}
+	}elseif(aheadzen_is_bp_topic())
+	{
+		$activity_id = bp_get_activity_id();
+		$group_id = $bp->groups->current_group->id;
+		$member_id = $bp->displayed_user->id;
+		$component_name = "buddypress";
+		$item_id = $post->ID;
+		
+		$check_url_for_topic = $bp->unfiltered_uri;
+		if (in_array("topic", $check_url_for_topic))
+		{
+			$topic_id = 1;
+		}		
+		if(isset($group_id) && $group_id != "" && (!isset($topic_id) && $topic_id == "")) //groups
+		{
+			$uid = $bp->groups->current_group->creator_id;
+			$pid = $bp->groups->current_group->id;
+			if($current_user->ID == $uid)
+			{
+				aheadzen_read_user_post_notifications($pid,$uid);
+			}
+		}
+		else if(isset($member_id) && $member_id != "") //member profile
+		{
+			if(strtolower($bp->current_component) == "profile")
+			{
+				if($current_user->ID == $member_id)
+				{
+					$uid = $member_id;
+					aheadzen_read_user_post_notifications($member_id,$uid);
+				}
+			}
+			else if(strtolower($bp->current_component) == "messages") //member messages
+			{
+				//echo 'VERY LAST 2222';
+			}
+		}else if(isset($activity_id) && $activity_id != "") //activity
+		{
+			$activity_id = bp_get_activity_id();
+			$uid = $current_user->ID;
+			if($uid){
+				$wpdb->query("update ".$table_prefix."bp_notifications set is_new='0' where component_action like 'activity_%' and user_id=\"$uid\"");
+			}
+		}else if(isset($topic_id) && $topic_id != "") //topics
+		{
+			$uid = $wp_query->queried_object->post_author;
+			$pid = $post->ID;
+			if($current_user->ID == $uid)
+			{
+				aheadzen_read_user_post_notifications($pid,$uid);
+			}
+		}
+		else
+		{
+			//echo 'VERY LAST';
+		}
+	}
+}
+
+
+function aheadzen_delete_post_related_data($pid)
+{
+	global $wpdb,$table_prefix;
+	$voter_table = $table_prefix.'ask_votes';
+	$notifications_table = $table_prefix.'bp_notifications';
+	$activity_table = $table_prefix.'bp_activity';
+    $wpdb->query("DELETE FROM $voter_table WHERE item_id=\"$pid\" or secondary_item_id=\"$pid\"");
+	$wpdb->query("DELETE FROM $notifications_table WHERE item_id=\"$pid\"");
+	$wpdb->query("DELETE FROM $activity_table WHERE component='votes' and item_id=\"$pid\"");
+}
+
+function aheadzen_bp_delete_topic()
+{
+	add_action('bbp_delete_topic','aheadzen_delete_post_related_data');
 }

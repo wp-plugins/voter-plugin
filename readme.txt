@@ -138,3 +138,7 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 = 1.2.0.0 =
 * Notification changes added for older version of buddypress.
 * New Email notification option added while you like any post,page,group,member profile, comments,products, etc...
+
+= 1.3.0.0 =
+* delete vote, notification & activity related data while delete any post or forum topic.
+* notification will be automatically marked as read while any creator or post author visit the detail page.
