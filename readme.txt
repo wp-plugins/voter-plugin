@@ -134,3 +134,7 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 
 = 1.1.0.4 =
 * Notification & activity related changed for older version of buddypress done.
+
+= 1.2.0.0 =
+* Notification changes added for older version of buddypress.
+* New Email notification option added while you like any post,page,group,member profile, comments,products, etc...
