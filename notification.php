@@ -7,7 +7,7 @@ function aheadzen_voter_add_vote_bbpress_notification()
 	global $wpdb,$post, $bp, $current_user,$wp_query;	
 	$item_id = (int)$_REQUEST['item_id'];
 	$post_id = (int)$_REQUEST['secondary_item_id'];
-	$secondary_item_id = (int)$_REQUEST['secondary_item_id'];
+	
 	$action = $_REQUEST['action'];
 	$check_url_for_topic = $bp->unfiltered_uri;
 	
@@ -39,6 +39,8 @@ function aheadzen_voter_add_vote_bbpress_notification()
 				$topic_details = bp_forums_get_topic_details( $topic_id );
 			}
 		}
+		
+		
 		if($_REQUEST['type']=='comment')
 		{
 			$post = get_post($item_id);
@@ -61,17 +63,18 @@ function aheadzen_voter_add_vote_bbpress_notification()
 			$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $_REQUEST['type'], $topic_link );
 		}elseif($_REQUEST['type']=='topic' && $topic_details)
 		{
-			
-			$post_title = $topic_details->post_title;
+				$post_title = $topic_details->post_title;
+		
 			if(function_exists('bbp_get_topic_permalink'))
-			{			
+			{	
 				$topic_link = bbp_get_topic_permalink( $post_id );
 			}else{
-				$group = groups_get_group( array( 'group_id' => $secondary_item_id ) );
-				$topic_link = trailingslashit( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug . '/' ).'/forum/topic/' . $topic_details->post_name;
-				//$topic_link = bp_forums_get_topic_permalink( $topic_id );
+				$post_title = $topic_details->topic_title;
+				$group = groups_get_group( array( 'group_id' => $item_id ) );
+				$topic_link = trailingslashit( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug . '/' ).'/forum/topic/' . $topic_details->topic_slug . '/';
+				
 			}	
-			
+	
 			$post_author = $topic_details->post_author;
 			$topic_link = '<a href="' . $topic_link .'">' . $post_title . '</a>';
 			$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $_REQUEST['type'], $topic_link );
@@ -105,16 +108,16 @@ function aheadzen_voter_add_vote_bbpress_notification()
 		if($post_author)
 		{
 			$arg = array(
-				'item_id' 			=> $_REQUEST['secondary_item_id'],
-				'secondary_item_id' => $_REQUEST['item_id'],
-				'post_author' 		=> $post_author,
-				'type' 				=> $_REQUEST['type'],
-				'action' 			=> $_REQUEST['action'],
-				'user_id' 			=> $user_id,
+				'secondary_item_id' => $_REQUEST['secondary_item_id'],
+				'item_id' 		=> $_REQUEST['item_id'],
+				'post_author' 	=> $post_author,
+				'type' 			=> $_REQUEST['type'],
+				'action' 		=> $_REQUEST['action'],
+				'user_id' 		=> $user_id,
 				);
 			aheadzen_send_author_notification($arg);
 			
-			bp_core_add_notification( $_REQUEST['item_id'], $post_author, 'votes', $action,$_REQUEST['secondary_item_id']);
+			bp_core_add_notification( $_REQUEST['secondary_item_id'], $post_author, 'votes', $action,$_REQUEST['item_id']);
 		}
 		
 		return true;
@@ -211,9 +214,9 @@ function aheadzen_voter_notification_title_format( $component_action, $item_id, 
 	
 	if($component_action_type=='comment')
 	{       
-		$post = get_post($item_id);
-		$topic_url = get_permalink($item_id);
-		$title = get_the_title($item_id);
+		$post = get_post($secondary_item_id);
+		$topic_url = get_permalink($secondary_item_id);
+		$title = get_the_title($secondary_item_id);
 		$topic_link = '<a href="' . $topic_url . '">' . $title . '</a>';
 		$notification = "$voter_link likes your $component_action_type on  $topic_link";
 	}elseif($component_action_type=='profile' || $component_action_type=='groups'  || $component_action_type=='activity')
@@ -236,8 +239,7 @@ function aheadzen_voter_notification_title_format( $component_action, $item_id, 
 		{			
 			$topic_link = bbp_get_topic_permalink( $post_id );
 		}else{
-			$group = groups_get_group( array( 'group_id' => $secondary_item_id ) );
-			$topic_link = trailingslashit( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug . '/' ).'/forum/topic/' . $topic_details->post_name;
+			//$topic_link = bp_forums_get_topic_permalink( $topic_id );
 		}
 		$post_author = $topic_details->post_author;
 		$topic_link = '<a href="' . $topic_link .'">' . $post_title . '</a>';
@@ -281,9 +283,9 @@ function aheadzen_send_author_notification($arg)
 	
 	if($component_action_type=='comment')
 	{       
-		$post = get_post($item_id);
-		$topic_url = get_permalink($item_id);
-		$title = get_the_title($item_id);
+		$post = get_post($secondary_item_id);
+		$topic_url = get_permalink($secondary_item_id);
+		$title = get_the_title($secondary_item_id);
 		$topic_link = '<a href="' . $topic_url . '">' . $title . '</a>';
 		$notification = "$voter_link likes your $component_action_type on  $topic_link";
 	}elseif($component_action_type=='profile' || $component_action_type=='groups'  || $component_action_type=='activity')
@@ -291,7 +293,7 @@ function aheadzen_send_author_notification($arg)
 		$topic_link = '';
 		if($component_action_type=='groups')
 		{
-			$post = groups_get_group( array( 'group_id' => $item_id ) );
+			$post = groups_get_group( array( 'group_id' => $secondary_item_id ) );
 			$group_name = $post->name;
 			$group_slug = $post->slug;
 			$title = $group_name;

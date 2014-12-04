@@ -145,3 +145,6 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 
 = 1.3.0.1 =
 * buddpress older version forum topic notification & activity problem - solved.
+
+= 1.3.1.1 =
+* buddpress older version forum topic notification & activity problem - solved.
