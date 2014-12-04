@@ -251,9 +251,19 @@ function aheadzen_display_voting_links($content)
 			$component_name = 'forum';
 			$type = "topic";
 			$secondary_item_id = $post->ID;
+			if(function_exists('bbp_get_topic'))
+			{			
+				$topic_details = bbp_get_topic( $post->ID );
+			}else{
+				$topic_details = bp_forums_get_topic_details( $post->ID );
+			}
 			
 			if(get_option('aheadzen_voter_for_forum'))
 			{
+				if($bp->current_component=='groups')
+				{
+					$secondary_item_id = $group_id = $bp->groups->current_group->id;
+				}
 				$params = array(
 					'component' => $component_name,
 					'type' => $type,

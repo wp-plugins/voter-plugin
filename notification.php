@@ -7,13 +7,13 @@ function aheadzen_voter_add_vote_bbpress_notification()
 	global $wpdb,$post, $bp, $current_user,$wp_query;	
 	$item_id = (int)$_REQUEST['item_id'];
 	$post_id = (int)$_REQUEST['secondary_item_id'];
+	$secondary_item_id = (int)$_REQUEST['secondary_item_id'];
 	$action = $_REQUEST['action'];
 	$check_url_for_topic = $bp->unfiltered_uri;
 	
 	//if($bp && $_REQUEST['action'] == 'up' && $post_id && $action && in_array("topic", $check_url_for_topic))
 	if($bp && $_REQUEST['action'] == 'up' && $post_id && $action)
 	{
-	
 		$topic_id = $post_id;
 		
 		$user_id = bp_loggedin_user_id();
@@ -30,6 +30,15 @@ function aheadzen_voter_add_vote_bbpress_notification()
 		//$topic_link = '<a href="' . bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $topic_slug . '/' . 'forum/topic/' . $topic_slug . '/">' . $topic_title . '</a>';
 		$topic_link = '<a href="' . bp_get_root_domain() . '/' . 'forum/topic/' . $topic_slug . '/">' . $topic_title . '</a>';
 		
+		if($_REQUEST['type']=='topic')
+		{
+			if(function_exists('bbp_get_topic'))
+			{			
+				$topic_details = bbp_get_topic( $post_id );
+			}else{
+				$topic_details = bp_forums_get_topic_details( $topic_id );
+			}
+		}
 		if($_REQUEST['type']=='comment')
 		{
 			$post = get_post($item_id);
@@ -49,6 +58,22 @@ function aheadzen_voter_add_vote_bbpress_notification()
 				$topic_link = '<a href="' . bp_get_root_domain() . '/' . 'groups/' . $bp->groups->current_group->slug . '/">' . $bp->groups->current_group->name . '</a>';
 				$post_author = $bp->groups->current_group->creator_id;
 			}
+			$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $_REQUEST['type'], $topic_link );
+		}elseif($_REQUEST['type']=='topic' && $topic_details)
+		{
+			
+			$post_title = $topic_details->post_title;
+			if(function_exists('bbp_get_topic_permalink'))
+			{			
+				$topic_link = bbp_get_topic_permalink( $post_id );
+			}else{
+				$group = groups_get_group( array( 'group_id' => $secondary_item_id ) );
+				$topic_link = trailingslashit( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug . '/' ).'/forum/topic/' . $topic_details->post_name;
+				//$topic_link = bp_forums_get_topic_permalink( $topic_id );
+			}	
+			
+			$post_author = $topic_details->post_author;
+			$topic_link = '<a href="' . $topic_link .'">' . $post_title . '</a>';
 			$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $_REQUEST['type'], $topic_link );
 		}else{
 			$post = get_post($post_id);
@@ -174,6 +199,16 @@ function aheadzen_voter_notification_title_format( $component_action, $item_id, 
 	$url = bp_core_get_user_domain( $user_id );
 	$voter_link = $display_name;
 	
+	if($component_action_type=='topic')
+	{
+		if(function_exists('bbp_get_topic'))
+		{			
+			$topic_details = bbp_get_topic( $post_id );
+		}else{
+			$topic_details = bp_forums_get_topic_details( $topic_id );
+		}
+	}
+	
 	if($component_action_type=='comment')
 	{       
 		$post = get_post($secondary_item_id);
@@ -194,6 +229,18 @@ function aheadzen_voter_notification_title_format( $component_action, $item_id, 
 		$component_action_arr = explode('_',$component_action);
 		$component_action_type = $component_action_arr[0];
 		$notification = "$voter_link likes your $component_action_type $topic_link";
+	}elseif($component_action_type=='topic' && $topic_details)
+	{
+		$post_title = $topic_details->post_title;
+		if(function_exists('bbp_get_topic_permalink'))
+		{			
+			$topic_link = bbp_get_topic_permalink( $post_id );
+		}else{
+			//$topic_link = bp_forums_get_topic_permalink( $topic_id );
+		}
+		$post_author = $topic_details->post_author;
+		$topic_link = '<a href="' . $topic_link .'">' . $post_title . '</a>';
+		$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $_REQUEST['type'], $topic_link );
 	}else{
 		$post = get_post($item_id);
 		$topic_url = get_permalink($item_id);
@@ -267,4 +314,12 @@ function aheadzen_send_author_notification($arg)
 	$headers .= "From: $from_name <$from_email>" . "\r\n";
 	//echo "$to_email, $subject, $message, $headers";exit;
 	wp_mail($to_email, $subject, $message, $headers);
+}
+
+function aheadzen_bp_the_topic_permalink() {
+ global $forum_template, $bbpress_live, $group_obj;
+ 
+ $target_uri = $bbpress_live->fetch->options['target_uri'];
+ 
+ echo bp_group_permalink( $group_obj, false ) . '/forum/topic/' . $forum_template->topic->topic_id;
 }
