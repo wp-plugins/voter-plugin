@@ -154,3 +154,6 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 
 = 1.3.3.0 =
 * email content merged with notification function.
+
+= 1.3.3.1 =
+* login in dialog redirection for buddypress.

@@ -644,12 +644,29 @@ Login form for -- Not login user
 *************************************************/
 function aheadzen_voting_login_dialog()
 {
+	global $bp;
 	$pid = get_the_ID();
 	if(aheadzen_check_voter_page_disabled($pid))
 	{
 		return $content;
 	}
-$redirect_to = get_permalink();
+/*
+if($bp->current_component=='activity')
+{
+	$redirect_to = $bp->canonical_stack['base_url'];
+}elseif($bp->current_component=='groups')
+{
+	$redirect_to = bp_get_root_domain() . '/groups/' . $bp->groups->current_group->slug.'/';
+}elseif($bp->current_component=='profile')
+{
+	$redirect_to = $bp->displayed_user->domain;
+}else
+{
+	$redirect_to = get_permalink();
+}
+*/
+$redirect_to = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+
 $login_title = get_option('aheadzen_voter_login_title');
 $login_desc = get_option('aheadzen_voter_login_desc');
 $login_link = get_option('aheadzen_voter_login_link');
