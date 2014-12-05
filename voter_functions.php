@@ -252,7 +252,6 @@ function aheadzen_display_voting_links($content)
 			$type = "topic";
 			$secondary_item_id = $post->ID;
 			
-			
 			if(get_option('aheadzen_voter_for_forum'))
 			{
 				if($bp->current_component=='groups')
@@ -272,7 +271,8 @@ function aheadzen_display_voting_links($content)
 					'type' => $type,
 					'item_id' => $item_id,
 					'secondary_item_id' => $secondary_item_id
-					);	
+					);
+				//print_r($params);
 				echo $votestr = aheadzen_get_voting_link($params);
 			}
 		}
@@ -314,6 +314,7 @@ function aheadzen_get_voting_link($params)
 	unset($params['result']);
 	
 	$post_id = $params['item_id'];
+	/*
 	if($params['type']=='forum')
 	{
 		if(function_exists('bp_get_the_topic_permalink'))
@@ -325,6 +326,8 @@ function aheadzen_get_voting_link($params)
 	}else{
 		$linkurl = get_permalink($post_id);
 	}
+	*/
+	$linkurl = aheadzen_get_current_page_url();
 	$total_votes = aheadzen_get_total_votes($params);
 	$is_voted = aheadzen_is_voted($params);
 	$class_up = 'vote-up-on';
@@ -650,22 +653,8 @@ function aheadzen_voting_login_dialog()
 	{
 		return $content;
 	}
-/*
-if($bp->current_component=='activity')
-{
-	$redirect_to = $bp->canonical_stack['base_url'];
-}elseif($bp->current_component=='groups')
-{
-	$redirect_to = bp_get_root_domain() . '/groups/' . $bp->groups->current_group->slug.'/';
-}elseif($bp->current_component=='profile')
-{
-	$redirect_to = $bp->displayed_user->domain;
-}else
-{
-	$redirect_to = get_permalink();
-}
-*/
-$redirect_to = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+
+$redirect_to = aheadzen_get_current_page_url();
 
 $login_title = get_option('aheadzen_voter_login_title');
 $login_desc = get_option('aheadzen_voter_login_desc');
@@ -976,4 +965,9 @@ function aheadzen_delete_post_related_data($pid)
 function aheadzen_bp_delete_topic()
 {
 	add_action('bbp_delete_topic','aheadzen_delete_post_related_data');
+}
+
+function aheadzen_get_current_page_url()
+{
+	return $redirect_to = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 }
