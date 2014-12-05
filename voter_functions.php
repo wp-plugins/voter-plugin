@@ -257,17 +257,21 @@ function aheadzen_display_voting_links($content)
 			{
 				if($bp->current_component=='groups')
 				{
-					$secondary_item_id = $group_id = $bp->groups->current_group->id;
+					//$item_id = $group_id = $bp->groups->current_group->id;
 				}
 				if(function_exists('bp_get_the_topic_id'))
 				{
 					$item_id = bp_get_the_topic_id();
 				}
+				if(function_exists('bp_get_the_topic_post_id'))
+				{
+					$secondary_item_id = bp_get_the_topic_post_id();
+				}
 				$params = array(
 					'component' => $component_name,
 					'type' => $type,
-					'item_id' => $secondary_item_id,
-					'secondary_item_id' => $item_id
+					'item_id' => $item_id,
+					'secondary_item_id' => $secondary_item_id
 					);	
 				echo $votestr = aheadzen_get_voting_link($params);
 			}
