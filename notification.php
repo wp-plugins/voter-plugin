@@ -6,40 +6,30 @@ function aheadzen_voter_add_vote_bbpress_notification()
 {
 	global $wpdb,$post, $bp, $current_user,$wp_query;	
 	$item_id = (int)$_REQUEST['item_id'];
-	$post_id = (int)$_REQUEST['secondary_item_id'];
-	
+	$secondary_item_id = (int)$_REQUEST['secondary_item_id'];	
 	$action = $_REQUEST['action'];
+	$type = $_REQUEST['type'];
 	$check_url_for_topic = $bp->unfiltered_uri;
 	
-	//if($bp && $_REQUEST['action'] == 'up' && $post_id && $action && in_array("topic", $check_url_for_topic))
-	if($bp && $_REQUEST['action'] == 'up' && $post_id && $action)
+	if($bp && $_REQUEST['action'] == 'up' && $secondary_item_id && $type)
 	{
-		$topic_id = $post_id;
-		
 		$user_id = bp_loggedin_user_id();
 		if($_REQUEST['user_id']){$user_id = $_REQUEST['user_id'];}
 		
-		$action = $_REQUEST['type'].'_'.$user_id.'_vote_' .$_REQUEST['action'];
-		
+		$topic_id = $secondary_item_id;
+		$action_str = $type.'_'.$user_id.'_vote_' .$action;
 		$userlink = bp_core_get_userlink( $user_id );
-		$topic = $wp_query->queried_object;
-		$topic_slug = $topic->post_name;
-		$topic_title = $topic->post_title;
 		
-		$post_author = $post->post_author;
-		//$topic_link = '<a href="' . bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $topic_slug . '/' . 'forum/topic/' . $topic_slug . '/">' . $topic_title . '</a>';
-		$topic_link = '<a href="' . bp_get_root_domain() . '/' . 'forum/topic/' . $topic_slug . '/">' . $topic_title . '</a>';
-		
-		if($_REQUEST['type']=='topic')
+		if($type=='topic' || $type=='topic_reply')
 		{
+			if($type=='topic_reply'){$the_topic_id = $item_id;}else{$the_topic_id = $secondary_item_id ;}
 			if(function_exists('bbp_get_topic'))
 			{			
-				$topic_details = bbp_get_topic( $post_id );
+				$topic_details = bbp_get_topic( $the_topic_id );
 			}else{
-				$topic_details = bp_forums_get_topic_details( $topic_id );
+				$topic_details = bp_forums_get_topic_details( $the_topic_id );
 			}
 		}
-		
 		
 		if($_REQUEST['type']=='comment')
 		{
@@ -61,15 +51,14 @@ function aheadzen_voter_add_vote_bbpress_notification()
 				$post_author = $bp->groups->current_group->creator_id;
 			}
 			$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $_REQUEST['type'], $topic_link );
-		}elseif($_REQUEST['type']=='topic' && $topic_details)
+		}elseif(($_REQUEST['type']=='topic' || $_REQUEST['type']=='topic_reply') && $topic_details)
 		{
-				$post_title = $topic_details->post_title;
-				$post_author = $topic_details->post_author;
-		
+			$post_title = $topic_details->post_title;
+			$post_author = $topic_details->post_author;
 			if(function_exists('bbp_get_topic_permalink'))
 			{	
-				$topic_link = bbp_get_topic_permalink( $post_id );
-				$post_author = bbp_get_reply_author( $post_id );
+				$topic_link = bbp_get_topic_permalink( $secondary_item_id );
+				$post_author = bbp_get_reply_author( $secondary_item_id );
 			}else{
 				$post_title = $topic_details->topic_title;
 				$group = groups_get_group( array( 'group_id' => $topic_details->object_id ) );
@@ -78,13 +67,14 @@ function aheadzen_voter_add_vote_bbpress_notification()
 				$topic_post= bp_forums_get_post( $item_id );
 				$post_author = $topic_post->poster_id;
 			}	
-	
+			
 			$topic_link = '<a href="' . $topic_link .'">' . $post_title . '</a>';
-			$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $_REQUEST['type'], $topic_link );
+			if($_REQUEST['type']=='topic_reply'){$typestr = 'topic reply';}else{$typestr = 'topic';}
+			$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $typestr, $topic_link );
 		}else{
-			$post = get_post($post_id);
+			$post = get_post($secondary_item_id);
 			$post_author = $post->post_author;
-			$post_type = get_post_type($post_id);
+			$post_type = get_post_type($secondary_item_id);
 			$topic_link = '<a href="' . get_permalink($post->ID) .'">' . $post->post_title . '</a>';
 			//$action_content = sprintf( __( "%s likes %s's post in %s", 'buddypress' ), $userlink, $poster_link, $topic_link );
 			$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $_REQUEST['type'], $topic_link );
@@ -120,7 +110,7 @@ function aheadzen_voter_add_vote_bbpress_notification()
 				);
 			aheadzen_send_author_notification($arg);
 			
-			bp_core_add_notification( $_REQUEST['secondary_item_id'], $post_author, 'votes', $action,$_REQUEST['item_id']);
+			bp_core_add_notification( $_REQUEST['secondary_item_id'], $post_author, 'votes', $action_str,$_REQUEST['item_id']);
 		}
 		
 		return true;

@@ -25,7 +25,7 @@ function aheadzen_voter_add_custom_scripts()
 	$pid = get_the_ID();
 	if(aheadzen_check_voter_page_disabled($pid))
 	{
-		return $content;
+		return;
 	}
 	wp_enqueue_script('aheadzen-voter-script', plugins_url('js/voter.js', __FILE__), array('jquery'));
 	wp_enqueue_style('', plugins_url('css/voter.css', __FILE__));
@@ -111,22 +111,13 @@ function aheadzen_check_voter_page_disabled($pid)
 }
 
 /*************************************************
-Display voter link conditions checking function
+Voting link for post,pages,products, etc...
 *************************************************/
-function aheadzen_display_voting_links($content)
+function aheadzen_content_voting_links($content)
 {
-	$pid = get_the_ID();
-	if(aheadzen_check_voter_page_disabled($pid))
-	{
-		return $content;
-	}
-		
-	global $post, $bp, $thread_template, $bbP, $forum_id, $wpdb, $table_prefix,$current_user;
+	global $post,$wpdb;
 	$post_type = $post->post_type;
-	$comment_id = get_comment_ID();
-	$params = array();	
-	
-	if(($post_type || $post_type == "page" || $post_type == "post" || $post_type == "product") && !aheadzen_is_bp_topic()) //check for page or post without buddpress topic
+	if(($post_type && get_option('aheadzen_voter_for_custom_posttype')) || ($post_type=='page' && get_option('aheadzen_voter_for_page')) || ($post_type=='post' && get_option('aheadzen_voter_for_post'))  || ($post_type=='product' && get_option('aheadzen_voter_for_product')))
 	{
 		if($post_type == "product"){
 			$component_name = "woocommerce";
@@ -135,171 +126,232 @@ function aheadzen_display_voting_links($content)
 		}else{
 			$component_name = "custompost";
 		}
-		
-		$type = $post->post_type;
-		$item_id = $post->ID;
-		if(isset($comment_id) && $comment_id != "")
-		{
-			$item_id = $post->ID;
-			$secondary_item_id = $comment_id;
-			if(get_option('aheadzen_voter_for_comments'))
-			{
-				$type = 'comment';
-				$params = array(
-					'component' => $component_name,
-					'type' => $type,
-					'item_id' => $item_id,
-					'secondary_item_id' => $secondary_item_id
-					);	
-				$votestr = aheadzen_get_voting_link($params);
-			}			
+		//$arg = array('post_type'=>$post_type,'post_id'=>$post->ID,'component_name'=>$component_name);
+		//$voting_links = aheadzen_display_voting_links($arg);
+		$params = array(
+			'component' => $component_name,
+			'type' => $post_type,
+			'item_id' => 0,
+			'secondary_item_id' => $post->ID
+			);
+		$votestr = aheadzen_get_voting_link($params);
+	}
+	return $content.$voting_links;
+}
+
+/*************************************************
+Voting link for Comments
+*************************************************/
+function aheadzen_comment_voting_links($comment_text,$comment)
+{
+	if(get_option('aheadzen_voter_for_comments'))
+	{
+		$comment_id = $comment->comment_ID;
+		$comment_post_id = $comment->comment_post_ID;
+		$user_id = $comment->user_id;
+		$comment_author = $comment->comment_author;
+		$comment_author_url = $comment->comment_author_url;
+		$post_type = get_post_type($comment_post_id);
+		if($post_type == "product"){
+			$component_name = "woocommerce";
+		}elseif($post_type == "page" || $post_type == "post"){
+			$component_name = "blog";
 		}else{
-			$item_id = 0;
-			$secondary_item_id = $post->ID;
-			
-			if(($type && get_option('aheadzen_voter_for_custom_posttype')) || ($type=='page' && get_option('aheadzen_voter_for_page')) || ($type=='post' && get_option('aheadzen_voter_for_post'))  || ($type=='product' && get_option('aheadzen_voter_for_product')))
+			$component_name = "custompost";
+		}		
+		//$arg = array('comment_id'=>$comment_id,'post_id'=>$comment_post_id,'user_id'=>$user_id,'author'=>$comment_author,'author_url'=>$comment_author_url,'component_name'=>$component_name);
+		//$voting_links = aheadzen_display_voting_links($arg);
+		$params = array(
+			'component' => $component_name,
+			'type' => 'comment',
+			'item_id' => $comment_post_id,
+			'secondary_item_id' => $comment_id
+			);
+		$voting_links = aheadzen_get_voting_link($params);
+		$comment_text = $comment_text.$voting_links;
+	}
+	return $comment_text;
+}
+
+/*************************************************
+Voting link for Buddypress Goup
+*************************************************/
+function aheadzen_bp_group_voting_links()
+{
+	global $groups_template,$bp;
+	if ( empty( $group ) && get_option('aheadzen_voter_for_group'))
+	{
+		$group =& $groups_template->group;
+		//$arg = array('gid'=>$group->id,'creator_id'=>$group->creator_id,'name'=>$group->name,'link'=>bp_get_group_permalink());		
+		$params = array(
+			'component' => 'buddypress',
+			'type' => $bp->current_component,
+			'item_id' => 0,
+			'secondary_item_id' => $group->id
+			);
+		echo $votestr = aheadzen_get_voting_link($params);
+	}	
+}
+
+/*************************************************
+Voting link for Buddypress Member profile
+*************************************************/
+function aheadzen_bp_member_voting_links()
+{
+	$user_id = bp_displayed_user_id();
+	if ($user_id && get_option('aheadzen_voter_for_profile'))
+	{
+		$userdata = bp_core_get_core_userdata( $user_id );
+		//$arg = array('mem_profile_id'=>$user_id,'display_name'=>$userdata->display_name,'user_login'=>$userdata->user_login);
+		//echo $voting_links = aheadzen_display_voting_links($arg);
+		global $bp;
+		$params = array(
+			'component' => 'buddypress',
+			'type' => $bp->current_component,
+			'item_id' => 0,
+			'secondary_item_id' => $user_id
+			);
+		echo $votestr = aheadzen_get_voting_link($params);
+	}	
+}
+
+/*************************************************
+Voting link for Buddypress Activity
+*************************************************/
+function aheadzen_bp_activity_voting_links()
+{
+	global $activities_template;
+	if($activities_template->activity && get_option('aheadzen_voter_for_activity'))
+	{
+		$activity_id = $activities_template->activity->id;
+		$user_id = $activities_template->activity->user_id;
+		$item_id = $activities_template->activity->item_id;
+		//$arg = array('activity_id'=>$activity_id,'user_id'=>$user_id,'item_id'=>$item_id);
+		//echo $voting_links = aheadzen_display_voting_links($arg);
+		$params = array(
+				'component' => 'buddypress',
+				'type' => 'activity',
+				'item_id' => 0,
+				'secondary_item_id' => $activity_id
+				);
+		echo $voting_links = aheadzen_get_voting_link($params);
+	}	
+}
+
+/*************************************************
+Voting link for Forum Topic & Reply
+*************************************************/
+function aheadzen_bp_forum_topic_reply_voting_links()
+{
+	$reply_id = bbp_get_reply_id();
+	$reply_content = bbp_get_reply($reply_id);
+	if(get_option('aheadzen_voter_for_forum'))
+	{
+		if($reply_content)
+		{
+			//$arg = array('reply_id'=>$reply_id,'post_author'=>$reply_content->post_author,'post_parent'=>$reply_content->post_parent);
+			//echo $voting_links = aheadzen_display_voting_links($arg);
+			$params = array(
+				'component' => 'forum',
+				'type' => 'topic_reply',
+				'item_id' => $reply_content->post_parent,
+				'secondary_item_id' => $reply_id
+				);
+			echo $votestr = aheadzen_get_voting_link($params);
+		}else{
+			if(function_exists('bbp_get_topic'))
 			{
+				$topic_details = bbp_get_topic($reply_id);
+				//$arg = array('topic_id'=>$topic_details->ID,'post_parent'=>$topic_details->post_parent,'title'=>$topic_details->post_title,'author'=>$topic_details->post_author);
+				//echo $voting_links = aheadzen_display_voting_links($arg);
 				$params = array(
-					'component' => $component_name,
-					'type' => $type,
-					'item_id' => $item_id,
-					'secondary_item_id' => $secondary_item_id
+					'component' => 'forum',
+					'type' => 'topic',
+					'item_id' => $topic_details->post_parent,
+					'secondary_item_id' => $topic_details->ID
 					);
-				$votestr = aheadzen_get_voting_link($params);
-			}	
+				echo $votestr = aheadzen_get_voting_link($params);
+			}
 		}
-	}elseif(aheadzen_is_bp_topic()) //if(function_exists('bp_get_activity_id'))
+	}
+}
+
+
+function aheadzen_display_voting_links($arg=array())
+{
+	global $bp;
+	$pid = get_the_ID();
+	if(aheadzen_check_voter_page_disabled($pid)){return;}
+	
+	$params = array();	
+	if(isset($arg) && $arg['gid']) //group settings
+	{
+		$params = array(
+			'component' => 'buddypress',
+			'type' => $bp->current_component,
+			'item_id' => 0,
+			'secondary_item_id' => $arg['gid']
+			);
+		$votestr = aheadzen_get_voting_link($params);
+	}elseif(isset($arg) && $arg['mem_profile_id']) //member profile settings
 	{
 		global $bp;
-		$activity_id = bp_get_activity_id();
-		$group_id = $bp->groups->current_group->id;
-		$member_id = $bp->displayed_user->id;
-		$component_name = "buddypress";
-		$item_id = $post->ID;
-		
-		$check_url_for_topic = $bp->unfiltered_uri;
-		if (in_array("topic", $check_url_for_topic))
-		{
-			$topic_id = 1;
-		}
-		
-		if(isset($activity_id) && $activity_id != "") //activity
-		{
-			$type = "activity";
-			$activity_id = bp_get_activity_id();
-			$secondary_item_id = $activity_id;
-			if(get_option('aheadzen_voter_for_activity'))
-			{
-				$params = array(
-					'component' => $component_name,
-					'type' => $type,
-					'item_id' => $item_id,
-					'secondary_item_id' => $secondary_item_id
-					);	
-				echo $votestr = aheadzen_get_voting_link($params);
-			}
-		}else if(isset($group_id) && $group_id != "" && (!isset($topic_id) && $topic_id == "")) //groups
-		{
-			$type = $bp->current_component;			
-			$secondary_item_id = $group_id;
-			if(get_option('aheadzen_voter_for_group'))
-			{
-				$params = array(
-					'component' => $component_name,
-					'type' => $type,
-					'item_id' => $item_id,
-					'secondary_item_id' => $secondary_item_id
-					);
-				echo $votestr = aheadzen_get_voting_link($params);
-			}
-		}
-		else if(isset($member_id) && $member_id != "") //member profile
-		{
-			if(strtolower($bp->current_component) == "profile")
-			{
-				$type = $bp->current_component;
-				$secondary_item_id = $member_id;						
-				if(get_option('aheadzen_voter_for_profile'))
-				{
-					$params = array(
-						'component' => $component_name,
-						'type' => $type,
-						'item_id' => $item_id,
-						'secondary_item_id' => $secondary_item_id
-						);	
-					echo $votestr = aheadzen_get_voting_link($params);
-				}
-			}
-			else if(strtolower($bp->current_component) == "messages") //member messages
-			{
-				$type = $bp->current_component;
-				$secondary_item_id = $thread_template->message->id;
-				if(get_option('aheadzen_voter_for_messages'))
-				{
-					$params = array(
-						'component' => $component_name,
-						'type' => $type,
-						'item_id' => $item_id,
-						'secondary_item_id' => $secondary_item_id
-						);	
-					$votestr = aheadzen_get_voting_link($params);
-				}
-			}
-		}
-		else if(isset($topic_id) && $topic_id != "") //topics
-		{
-			$component_name = 'forum';
-			$type = "topic";
-			$secondary_item_id = $post->ID;
-			
-			if(get_option('aheadzen_voter_for_forum'))
-			{
-				if($bp->current_component=='groups')
-				{
-					//$item_id = $group_id = $bp->groups->current_group->id;
-				}
-				if(function_exists('bp_get_the_topic_id'))
-				{
-					$item_id = bp_get_the_topic_id();
-				}
-				if(function_exists('bp_get_the_topic_post_id'))
-				{
-					$secondary_item_id = bp_get_the_topic_post_id();
-				}
-				$params = array(
-					'component' => $component_name,
-					'type' => $type,
-					'item_id' => $item_id,
-					'secondary_item_id' => $secondary_item_id
-					);
-				//print_r($params);
-				echo $votestr = aheadzen_get_voting_link($params);
-			}
-		}
-		else
-		{			
-			// bp_get_member_user_id
-			$type = $post->post_title;
-			$member_id = get_current_user_id();
-			$secondary_item_id = $member_id;					
-			$params = array(
-				'component' => $component_name,
-				'type' => $type,
-				'item_id' => $item_id,
-				'secondary_item_id' => $secondary_item_id
-				);	
-			$votestr = aheadzen_get_voting_link($params);
-		}
-	}
-	$voting_options = get_option('aheadzen_voter_display_options');
-	
-	if($voting_options==1)
+		$params = array(
+			'component' => 'buddypress',
+			'type' => $bp->current_component,
+			'item_id' => 0,
+			'secondary_item_id' => $arg['mem_profile_id']
+			);
+		$votestr = aheadzen_get_voting_link($params);
+	}elseif(isset($arg) && $arg['topic_id']) //topics settings
 	{
-		return $content.$votestr;
-	}else{
-		return $votestr.$content;
+		$params = array(
+				'component' => 'forum',
+				'type' => 'topic',
+				'item_id' => $arg['post_parent'],
+				'secondary_item_id' => $arg['topic_id']
+				);
+		$votestr = aheadzen_get_voting_link($params);
+	}elseif(isset($arg) && $arg['reply_id']) //topic reply settings
+	{
+		$params = array(
+				'component' => 'forum',
+				'type' => 'topic_reply',
+				'item_id' => $arg['post_parent'],
+				'secondary_item_id' => $arg['reply_id']
+				);
+		$votestr = aheadzen_get_voting_link($params);
+	}elseif(isset($arg) && $arg['activity_id']) //topic activity settings
+	{
+		$params = array(
+				'component' => 'buddypress',
+				'type' => 'activity',
+				'item_id' => 0,
+				'secondary_item_id' => $arg['activity_id']
+				);
+		$votestr = aheadzen_get_voting_link($params);
+		
+		
+	}elseif(isset($arg) && $arg['comment_id']) //comment settings
+	{
+		$params = array(
+			'component' => $arg['component_name'],
+			'type' => 'comment',
+			'item_id' => $arg['post_id'],
+			'secondary_item_id' => $arg['comment_id']
+			);
+		$votestr = aheadzen_get_voting_link($params);
+	}elseif(isset($arg) && $arg['post_type']) //post settings
+	{
+		$params = array(
+			'component' => $arg['component_name'],
+			'type' => $arg['post_type'],
+			'item_id' => 0,
+			'secondary_item_id' => $arg['post_id']
+			);
+		$votestr = aheadzen_get_voting_link($params);
 	}
-	
+	return $votestr;
 }
 
 
@@ -314,19 +366,6 @@ function aheadzen_get_voting_link($params)
 	unset($params['result']);
 	
 	$post_id = $params['item_id'];
-	/*
-	if($params['type']=='forum')
-	{
-		if(function_exists('bp_get_the_topic_permalink'))
-		{
-			$linkurl =  bp_get_the_topic_permalink();
-		}else{		
-			$linkurl =  esc_url( bbp_get_topic_permalink( $post_id) );
-		}
-	}else{
-		$linkurl = get_permalink($post_id);
-	}
-	*/
 	$linkurl = aheadzen_get_current_page_url();
 	$total_votes = aheadzen_get_total_votes($params);
 	$is_voted = aheadzen_is_voted($params);
@@ -522,8 +561,6 @@ function aheadzen_get_user_all_vote_details($params)
 }
 
 
-
-
 /*************************************************
 Get post's voting details
 *************************************************/
@@ -687,7 +724,7 @@ if($login_link=='')
 		<a href="<?php echo $register_link;?>?redirect_to=<?php echo urlencode($redirect_to); ?>" class="aheadzen_button_red"><?php _e('Register','aheadzen'); ?></a>
 		<?php }?>
 
-	<input type="hidden" name="redirect_to" value="<?php echo $redirect_to; ?>" />
+	<input type="hidden" name="redirect_to" value="<?php echo esc_attr($redirect_to); ?>" />
 		<?php /*?><input type="hidden" name="testcookie" value="1" /><?php */?>
 	</p>
 </form>
