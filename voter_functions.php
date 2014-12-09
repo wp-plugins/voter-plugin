@@ -139,6 +139,7 @@ function aheadzen_content_voting_links($content)
 	return $content.$voting_links;
 }
 
+
 /*************************************************
 Voting link for Comments
 *************************************************/
@@ -193,6 +194,7 @@ function aheadzen_bp_group_voting_links()
 	}	
 }
 
+
 /*************************************************
 Voting link for Buddypress Member profile
 *************************************************/
@@ -238,22 +240,49 @@ function aheadzen_bp_activity_voting_links()
 	}	
 }
 
+
+function is_old_version() {
+ 
+ if(function_exists('bbp_get_reply_id' ) && function_exists('bbp_get_topic'))
+  return false;
+  
+	if(function_exists('bp_get_the_topic_id')) return true;
+
+}
 /*************************************************
 Voting link for Forum Topic & Reply
 *************************************************/
 function aheadzen_bp_forum_topic_reply_voting_links()
 {
-	$reply_id = bbp_get_reply_id();
-	$reply_content = bbp_get_reply($reply_id);
-	if(get_option('aheadzen_voter_for_forum'))
-	{
+	if(!get_option('aheadzen_voter_for_forum'))return false;
+	
+		if(is_old_version())
+		{
+			$reply_id = bp_get_the_topic_post_id();
+			if($reply_id)
+			{
+				global $topic_template;
+				$reply_id = bp_get_the_topic_post_id();
+				//$reply_content= bp_forums_get_post( $reply_id );
+				$reply_content= $topic_template->post;
+				$reply_content->post_parent=$reply_content->topic_id;
+				
+			}elseif(bp_get_the_topic_id()){
+				$reply_id = bp_get_the_topic_id();
+				$reply_content= bp_forums_get_post( $reply_id );
+			}
+		}else
+		{
+			$reply_id = bbp_get_reply_id();
+			$reply_content = bbp_get_reply($reply_id);
+		}
 		if($reply_content)
 		{
 			//$arg = array('reply_id'=>$reply_id,'post_author'=>$reply_content->post_author,'post_parent'=>$reply_content->post_parent);
 			//echo $voting_links = aheadzen_display_voting_links($arg);
 			$params = array(
 				'component' => 'forum',
-				'type' => 'topic_reply',
+				'type' => 'topic-reply',
 				'item_id' => $reply_content->post_parent,
 				'secondary_item_id' => $reply_id
 				);
@@ -273,7 +302,7 @@ function aheadzen_bp_forum_topic_reply_voting_links()
 				echo $votestr = aheadzen_get_voting_link($params);
 			}
 		}
-	}
+	
 }
 
 
@@ -316,7 +345,7 @@ function aheadzen_display_voting_links($arg=array())
 	{
 		$params = array(
 				'component' => 'forum',
-				'type' => 'topic_reply',
+				'type' => 'topic-reply',
 				'item_id' => $arg['post_parent'],
 				'secondary_item_id' => $arg['reply_id']
 				);
@@ -910,80 +939,57 @@ function aheadzen_delete_user_notifications($user_id)
 /*******************************
 Read all user post notifications on while visit the page
 ****************************/
-function aheadzen_read_user_post_notifications($pid,$uid)
+function aheadzen_read_user_post_notifications($pid,$uid,$type)
 {
 	global $wpdb,$table_prefix;
-	$wpdb->query("update ".$table_prefix."bp_notifications set is_new='0' where item_id=\"$pid\" and user_id=\"$uid\"");
+	if($type == 'activity')
+	{
+		$subsql = " and component_action like \"activity_%\"";
+	}elseif($type == 'topic-reply')
+	{
+		$subsql = " and secondary_item_id=\"$pid\"";
+	}elseif($type == 'post')
+	{
+		$subsql = " and (item_id=\"$pid\") OR (secondary_item_id=\"$pid\" and component_action like \"comment_%\")";
+	}else
+	{
+		$subsql = " and item_id=\"$pid\"";
+	}
+	$sql = "update ".$table_prefix."bp_notifications set is_new='0' where user_id=\"$uid\" $subsql";
+	$wpdb->query($sql);
 }
 
 function aheadzen_update_user_notification()
 {
-	global $wp_query,$post, $bp, $thread_template, $bbP, $forum_id, $wpdb, $table_prefix,$current_user;
+	global $activities_template,$groups_template,$bp,$current_user,$post;
 	$post_type = $post->post_type;
-	if(($post_type || $post_type == "page" || $post_type == "post" || $post_type == "product") && !aheadzen_is_bp_topic()) //check for page or post without buddpress topic
+	$user_id = $current_user->ID;
+	
+	if(is_old_version())
 	{
-		$uid = $wp_query->queried_object->post_author;
-		$pid = $post->ID;
-		if($current_user->ID == $uid)
-		{
-			aheadzen_read_user_post_notifications($pid,$uid);
-		}
-	}elseif(aheadzen_is_bp_topic())
+		$reply_id = bp_get_the_topic_id();
+	}else
 	{
-		$activity_id = bp_get_activity_id();
-		$group_id = $bp->groups->current_group->id;
-		$member_id = $bp->displayed_user->id;
-		$component_name = "buddypress";
-		$item_id = $post->ID;
-		
-		$check_url_for_topic = $bp->unfiltered_uri;
-		if (in_array("topic", $check_url_for_topic))
-		{
-			$topic_id = 1;
-		}		
-		if(isset($group_id) && $group_id != "" && (!isset($topic_id) && $topic_id == "")) //groups
-		{
-			$uid = $bp->groups->current_group->creator_id;
-			$pid = $bp->groups->current_group->id;
-			if($current_user->ID == $uid)
-			{
-				aheadzen_read_user_post_notifications($pid,$uid);
-			}
-		}
-		else if(isset($member_id) && $member_id != "") //member profile
-		{
-			if(strtolower($bp->current_component) == "profile")
-			{
-				if($current_user->ID == $member_id)
-				{
-					$uid = $member_id;
-					aheadzen_read_user_post_notifications($member_id,$uid);
-				}
-			}
-			else if(strtolower($bp->current_component) == "messages") //member messages
-			{
-				//echo 'VERY LAST 2222';
-			}
-		}else if(isset($activity_id) && $activity_id != "") //activity
-		{
-			$activity_id = bp_get_activity_id();
-			$uid = $current_user->ID;
-			if($uid){
-				$wpdb->query("update ".$table_prefix."bp_notifications set is_new='0' where component_action like 'activity_%' and user_id=\"$uid\"");
-			}
-		}else if(isset($topic_id) && $topic_id != "") //topics
-		{
-			$uid = $wp_query->queried_object->post_author;
-			$pid = $post->ID;
-			if($current_user->ID == $uid)
-			{
-				aheadzen_read_user_post_notifications($pid,$uid);
-			}
-		}
-		else
-		{
-			//echo 'VERY LAST';
-		}
+		$reply_id = bbp_get_reply_id();
+	}
+	 
+	if($reply_id) 
+	{
+		aheadzen_read_user_post_notifications($reply_id,$user_id,'topic-reply');
+	}elseif($groups_template->group->group_id)
+	{
+		aheadzen_read_user_post_notifications($groups_template->group->group_id,$user_id,'group');
+	}elseif($activities_template->activities)
+	{
+		$activity_id = '0';
+		aheadzen_read_user_post_notifications($activity_id,$user_id,'activity');
+	}elseif (bp_displayed_user_id())
+	{
+		$display_user_id = bp_displayed_user_id();
+		aheadzen_read_user_post_notifications($display_user_id,$user_id);
+	}elseif($post_type||$post_type=='page'||$post_type=='post'||$post_type=='product')
+	{
+		aheadzen_read_user_post_notifications($post->ID,$user_id,'post');
 	}
 }
 

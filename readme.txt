@@ -164,3 +164,6 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 = 1.3.3.3 =
 * forum topic & reply related settings done.
 * plugin organization done.
+
+= 1.4.0 =
+* buddypress older version related settings done for activity,notificactions & emails
