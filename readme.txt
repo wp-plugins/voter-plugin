@@ -167,3 +167,6 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 
 = 1.4.0 =
 * buddypress older version related settings done for activity,notificactions & emails
+
+= 1.4.1 =
+* post comments email sent problem was wrong - Solved to commenter id

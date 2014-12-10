@@ -39,7 +39,12 @@ function aheadzen_voter_add_vote_bbpress_notification()
 			$post = get_post($item_id);
 			$post_title =$post->post_title;
 			$post_type = get_post_type($item_id);
-			$post_author = $post->post_author;
+			$comment_detail = get_comment( $secondary_item_id );
+			if($comment_detail->user_id){
+				$post_author = $comment_detail->user_id;
+			}else{
+				$post_author = $post->post_author;
+			}
 			$poster_link = bp_core_get_userlink( $post->post_author );	
 			$topic_link = '<a href="' . get_permalink($post->ID) .'">' . $post->post_title . '</a>';
 			$action_content = sprintf( __( "%s likes comment on %s's post %s", 'buddypress' ), $userlink, $poster_link, $topic_link );
