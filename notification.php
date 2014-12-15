@@ -54,10 +54,12 @@ function aheadzen_voter_add_vote_bbpress_notification()
 			if($_REQUEST['type']=='profile')
 			{
 				$topic_link = '<a href="' . $bp->displayed_user->domain . '/">' . $bp->displayed_user->fullname . '</a>';
+				$post_title = $bp->displayed_user->fullname;
 				$post_author = $bp->displayed_user->id;
 			}elseif($_REQUEST['type']=='groups')
 			{
 				$topic_link = '<a href="' . bp_get_root_domain() . '/' . 'groups/' . $bp->groups->current_group->slug . '/">' . $bp->groups->current_group->name . '</a>';
+				$post_title = $bp->groups->current_group->name;
 				$post_author = $bp->groups->current_group->creator_id;
 			}
 			$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $_REQUEST['type'], $topic_link );
@@ -101,7 +103,6 @@ function aheadzen_voter_add_vote_bbpress_notification()
 			$activity_id = bp_activity_add($arg_arr);
 			/**Send Activity end**/
 			
-echo 'ADDING ACTIVITY <br /><br />';
 			if($_REQUEST['type']=='activity')
 			{
 				//don't send notification for activity
@@ -125,7 +126,6 @@ echo 'ADDING ACTIVITY <br /><br />';
 				'like_msg' 		=> $action_content,
 				'title_msg' 	=> $post_title,
 				);
-echo 'ADDING EMAIL <br /><br />';
 			aheadzen_send_author_notification($arg);
 			/**Send Email end**/
 			}
@@ -134,7 +134,6 @@ echo 'ADDING EMAIL <br /><br />';
 			/**Send Notification start**/
 			bp_core_add_notification( $_REQUEST['secondary_item_id'], $post_author, 'votes', $action_str,$_REQUEST['item_id']);
 			/**Send Notification end**/
-echo 'ADDING NOTIFICATIONS <br /><br />';
 			}
 		}
 		

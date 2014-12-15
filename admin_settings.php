@@ -39,7 +39,8 @@ function aheadzen_voter_settings_page()
 
 		echo '<script>window.location.href="'.admin_url().'options-general.php?page=voter&msg=success";</script>';
 		exit;
-	}	
+	}
+
 	?>
 	<h2><?php _e('Voter Settings','aheadzen');?></h2>
 	<?php

@@ -175,3 +175,6 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 * added activity,notification & email alert enable/disable related settings.
 * pages,post ...like button not adding - problem solved.
 * voting settings for comments was display on admin side - Problem solved.
+
+= 1.4.3 =
+* email subject related chage done.
