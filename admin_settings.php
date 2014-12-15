@@ -32,8 +32,11 @@ function aheadzen_voter_settings_page()
 		update_option('aheadzen_voter_register_link',$_POST['aheadzen_voter_register_link']);
 		update_option('aheadzen_voter_display_login_frm',$_POST['aheadzen_voter_display_login_frm']);
 		update_option('aheadzen_voter_include_dialog_js',$_POST['aheadzen_voter_include_dialog_js']);
-		update_option('aheadzen_voter_exclude_pages',$_POST['exclude_pages']);		
-		   
+		update_option('aheadzen_voter_exclude_pages',$_POST['exclude_pages']);
+		update_option('aheadzen_voter_disable_activity',$_POST['aheadzen_voter_disable_activity']);
+		update_option('aheadzen_voter_disable_notification',$_POST['aheadzen_voter_disable_notification']);
+		update_option('aheadzen_voter_disable_email',$_POST['aheadzen_voter_disable_email']);
+
 		echo '<script>window.location.href="'.admin_url().'options-general.php?page=voter&msg=success";</script>';
 		exit;
 	}	
@@ -66,66 +69,94 @@ function aheadzen_voter_settings_page()
 			<tr valign="top">
 				<td>
 				<label for="aheadzen_voter_for_custom_posttype">
-				<input type="checkbox" value="1" id="aheadzen_voter_for_custom_posttype" name="aheadzen_voter_for_custom_posttype" <?php if(get_option('aheadzen_voter_for_custom_posttype')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for all posts types/all custom post types','aheadzen');?>
+				<input type="checkbox" value="1" id="aheadzen_voter_for_custom_posttype" name="aheadzen_voter_for_custom_posttype" <?php if(get_option('aheadzen_voter_for_custom_posttype')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for all posts types/all custom post type pages','aheadzen');?>
 				</label>
 				</td>
 			</tr>
 			<tr valign="top">
 				<td>
 				<label for="aheadzen_voter_for_page">
-				<input type="checkbox" value="1" id="aheadzen_voter_for_page" name="aheadzen_voter_for_page" <?php if(get_option('aheadzen_voter_for_page')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for pages','aheadzen');?>
+				<input type="checkbox" value="1" id="aheadzen_voter_for_page" name="aheadzen_voter_for_page" <?php if(get_option('aheadzen_voter_for_page')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for content pages','aheadzen');?>
 				</label>
 				</td>
 			</tr>
 			<tr valign="top">
 				<td>
 				<label for="aheadzen_voter_for_post">
-				<input type="checkbox" value="1" id="aheadzen_voter_for_post" name="aheadzen_voter_for_post" <?php if(get_option('aheadzen_voter_for_post')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for post','aheadzen');?></td>
+				<input type="checkbox" value="1" id="aheadzen_voter_for_post" name="aheadzen_voter_for_post" <?php if(get_option('aheadzen_voter_for_post')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for post pages','aheadzen');?></td>
 			</tr>
 			<tr valign="top">
 				<td>
 				<label for="aheadzen_voter_for_product">
-				<input type="checkbox" value="1" id="aheadzen_voter_for_product" name="aheadzen_voter_for_product" <?php if(get_option('aheadzen_voter_for_product')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for product','aheadzen');?></td>
+				<input type="checkbox" value="1" id="aheadzen_voter_for_product" name="aheadzen_voter_for_product" <?php if(get_option('aheadzen_voter_for_product')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for product pages','aheadzen');?></td>
 			</tr>
 			<tr valign="top">
 				<td>
 				<label for="aheadzen_voter_for_comments">
-				<input type="checkbox" value="1" id="aheadzen_voter_for_comments" name="aheadzen_voter_for_comments" <?php if(get_option('aheadzen_voter_for_comments')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for comments','aheadzen');?>
+				<input type="checkbox" value="1" id="aheadzen_voter_for_comments" name="aheadzen_voter_for_comments" <?php if(get_option('aheadzen_voter_for_comments')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for post comments','aheadzen');?>
 				</label>
 				</td>
 			</tr>
 			<tr valign="top">
 				<td>
 				<label for="aheadzen_voter_for_activity">
-				<input type="checkbox" value="1" id="aheadzen_voter_for_activity" name="aheadzen_voter_for_activity" <?php if(get_option('aheadzen_voter_for_activity')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for buddypress activity','aheadzen');?>
+				<input type="checkbox" value="1" id="aheadzen_voter_for_activity" name="aheadzen_voter_for_activity" <?php if(get_option('aheadzen_voter_for_activity')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for buddypress activity listing page','aheadzen');?>
 				</label>
 				</td>
 			</tr>
 			<tr valign="top">
 				<td>
 				<label for="aheadzen_voter_for_group">
-				<input type="checkbox" value="1" id="aheadzen_voter_for_group" name="aheadzen_voter_for_group" <?php if(get_option('aheadzen_voter_for_group')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for buddypress groups','aheadzen');?>
+				<input type="checkbox" value="1" id="aheadzen_voter_for_group" name="aheadzen_voter_for_group" <?php if(get_option('aheadzen_voter_for_group')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for buddypress groups detail pages','aheadzen');?>
 				</label>
 				</td>
 			</tr>
 			<tr valign="top">
 				<td>
 				<label for="aheadzen_voter_for_forum">
-				<input type="checkbox" value="1" id="aheadzen_voter_for_forum" name="aheadzen_voter_for_forum" <?php if(get_option('aheadzen_voter_for_forum')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for buddypress forums','aheadzen');?>
+				<input type="checkbox" value="1" id="aheadzen_voter_for_forum" name="aheadzen_voter_for_forum" <?php if(get_option('aheadzen_voter_for_forum')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for buddypress forum topic pages','aheadzen');?>
 				</label>
 				</td>
 			</tr>
 			<tr valign="top">
 				<td>
 				<label for="aheadzen_voter_for_profile">
-				<input type="checkbox" value="1" id="aheadzen_voter_for_profile" name="aheadzen_voter_for_profile" <?php if(get_option('aheadzen_voter_for_profile')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for buddypress profile','aheadzen');?>
+				<input type="checkbox" value="1" id="aheadzen_voter_for_profile" name="aheadzen_voter_for_profile" <?php if(get_option('aheadzen_voter_for_profile')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for buddypress members profile page','aheadzen');?>
+				</label>
+				</td>
+			</tr>
+			<?php /*?>
+			<tr valign="top">
+				<td>
+				<label for="aheadzen_voter_for_messages">
+				<input type="checkbox" value="1" id="aheadzen_voter_for_messages" name="aheadzen_voter_for_messages" <?php if(get_option('aheadzen_voter_for_messages')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for buddypress messages','aheadzen');?>
+				</label>
+				</td>
+			</tr>
+			<?php */?>
+			<tr valign="top">
+				<td>
+				<h3><?php _e('Notification Settings','aheadzen');?></h3>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td>
+				<label for="aheadzen_voter_disable_activity">
+				<input type="checkbox" value="1" id="aheadzen_voter_disable_activity" name="aheadzen_voter_disable_activity" <?php if(get_option('aheadzen_voter_disable_activity')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Disable alert by Activity?','aheadzen');?>
 				</label>
 				</td>
 			</tr>
 			<tr valign="top">
 				<td>
-				<label for="aheadzen_voter_for_messages">
-				<input type="checkbox" value="1" id="aheadzen_voter_for_messages" name="aheadzen_voter_for_messages" <?php if(get_option('aheadzen_voter_for_messages')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for buddypress messages','aheadzen');?>
+				<label for="aheadzen_voter_disable_notification">
+				<input type="checkbox" value="1" id="aheadzen_voter_disable_notification" name="aheadzen_voter_disable_notification" <?php if(get_option('aheadzen_voter_disable_notification')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Disable alert by Notification?','aheadzen');?>
+				</label>
+				</td>
+			</tr>
+			<tr valign="top">
+				<td>
+				<label for="aheadzen_voter_disable_email">
+				<input type="checkbox" value="1" id="aheadzen_voter_disable_email" name="aheadzen_voter_disable_email" <?php if(get_option('aheadzen_voter_disable_email')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Disable alert by Email?','aheadzen');?>
 				</label>
 				</td>
 			</tr>

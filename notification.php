@@ -87,26 +87,34 @@ function aheadzen_voter_add_vote_bbpress_notification()
 			//$action_content = sprintf( __( "%s likes %s's post in %s", 'buddypress' ), $userlink, $poster_link, $topic_link );
 			$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $_REQUEST['type'], $topic_link );
 		}
-		$arg_arr = array(
-					'user_id'   => $post_author,
-					'action'    => $action_content,
-					'component' => 'votes',
-					'item_id'           => $topic_id, 
-					'secondary_item_id' => $_REQUEST['item_id'],
-					'type'      => 'forums'
-				);
-		$activity_id = bp_activity_add($arg_arr);
 		
-		if($_REQUEST['type']=='activity')
-		{
-			//don't send notification for activity
-			global $wpdb;
-			$table_name =  $bp->activity->table_name;
-			$post_author = $wpdb->get_var("select user_id from $table_name where id=\"$topic_id\"");
+		if(!get_option('aheadzen_voter_disable_activity')){
+			/**Send Activity start**/
+			$arg_arr = array(
+						'user_id'   => $post_author,
+						'action'    => $action_content,
+						'component' => 'votes',
+						'item_id'           => $topic_id, 
+						'secondary_item_id' => $_REQUEST['item_id'],
+						'type'      => 'forums'
+					);
+			$activity_id = bp_activity_add($arg_arr);
+			/**Send Activity end**/
+			
+echo 'ADDING ACTIVITY <br /><br />';
+			if($_REQUEST['type']=='activity')
+			{
+				//don't send notification for activity
+				global $wpdb;
+				$table_name =  $bp->activity->table_name;
+				$post_author = $wpdb->get_var("select user_id from $table_name where id=\"$topic_id\"");
+			}
 		}
 		
 		if($post_author)
 		{
+			if(!get_option('aheadzen_voter_disable_email')){
+			/**Send Email start**/
 			$arg = array(
 				'secondary_item_id' => $_REQUEST['secondary_item_id'],
 				'item_id' 		=> $_REQUEST['item_id'],
@@ -117,9 +125,17 @@ function aheadzen_voter_add_vote_bbpress_notification()
 				'like_msg' 		=> $action_content,
 				'title_msg' 	=> $post_title,
 				);
+echo 'ADDING EMAIL <br /><br />';
 			aheadzen_send_author_notification($arg);
+			/**Send Email end**/
+			}
 			
+			if(!get_option('aheadzen_voter_disable_notification')){
+			/**Send Notification start**/
 			bp_core_add_notification( $_REQUEST['secondary_item_id'], $post_author, 'votes', $action_str,$_REQUEST['item_id']);
+			/**Send Notification end**/
+echo 'ADDING NOTIFICATIONS <br /><br />';
+			}
 		}
 		
 		return true;

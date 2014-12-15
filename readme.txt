@@ -170,3 +170,8 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 
 = 1.4.1 =
 * post comments email sent problem was wrong - Solved to commenter id
+
+= 1.4.2 =
+* added activity,notification & email alert enable/disable related settings.
+* pages,post ...like button not adding - problem solved.
+* voting settings for comments was display on admin side - Problem solved.

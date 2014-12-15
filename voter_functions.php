@@ -134,7 +134,7 @@ function aheadzen_content_voting_links($content)
 			'item_id' => 0,
 			'secondary_item_id' => $post->ID
 			);
-		$votestr = aheadzen_get_voting_link($params);
+		$voting_links = aheadzen_get_voting_link($params);
 	}
 	return $content.$voting_links;
 }
@@ -389,6 +389,7 @@ Display up & down link function
 *************************************************/
 function aheadzen_get_voting_link($params)
 {
+	if(is_admin()){return '';}
 	global $current_user;
 	$votestr = '';
 	$the_result = $params['result'];
@@ -986,7 +987,7 @@ function aheadzen_update_user_notification()
 	}elseif (bp_displayed_user_id())
 	{
 		$display_user_id = bp_displayed_user_id();
-		aheadzen_read_user_post_notifications($display_user_id,$user_id);
+		aheadzen_read_user_post_notifications($display_user_id,$user_id,'profile');
 	}elseif($post_type||$post_type=='page'||$post_type=='post'||$post_type=='product')
 	{
 		aheadzen_read_user_post_notifications($post->ID,$user_id,'post');
