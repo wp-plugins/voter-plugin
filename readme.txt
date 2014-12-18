@@ -178,3 +178,7 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 
 = 1.4.3 =
 * email subject related chage done.
+
+= 2.0.0 =
+* Pluing in OOPs format
+* solved some errors of notifications.
