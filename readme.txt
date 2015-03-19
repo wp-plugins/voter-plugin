@@ -182,3 +182,8 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 = 2.0.0 =
 * Pluing in OOPs format
 * solved some errors of notifications.
+
+= 2.0.1 =
+* undefined function for notification.php file on line 58 the code is :: $reply_id = bbp_get_reply_id();
+* Problem solved and and now OK.
+

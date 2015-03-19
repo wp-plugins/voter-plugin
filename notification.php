@@ -53,7 +53,7 @@ class VoterBpNotifications extends VoterPluginClass {
 		if(VoterPluginClass::is_old_version())
 		{
 			$reply_id = bp_get_the_topic_id();
-		}else
+		}elseif(function_exists('bbp_get_reply_id'))
 		{
 			$reply_id = bbp_get_reply_id();
 		}
