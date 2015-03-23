@@ -830,11 +830,11 @@ class VoterBpTopics extends VoterPluginClass {
 					$reply_content= $topic_template->post;
 					$reply_content->post_parent=$reply_content->topic_id;
 					
-				}elseif(bp_get_the_topic_id()){
+				}elseif(bp_get_the_topic_id() && function_exists('bp_forums_get_post')){
 					$reply_id = bp_get_the_topic_id();
 					$reply_content= bp_forums_get_post( $reply_id );
 				}
-			}else
+			}elseif(function_exists('bbp_get_reply'))
 			{
 				$reply_id = bbp_get_reply_id();
 				$reply_content = bbp_get_reply($reply_id);

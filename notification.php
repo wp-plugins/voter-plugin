@@ -68,7 +68,7 @@ class VoterBpNotifications extends VoterPluginClass {
 		{
 			$activity_id = '0';
 			VoterBpNotifications::aheadzen_read_user_post_notifications($activity_id,$user_id,'activity');
-		}elseif (bp_displayed_user_id())
+		}elseif (function_exists('bp_displayed_user_id') && bp_displayed_user_id())
 		{
 			$display_user_id = bp_displayed_user_id();
 			VoterBpNotifications::aheadzen_read_user_post_notifications($display_user_id,$user_id,'profile');
@@ -112,7 +112,7 @@ class VoterBpNotifications extends VoterPluginClass {
 		$type = $_REQUEST['type'];
 		$check_url_for_topic = $bp->unfiltered_uri;
 		
-		if($bp && $_REQUEST['action'] == 'up' && $secondary_item_id && $type)
+		if($bp && $_REQUEST['action'] == 'up' && $secondary_item_id && $type && function_exists('bp_loggedin_user_id') && function_exists('bp_core_get_userlink'))
 		{
 			$user_id = bp_loggedin_user_id();
 			if($_REQUEST['user_id']){$user_id = $_REQUEST['user_id'];}
@@ -133,11 +133,11 @@ class VoterBpNotifications extends VoterPluginClass {
 					$topic_details = bbp_get_reply($secondary_item_id);
 					$topic_details->post_title = $topic->post_title;
 				}
-			}elseif($type=='topic'){
+			}elseif($type=='topic' && function_exists('bbp_get_topic')){
 				$topic_details = bbp_get_topic( $secondary_item_id );
 			}			
 		
-			if($_REQUEST['type']=='comment')
+			if($_REQUEST['type']=='comment' && function_exists('bp_core_get_userlink'))
 			{
 				$post = get_post($item_id);
 				$post_title =$post->post_title;
@@ -198,15 +198,17 @@ class VoterBpNotifications extends VoterPluginClass {
 			
 			if(!get_option('aheadzen_voter_disable_activity')){
 				/**Send Activity start**/
-				$arg_arr = array(
-							'user_id'   => $post_author,
-							'action'    => $action_content,
-							'component' => 'votes',
-							'item_id'           => $topic_id, 
-							'secondary_item_id' => $_REQUEST['item_id'],
-							'type'      => 'forums'
-						);
-				$activity_id = bp_activity_add($arg_arr);
+				if(function_exists('bp_activity_add')){
+					$arg_arr = array(
+								'user_id'   => $post_author,
+								'action'    => $action_content,
+								'component' => 'votes',
+								'item_id'           => $topic_id, 
+								'secondary_item_id' => $_REQUEST['item_id'],
+								'type'      => 'forums'
+							);
+					$activity_id = bp_activity_add($arg_arr);
+				}
 				/**Send Activity end**/
 				
 				if($_REQUEST['type']=='activity')
@@ -236,7 +238,7 @@ class VoterBpNotifications extends VoterPluginClass {
 					/**Send Email end**/
 				}
 				
-				if(!get_option('aheadzen_voter_disable_notification')){
+				if(!get_option('aheadzen_voter_disable_notification') && function_exists('bp_core_add_notification')){
 					/**Send Notification start**/
 					bp_core_add_notification( $_REQUEST['secondary_item_id'], $post_author, 'votes', $action_str,$_REQUEST['item_id']);
 					/**Send Notification end**/
@@ -314,7 +316,7 @@ class VoterBpNotifications extends VoterPluginClass {
 		}elseif($component_action_type=='profile' || $component_action_type=='groups'  || $component_action_type=='activity')
 		{
 			$topic_link = '';
-			if($component_action_type=='groups')
+			if($component_action_type=='groups' && function_exists('groups_get_groupgroups_get_group'))
 			{
 				$post = groups_get_group( array( 'group_id' => $item_id ) );
 				$group_name = $post->name;

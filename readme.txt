@@ -187,3 +187,8 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 * undefined function for notification.php file on line 58 the code is :: $reply_id = bbp_get_reply_id();
 * Problem solved and and now OK.
 
+= 2.0.2 =
+* undefined function for notification.php file on line 209 the code is :: $activity_id = bp_activity_add($arg_arr);
+* Problem solved and and now OK.
+* added possible components and added condition so it will work if it is activated.
+
