@@ -139,6 +139,9 @@ class VoterPluginClass {
 		$the_result = $params['result'];
 		unset($params['result']);
 		
+		$voting_options = get_option('aheadzen_voter_display_options');
+		if($voting_options==2){$votetype = ' thumbs_up_down ';}elseif($voting_options==3){$votetype = ' button_up_down ';}
+		
 		$post_id = $params['item_id'];
 		$linkurl = VoterPluginClass::aheadzen_get_current_page_url();
 		$total_votes = VoterPluginClass::aheadzen_get_total_votes($params);
@@ -162,12 +165,12 @@ class VoterPluginClass {
 			$title_up = $title_down = __('please login to vote','aheadzen');
 			$url_up = $url_down = '#';
 		}
-		
-		$voting_options = get_option('aheadzen_voter_display_options');
+		$class_up .= $votetype;
+		$class_down .= $votetype;
 		if($voting_options==1)
 		{
 			$votestr.= '<div id="aheadzen_voting_'.$params['secondary_item_id'].'_'.$params['item_id'].'_'.$params['component'].'" class="aheadzen_vote alignright like_unlike_vote">';
-			if($is_voted){
+			if($is_voted!=''){
 				if($is_voted=='up')
 				{
 					$votestr.= '<a rel="nofollow" title="'.$title_up.'" class="aheadzen_voter_css ' . $class_up . '" href="' . $url_up . '">'.__('Unlike','aheadzen').' <span>('.$total_votes.')</span></a>';
@@ -179,7 +182,7 @@ class VoterPluginClass {
 			}
 			$votestr.= '</div>';
 		}else{
-			if($is_voted){
+			if($is_voted!=''){
 				if($is_voted=='up')
 				{
 					$class_up = 'vote-up-off';
@@ -191,10 +194,12 @@ class VoterPluginClass {
 					$class_up = 'vote-up-on';
 					$class_down = 'vote-down-off';
 					$title_down = __('already voted','aheadzen');
-					$url_down = '#';
+					//$url_down = '#';
 				}
+				$class_up .= $votetype;
+				$class_down .= $votetype;
 			}
-		
+			
 			$votestr.= '<div id="aheadzen_voting_'.$params['secondary_item_id'].'_'.$params['item_id'].'_'.$params['component'].'" class="aheadzen_vote alignright">';	
 			
 			$votestr.= '<a rel="nofollow" title="'.$title_up.'" class="aheadzen_voter_css ' . $class_up . '" href="' . $url_up . '"></a>';
@@ -280,7 +285,8 @@ class VoterPluginClass {
 						$wpdb->query($sql);
 						$result = '0';
 					}else{				
-						$sql = "update `".$table_prefix."ask_votes` set action=\"$action\" where id=\"$voted_id\"";
+						//$sql = "update `".$table_prefix."ask_votes` set action=\"$action\" where id=\"$voted_id\"";
+						$sql = "delete from `".$table_prefix."ask_votes` where id=\"$voted_id\"";
 						$wpdb->query($sql);
 					}				
 				}else{

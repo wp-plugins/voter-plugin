@@ -62,7 +62,8 @@ class VoterAdminClass {
 					<select name="aheadzen_voter_display_options" id="aheadzen_voter_display_options">
 					<option value=""><?php _e(' -- Select One -- ','aheadzen');?></option>
 					<option value="1" <?php if($display_options=='1'){echo 'selected';}?>><?php _e('Simple Like/Unlike','aheadzen');?></option>
-					<option value="2" <?php if($display_options=='2'){echo 'selected';}?>><?php _e('Voting Up/Down Arrow','aheadzen');?></option>
+					<option value="2" <?php if($display_options=='2'){echo 'selected';}?>><?php _e('Thumbs up/down','aheadzen');?></option>
+					<option value="3" <?php if($display_options=='3'){echo 'selected';}?>><?php _e('Up/Down Button','aheadzen');?></option>
 					</select>
 					</p>
 					</label>

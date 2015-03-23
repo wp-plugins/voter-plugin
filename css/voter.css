@@ -1,11 +1,19 @@
-.aheadzen_voter_css{ background-image: url('../images/buttons.png')!important; background-color: #cccccc; background-repeat:no-repeat;height: 35px!important;display: block!important;padding:0 !important;}
-.aheadzen_vote{width: 40px;}
-.aheadzen_vote .alignright {float: right;}
-.aheadzen_vote .vote-up-off{background-position:0 -35px!important;cursor: default;}
-.aheadzen_vote  .vote-up-on{background-position:0 0 !important; }
-.aheadzen_vote  .vote-down-off{background-position:0 -105px !important; cursor: default;}
-.aheadzen_vote  .vote-down-on{background-position:0% -70px !important;}
-.aheadzen_vote  .vote-count-post{font-size: 2em;text-align: center;color: #999;margin: 0.5em;}
+.aheadzen_voter_css{background-repeat:no-repeat;width: 150px; height:63px!important;display: block!important;padding:0 !important;}
+.thumbs_up_down{background-image: url('../images/thumbs.png')!important;width: 63px;}
+.aheadzen_vote .vote-up-off.thumbs_up_down{background-position:0 0!important;}
+.aheadzen_vote  .vote-up-on.thumbs_up_down{background-position:0px -82px !important; }
+.aheadzen_vote  .vote-down-off.thumbs_up_down{background-position:-64px -23px !important;}
+.aheadzen_vote  .vote-down-on.thumbs_up_down{background-position:-64px -105px !important;}
+.button_up_down{background-image: url('../images/up-arrow.png')!important;width: 63px;}
+.aheadzen_vote .vote-up-off.button_up_down{background-position:-81px -5px !important;}
+.aheadzen_vote  .vote-up-on.button_up_down{background-position:-81px -79px !important; }
+.aheadzen_vote  .vote-down-off.button_up_down{background-position:-8px -5px !important;}
+.aheadzen_vote  .vote-down-on.button_up_down{background-position:-8px -79px !important;}
+
+.aheadzen_vote{width:100%;}
+/*.aheadzen_vote .alignright {float: right;}*/
+.aheadzen_vote a.aheadzen_voter_css, .aheadzen_vote  a.aheadzen_vote{ float:left; margin-top:15px; border: medium none;text-decoration: none;}
+.aheadzen_vote  .vote-count-post{font-size:2.5em;text-align: center;color: #999;margin:0 0.2em; float:left;min-width: 100px;}
 .aheadzen_vote  .ajaxloading{background:url('../images/ajax-loader.gif') center center no-repeat;width: 30px;height: 30px;}
 .aheadzen_vote span{ display: inline-block!important;}
 .like_unlike_vote{float:none !important; display: inline-block; clear:both; margin: 0;}

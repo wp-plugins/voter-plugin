@@ -1,36 +1,48 @@
 === Voter Plugin ===
 Contributors: aheadzen
-Tags: voter,review,woocommerce,buddypress,like,unlike
+Tags: voter,review,woocommerce,buddypress,like,unlike,voting
 Requires at least : 3.0.0
 Tested up to: 4.0
-Stable tag: 1.0.0.0
+Stable tag: 2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-The plugin added votes option for pages, post, custom post types, comments, BuddyPress activity, groups, member profiles, WooCommerce products etc...
+The Voter plugin adds a recommendation engine (voting or like/unlike features) on any WordPress blog or website.
 
 == Description ==
 
-If you want to add the voting system in your wordpress blog site, or WooCommerce site or BuddyPress forum, the Voter plugin is best option to add the up & down voting system.
-Even you can display like/unlike link option as voting in place of up & down voting.
-The plugin have added option for add voting option enable/disable for pages, post, custom post types, comments, BuddyPress activity, groups, member profiles, WooCommerce products. You don't need to make any change or any thing as soon as the plugin activated related voting options will be added on with description of post, pages etc...
-Related to comments it will be appear with comment content both for normal blog and BuddyPress.
+Voter plugin adds voting options for pages, posts, custom post types, comments, BuddyPress activity, groups, member profiles, WooCommerce products, bbPress topics and posts, and more.
+
+Adds a recommendation system on your wordpress blog site:
+ - Supports posts, pages, custom post types and comments.
+ - Supports BuddyPress - Groups, Profiles, Activities and more.
+ - Supports bbPress Posts
+ - Supports WooCommerce Products and Reviews.
+
+Voting options:
+ - FaceBook style simple Like and Unlike
+ - Up and Down buttons
+ - Thumbs buttons
 
 <h4>Features :</h4>
 <ul>
-<li>• Up & Down voting options. </li>
-<li>• Like & Unlike voting options.</li>
-<li>• Ajax based plugin so no page refresh.</li>
-<li>• added votes option for pages, post, custom post types, comments, BuddyPress activity, groups, member profiles, WooCommerce products etc...</li>
-<li>• Enable or disable voting option for specifict area like posts, pages, BuddyPress activity, groups, member profiles, WooCommerce products etc...</li>
-<li>• Optimum css & js code.</li>
-<li>• Localization ready.</li>
+<li>Three voting options </li>
+<li>Thumbs Up & Down voting </li>
+<li>Up & Down button voting </li>
+<li>Like & Unlike voting</li>
+<li>Uses AJAX for best experience</li>
+<li>Widgets for promoting top content</li>
+<li>ShortCodes for promoting top content</li>
+<li>Fast and Lightweight. Works on shared hosting.</li>
+<li>Enable or disable voting option for specifict area like posts, pages, BuddyPress activity, groups, member profiles, WooCommerce products etc...</li>
+<li>Optimum css & js code.</li>
+<li>Localisation ready.</li>
 </ul>
 
 <h4>Top voted Widget</h4>
-New Widget for top voted listing for posts,pages,products,profile & groups.<br />
+ Widget for top voted listing for posts,pages,products,profile & groups.<br />
 Widget name : "Top Listings Voter Plugin"<br />
-Go to wp-admin > widgets > Top Listings Voter Plugin (drag & drop) as per you want to display.<br /><br />
+Go to Wordpress Admin > Appearance > Widgets > Top Listings Voter Plugin (drag & drop) as per you want to display.<br /><br />
 
 <h4>Top voted Shotcode</h4>
 Shortcode for top voted listing for posts,pages,products,profile & groups.<br />
@@ -42,6 +54,7 @@ shortcode for profile :   [voter_plugin_top_voted type=profile num=5]<br />
 shortcode for groups :    [voter_plugin_top_voted type=groups num=5]<br />
 shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 
+Any problems? [Contact Us](http://aheadzen.com/contact/)
 
 == Installation ==
 1. Unzip and upload plugin folder to your /wp-content/plugins/ directory  OR Go to wp-admin > plugins > Add new Plugin & Upload plugin zip.
@@ -57,8 +70,9 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 6. Voting for Buddpress groups
 7. Voting for Buddpress activity
 8. Voting for Buddpress Member Profile
-9. Voting for Woocommerce Product
-10. Login Settings
+9. Up & Down Button Voting for Woocommerce Product
+10. Thumbs Up & Down Voting for Woocommerce Product
+11. Login Settings
 
 == Configuration ==
 
@@ -187,8 +201,7 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 * undefined function for notification.php file on line 58 the code is :: $reply_id = bbp_get_reply_id();
 * Problem solved and and now OK.
 
-= 2.0.2 =
+= 2.1.0 =
 * undefined function for notification.php file on line 209 the code is :: $activity_id = bp_activity_add($arg_arr);
 * Problem solved and and now OK.
 * added possible components and added condition so it will work if it is activated.
-
