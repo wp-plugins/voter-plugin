@@ -96,7 +96,7 @@ class VoterPluginClass {
 	/*************************************************
 	Check if the voter plugin disable or not
 	*************************************************/
-	function aheadzen_check_voter_page_disabled($pid)
+	function aheadzen_check_voter_page_disabled($pid='')
 	{
 		$exclude_pages = get_option('aheadzen_voter_exclude_pages');
 		if($exclude_pages)
@@ -106,6 +106,9 @@ class VoterPluginClass {
 			{
 				return true;
 			}
+		}elseif(function_exists('is_woocommerce') && (is_cart() || is_checkout() || is_account_page()))
+		{
+			return true;
 		}
 		return false;
 	}
@@ -128,6 +131,10 @@ class VoterPluginClass {
 	function aheadzen_get_voting_link($params)
 	{
 		if(is_admin()){return '';}
+		if(VoterPluginClass::aheadzen_check_voter_page_disabled($params['secondary_item_id']))
+		{
+			return '';
+		}
 		global $current_user;
 		$votestr = '';
 		$the_result = $params['result'];
