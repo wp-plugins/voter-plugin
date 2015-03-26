@@ -14,12 +14,14 @@ The Voter plugin adds a recommendation engine (voting or like/unlike features) o
 Voter plugin adds voting options for pages, posts, custom post types, comments, BuddyPress activity, groups, member profiles, WooCommerce products, bbPress topics and posts, and more.
 
 Adds a recommendation system on your wordpress blog site:
+
  - Supports posts, pages, custom post types and comments.
  - Supports BuddyPress - Groups, Profiles, Activities and more.
  - Supports bbPress Posts
  - Supports WooCommerce Products and Reviews.
 
 Voting options:
+
  - FaceBook style simple Like and Unlike
  - Up and Down buttons
  - Thumbs buttons
@@ -46,13 +48,14 @@ Go to Wordpress Admin > Appearance > Widgets > Top Listings Voter Plugin (drag &
 
 <h4>Top voted Shotcode</h4>
 Shortcode for top voted listing for posts,pages,products,profile & groups.<br />
-Get shortcode examples ::<br />
-shortcode for posts :     [voter_plugin_top_voted type=post num=5]<br />
-shortcode for pages :     [voter_plugin_top_voted type=page num=5]<br />
-shortcode for products :  [voter_plugin_top_voted type=product num=5]<br />
-shortcode for profile :   [voter_plugin_top_voted type=profile num=5]<br />
-shortcode for groups :    [voter_plugin_top_voted type=groups num=5]<br />
-shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
+`Get shortcode examples ::<br />
+shortcode for posts :     [voter_plugin_top_voted type=post num=5]
+shortcode for pages :     [voter_plugin_top_voted type=page num=5]
+shortcode for custom:     [voter_plugin_top_voted type=custom_post_type num=5]
+shortcode for products :  [voter_plugin_top_voted type=product num=5]
+shortcode for profile :   [voter_plugin_top_voted type=profile num=5]
+shortcode for groups :    [voter_plugin_top_voted type=groups num=5]
+shortcode for members :   [voter_plugin_top_voted type=profile num=5]`
 
 Any problems? [Contact Us](http://aheadzen.com/contact/)
 
