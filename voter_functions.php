@@ -1,10 +1,4 @@
 <?php
-include_once('voter_db_settings.php');
-include_once('admin_settings.php');
-include_once('notification.php');
-include_once('voter_api.php');
-include_once('voter_widgets_shorcodes.php');
-
 class VoterPluginClass {
 	
 	public function __construct(){
@@ -140,14 +134,15 @@ class VoterPluginClass {
 		unset($params['result']);
 		
 		$voting_options = get_option('aheadzen_voter_display_options');
-		if($voting_options==2){$votetype = ' thumbs_up_down ';}elseif($voting_options==3){$votetype = ' button_up_down ';}
-		
+		if($voting_options=='thumbs'){$votetype = ' thumbs_up_down ';}elseif($voting_options=='buttons'){$votetype = ' button_up_down ';}
+		if(strlen($voting_options)<3){$voting_options='likeunlike';}
 		$post_id = $params['item_id'];
 		$linkurl = VoterPluginClass::aheadzen_get_current_page_url();
-		$total_votes = VoterPluginClass::aheadzen_get_total_votes($params);
+		$total_votes_arr = VoterPluginClass::aheadzen_get_total_votes($params);
+		$total_votes = $total_votes_arr['total'];
 		$is_voted = VoterPluginClass::aheadzen_is_voted($params);
-		$class_up = 'vote-up-on';
-		$class_down = 'vote-down-on';
+		$class_up = 'vote-up-off';
+		$class_down = 'vote-down-off';
 		$title_up = $title_down = __('click to vote','aheadzen');
 		
 		$user_id = $current_user->ID;
@@ -167,9 +162,9 @@ class VoterPluginClass {
 		}
 		$class_up .= $votetype;
 		$class_down .= $votetype;
-		if($voting_options==1)
+		if($voting_options=='likeunlike')
 		{
-			$votestr.= '<div id="aheadzen_voting_'.$params['secondary_item_id'].'_'.$params['item_id'].'_'.$params['component'].'" class="aheadzen_vote alignright like_unlike_vote">';
+			$votestr.= '<div id="aheadzen_voting_'.$params['secondary_item_id'].'_'.$params['item_id'].'_'.$params['component'].'" class="aheadzen_vote like_unlike_vote">';
 			if($is_voted!=''){
 				if($is_voted=='up')
 				{
@@ -185,14 +180,14 @@ class VoterPluginClass {
 			if($is_voted!=''){
 				if($is_voted=='up')
 				{
-					$class_up = 'vote-up-off';
-					$class_down = 'vote-down-on';
+					$class_up = 'vote-up-on';
+					$class_down = 'vote-down-off';
 					$title_up = __('already voted, click to remove','aheadzen');
 					//$url_up = '#';
 				}elseif($is_voted=='down')
 				{
-					$class_up = 'vote-up-on';
-					$class_down = 'vote-down-off';
+					$class_up = 'vote-up-off';
+					$class_down = 'vote-down-on';
 					$title_down = __('already voted','aheadzen');
 					//$url_down = '#';
 				}
@@ -200,17 +195,38 @@ class VoterPluginClass {
 				$class_down .= $votetype;
 			}
 			
-			$votestr.= '<div id="aheadzen_voting_'.$params['secondary_item_id'].'_'.$params['item_id'].'_'.$params['component'].'" class="aheadzen_vote alignright">';	
-			
-			$votestr.= '<a rel="nofollow" title="'.$title_up.'" class="aheadzen_voter_css ' . $class_up . '" href="' . $url_up . '"></a>';
-			
-			$votestr.= '<span class="vote-count-post">';
-			$votestr.= $total_votes;
-			$votestr.= '</span>';	
-			
-			$votestr.= '<a rel="nofollow" title="'.$title_down.'" class="aheadzen_voter_css ' . $class_down . '" href="' . $url_down . '"></a>';
-			
-			$votestr.= '</div>';
+			if($voting_options=='helpful')
+			{
+				$total_up_votes = $total_votes_arr['total_up'];
+				$total_count = $total_votes_arr['total_count'];
+				$type = $params['type'];
+				$votestr.= '<div id="aheadzen_voting_'.$params['secondary_item_id'].'_'.$params['item_id'].'_'.$params['component'].'" class="aheadzen_vote helpful_vote">';	
+				$votestr.= '<span>'.sprintf(__('Is this %s help you?','aheadzen'),$type).'<br /><small style="display: block;">'.sprintf(__('%s out of %s said Yes','aheadzen'),$total_up_votes,$total_count).'</small></span>';
+				$votestr.= '<a rel="nofollow" title="'.$title_up.'" class="aheadzen_voter_css ' . $class_up . '" href="' . $url_up . '">'.__('Yes','aheadzen').'</a>';
+				$disable_down_voter = get_option('aheadzen_disable_down_voter');
+				if($disable_down_voter==1){ }else{
+					$votestr.= '<a rel="nofollow" title="'.$title_down.'" class="aheadzen_voter_css ' . $class_down . '" href="' . $url_down . '">'.__('No','aheadzen').'</a>';
+				}
+				$votestr.= '<span class="vote-count-post">';
+				//$votestr.= $total_votes;
+				$votestr.= '</span>';
+				$votestr.= '</div>';
+			}else{
+				$votestr.= '<div id="aheadzen_voting_'.$params['secondary_item_id'].'_'.$params['item_id'].'_'.$params['component'].'" class="aheadzen_vote">';	
+				
+				$votestr.= '<a rel="nofollow" title="'.$title_up.'" class="aheadzen_voter_css ' . $class_up . '" href="' . $url_up . '"></a>';
+				
+				$votestr.= '<span class="vote-count-post">';
+				$votestr.= $total_votes;
+				$votestr.= '</span>';	
+				
+				$disable_down_voter = get_option('aheadzen_disable_down_voter');
+				if($disable_down_voter==1){ }else{
+					$votestr.= '<a rel="nofollow" title="'.$title_down.'" class="aheadzen_voter_css ' . $class_down . '" href="' . $url_down . '"></a>';
+				}
+				
+				$votestr.= '</div>';
+			}
 		}
 		
 		if($_REQUEST['rtype']=='json')
@@ -227,7 +243,7 @@ class VoterPluginClass {
 	}
 	
 	/*************************************************
-	Get Total votes of particulate item
+	Get Total votes of particulate item 
 	*************************************************/
 	function aheadzen_get_total_votes($params)
 	{	
@@ -237,10 +253,12 @@ class VoterPluginClass {
 		$type = $params['type'];
 		$item_id = $params['item_id'];
 		$secondary_item_id = $params['secondary_item_id'];
+		
 		$total_up = $wpdb->get_var("select count(id) from `".$table_prefix."ask_votes` WHERE action='up' AND item_id=\"$item_id\" AND component=\"$component\" AND type=\"$type\" AND secondary_item_id=\"$secondary_item_id\"");
 		$total_down = $wpdb->get_var("select count(id) from `".$table_prefix."ask_votes` WHERE action='down' AND item_id=\"$item_id\" AND component=\"$component\" AND type=\"$type\" AND secondary_item_id=\"$secondary_item_id\"");
 		$total = $total_up-$total_down;
-		return $total;
+		$total_count = $total_up+$total_down;
+		return array('total'=>$total,'total_up'=>$total_up,'total_down'=>$total_down,'total_count'=>$total_count);
 	}
 	
 	/*************************************************
@@ -279,14 +297,13 @@ class VoterPluginClass {
 				if($is_voted){
 					$voted_id = $is_voted->id;
 					$action = $_REQUEST['action'];
-					if($action=='up' && $is_voted->action=='up')
+					if(($action=='up' && $is_voted->action=='up') || ($action=='down' && $is_voted->action=='down'))
 					{
 						$sql = "delete from `".$table_prefix."ask_votes` where id=\"$voted_id\"";
 						$wpdb->query($sql);
 						$result = '0';
-					}else{				
-						//$sql = "update `".$table_prefix."ask_votes` set action=\"$action\" where id=\"$voted_id\"";
-						$sql = "delete from `".$table_prefix."ask_votes` where id=\"$voted_id\"";
+					}else{
+						$sql = "update `".$table_prefix."ask_votes` set action=\"$action\" where id=\"$voted_id\"";
 						$wpdb->query($sql);
 					}				
 				}else{
@@ -551,7 +568,8 @@ class VoterPluginClass {
 				$component = 'blog';
 			}
 			$arg = array('component'=>$component,'type'=>$type,'num'=>$num);
-			return aheadzen_top_voted_list_default($arg);
+			$voterplugin = new VoterPluginClass();
+			return $voterplugin->aheadzen_top_voted_list_default($arg);
 		}
 	}
 
@@ -566,7 +584,8 @@ class VoterPluginClass {
 		$type = $arg['type'];
 		$num = $arg['num'];
 		
-		$sql = "select secondary_item_id,count(action) as count from `".$table_prefix."ask_votes` where component=\"$component\" and type=\"$type\" group by secondary_item_id order by count desc limit $num";
+		//$sql = "select secondary_item_id,count(action) as count from `".$table_prefix."ask_votes` where component=\"$component\" and type=\"$type\" group by secondary_item_id order by count desc limit $num";
+		$sql = "select secondary_item_id,count(action) as count from `".$table_prefix."ask_votes` where component=\"$component\" group by secondary_item_id order by count desc limit $num";
 		$res =  $wpdb->get_results($sql);
 		if($res)
 		{
@@ -870,3 +889,9 @@ class VoterBpTopics extends VoterPluginClass {
 		
 	}
 }
+
+include_once('voter_db_settings.php');
+include_once('admin_settings.php');
+include_once('notification.php');
+include_once('voter_api.php');
+include_once('voter_widgets_shorcodes.php');

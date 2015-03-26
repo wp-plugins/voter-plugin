@@ -386,9 +386,9 @@ class VoterBpNotifications extends VoterPluginClass {
 		$voter_link = bp_core_get_userlink( $user_id );
 		$subject = '';
 		
-		$notification = $like_msg;
+		$notification = str_replace($arg['type'],'your '.$arg['type'],$like_msg);
 		
-		$subject = "$user_display_name likes your $component_action_type $title_msg";
+		$subject = "$user_display_name likes your $component_action_type on $title_msg";
 		$notification_link = $bp->bp_nav['notifications']['link'];
 		$settings_link = '<a href="'.$bp->bp_nav['settings']['link'].'notifications/"> member settings</a>';
 		$message =  $notification.'<br /><br />To view all of your pending notifications: <a href="'.$notification_link.'">Click the link</a> <br /><br />Click to view '.$voter_link.'\'s profile.';

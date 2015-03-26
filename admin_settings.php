@@ -20,6 +20,7 @@ class VoterAdminClass {
 			update_option('aheadzen_voter_for_post',$_POST['aheadzen_voter_for_post']);
 			update_option('aheadzen_voter_for_product',$_POST['aheadzen_voter_for_product']);
 			update_option('aheadzen_voter_for_custom_posttype',$_POST['aheadzen_voter_for_custom_posttype']);
+			update_option('aheadzen_disable_down_voter',$_POST['aheadzen_disable_down_voter']);
 			update_option('aheadzen_voter_for_comments',$_POST['aheadzen_voter_for_comments']);
 			update_option('aheadzen_voter_for_activity',$_POST['aheadzen_voter_for_activity']);
 			update_option('aheadzen_voter_for_group',$_POST['aheadzen_voter_for_group']);
@@ -41,7 +42,10 @@ class VoterAdminClass {
 			echo '<script>window.location.href="'.admin_url().'options-general.php?page=voter&msg=success";</script>';
 			exit;
 		}
-
+		
+		$exclude_pages = get_option('aheadzen_voter_exclude_pages');
+		$templates = get_page_templates( get_post() );
+		ksort( $templates );
 		?>
 		<h2><?php _e('Voter Settings','aheadzen');?></h2>
 		<?php
@@ -61,11 +65,19 @@ class VoterAdminClass {
 					<p><?php _e('Voting Display Options','aheadzen');?> ::
 					<select name="aheadzen_voter_display_options" id="aheadzen_voter_display_options">
 					<option value=""><?php _e(' -- Select One -- ','aheadzen');?></option>
-					<option value="1" <?php if($display_options=='1'){echo 'selected';}?>><?php _e('Simple Like/Unlike','aheadzen');?></option>
-					<option value="2" <?php if($display_options=='2'){echo 'selected';}?>><?php _e('Thumbs up/down','aheadzen');?></option>
-					<option value="3" <?php if($display_options=='3'){echo 'selected';}?>><?php _e('Up/Down Button','aheadzen');?></option>
+					<option value="likeunlike" <?php if($display_options=='likeunlike'){echo 'selected';}?>><?php _e('Simple Like/Unlike','aheadzen');?></option>
+					<option value="helpful" <?php if($display_options=='helpful'){echo 'selected';}?>><?php _e('Helpful? Yes/No','aheadzen');?></option>
+					<option value="thumbs" <?php if($display_options=='thumbs'){echo 'selected';}?>><?php _e('Thumbs up/down','aheadzen');?></option>
+					<option value="buttons" <?php if($display_options=='buttons'){echo 'selected';}?>><?php _e('Up/Down Button','aheadzen');?></option>
 					</select>
 					</p>
+					</label>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td>
+					<label for="aheadzen_disable_down_voter">
+					<input type="checkbox" value="1" id="aheadzen_disable_down_voter" name="aheadzen_disable_down_voter" <?php if(get_option('aheadzen_disable_down_voter')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Hide down votes completely?','aheadzen');?>
 					</label>
 					</td>
 				</tr>
@@ -100,6 +112,10 @@ class VoterAdminClass {
 					</label>
 					</td>
 				</tr>
+				<?php if (class_exists('BuddyPress')){
+				global $bp;
+				if(function_exists('bp_is_active') && bp_is_active('activity')){
+				?>
 				<tr valign="top">
 					<td>
 					<label for="aheadzen_voter_for_activity">
@@ -107,17 +123,12 @@ class VoterAdminClass {
 					</label>
 					</td>
 				</tr>
+				<?php }?>
+				<?php if(function_exists('bp_is_active') && bp_is_active('groups')){?>
 				<tr valign="top">
 					<td>
 					<label for="aheadzen_voter_for_group">
 					<input type="checkbox" value="1" id="aheadzen_voter_for_group" name="aheadzen_voter_for_group" <?php if(get_option('aheadzen_voter_for_group')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for buddypress groups detail pages','aheadzen');?>
-					</label>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td>
-					<label for="aheadzen_voter_for_forum">
-					<input type="checkbox" value="1" id="aheadzen_voter_for_forum" name="aheadzen_voter_for_forum" <?php if(get_option('aheadzen_voter_for_forum')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for buddypress forum topic pages','aheadzen');?>
 					</label>
 					</td>
 				</tr>
@@ -128,6 +139,17 @@ class VoterAdminClass {
 					</label>
 					</td>
 				</tr>
+				<?php }?>
+				<?php if(function_exists('bbPress')){?>
+				<tr valign="top">
+					<td>
+					<label for="aheadzen_voter_for_forum">
+					<input type="checkbox" value="1" id="aheadzen_voter_for_forum" name="aheadzen_voter_for_forum" <?php if(get_option('aheadzen_voter_for_forum')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for bbPress Posts/forum topic pages','aheadzen');?>
+					</label>
+					</td>
+				</tr>
+				<?php }?>
+				<?php }?>
 				<?php /*?>
 				<tr valign="top">
 					<td>
@@ -142,6 +164,8 @@ class VoterAdminClass {
 					<h3><?php _e('Notification Settings','aheadzen');?></h3>
 					</td>
 				</tr>
+				<?php if (class_exists('BuddyPress')){?>
+				<?php if(function_exists('bp_is_active') && bp_is_active('activity')){?>
 				<tr valign="top">
 					<td>
 					<label for="aheadzen_voter_disable_activity">
@@ -149,6 +173,7 @@ class VoterAdminClass {
 					</label>
 					</td>
 				</tr>
+				<?php }?>
 				<tr valign="top">
 					<td>
 					<label for="aheadzen_voter_disable_notification">
@@ -156,6 +181,7 @@ class VoterAdminClass {
 					</label>
 					</td>
 				</tr>
+				<?php }?>
 				<tr valign="top">
 					<td>
 					<label for="aheadzen_voter_disable_email">
@@ -235,14 +261,13 @@ class VoterAdminClass {
 					</label>
 					</td>
 				</tr>
+				<?php 
+				if($templates){?>
 				<tr valign="top">
 					<td>
 					<p><?php _e('Select the page template to disable voter plugin','aheadzen');?> ::</p>
 					<ul>
 					<?php
-					$exclude_pages = get_option('aheadzen_voter_exclude_pages');
-					$templates = get_page_templates( get_post() );
-					ksort( $templates );
 					foreach ( array_keys( $templates ) as $template ) {
 						$selected = selected( $default, $templates[ $template ], false );
 						?>
@@ -258,6 +283,7 @@ class VoterAdminClass {
 					<br /> <small><?php _e('Please select the template if you want to disable the voter plugin for it.','aheadzen');?></small>
 					</td>
 				</tr>
+				<?php }?>
 				<tr valign="top">
 					<td>
 						<input type="hidden" name="page_options" value="<?php echo $value;?>" />

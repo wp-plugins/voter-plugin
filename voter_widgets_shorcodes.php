@@ -20,7 +20,7 @@ if(!class_exists('aheadzen_voter_widget')){
 	class aheadzen_voter_widget extends WP_Widget {
 		function aheadzen_voter_widget() {
 		//Constructor
-			$widget_ops = array('classname' => 'widget aheadzen_voter', 'description' => 'Display top voted posts,pages,products,groups,members etc...' );		
+			$widget_ops = array('classname' => 'widget aheadzen_voter widget_categories', 'description' => 'Display top voted posts,pages,products,groups,members etc...' );		
 			$this->WP_Widget('aheadzen_voter','Top Listings Voter Plugin', $widget_ops);
 		}
 		function widget($args, $instance) {
@@ -35,7 +35,8 @@ if(!class_exists('aheadzen_voter_widget')){
 			
 			if($title){ echo $before_title.$title.$after_title; }
 			$arg = array('type'=>$type,'num'=>$num);
-			echo aheadzen_top_voted_list_all($arg);
+			$voterplugin = new VoterPluginClass();
+			echo $voterplugin->aheadzen_top_voted_list_all($arg);
 			
 			echo $after_widget;				
 		}
@@ -97,7 +98,8 @@ function aheadzen_voter_plugin_shortcode($atts) {
 	if($type==''){$type='post';}
 	if(!$num){$num=5;}
 	$arg = array('type'=>$type,'num'=>$num);
-	$content = aheadzen_top_voted_list_all($arg);	
+	$voterplugin = new VoterPluginClass();
+	$content = $voterplugin->aheadzen_top_voted_list_all($arg);	
 	return $content;
 }
 add_shortcode('voter_plugin_top_voted', 'aheadzen_voter_plugin_shortcode');

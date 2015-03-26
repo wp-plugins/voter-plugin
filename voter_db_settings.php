@@ -21,7 +21,7 @@ function aheadzen_voter_install()
 		update_option('aheadzen_voter_for_profile',1);
 		update_option('aheadzen_voter_for_messages',1);
 		update_option('aheadzen_voter_for_forum',1);
-		update_option('aheadzen_voter_display_options',0);
+		update_option('aheadzen_voter_display_options','likeunlike');
 		update_option('aheadzen_voter_login_title','Please Login');
 		update_option('aheadzen_voter_login_desc','<p>This site is free and open to everyone, but our registered users get extra privileges like commenting, and voting.</p>');
 		update_option('aheadzen_voter_login_link',wp_login_url());

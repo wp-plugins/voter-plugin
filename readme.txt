@@ -3,7 +3,7 @@ Contributors: aheadzen
 Tags: voter,review,woocommerce,buddypress,like,unlike,voting
 Requires at least : 3.0.0
 Tested up to: 4.0
-Stable tag: 2.1
+Stable tag: 2.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -205,3 +205,10 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 * undefined function for notification.php file on line 209 the code is :: $activity_id = bp_activity_add($arg_arr);
 * Problem solved and and now OK.
 * added possible components and added condition so it will work if it is activated.
+
+= 2.1.1 =
+* Added new voting option type : "Helpful Option".
+* Display the YES or NO option on frond end inplace of voting.
+* Added conditions for buddypress & bbpress options like it will display only if buddypress or bbpress activated.
+* Default up-down thumbs & button settings default set to -- disable.
+* Top voted widget - PHP error  - SOLVED.
