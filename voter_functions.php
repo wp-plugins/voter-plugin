@@ -116,7 +116,7 @@ class VoterPluginClass {
 	/*************************************************
 	Check the Buddpress Version for Older version.
 	*************************************************/
-	function is_old_version()
+	function voter_is_old_version()
 	{
  
 		if(function_exists('bbp_get_reply_id' ) && function_exists('bbp_get_topic'))return false;
@@ -863,7 +863,7 @@ class VoterBpTopics extends VoterPluginClass {
 	{
 		if(!get_option('aheadzen_voter_for_forum'))return false;
 		
-			if(VoterPluginClass::is_old_version())
+			if(VoterPluginClass::voter_is_old_version())
 			{
 				$reply_id = bp_get_the_topic_post_id();
 				if($reply_id)

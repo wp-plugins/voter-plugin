@@ -50,7 +50,7 @@ class VoterBpNotifications extends VoterPluginClass {
 		$post_type = $post->post_type;
 		$user_id = $current_user->ID;
 		
-		if(VoterPluginClass::is_old_version())
+		if(VoterPluginClass::voter_is_old_version())
 		{
 			$reply_id = bp_get_the_topic_id();
 		}elseif(function_exists('bbp_get_reply_id'))
@@ -122,7 +122,7 @@ class VoterBpNotifications extends VoterPluginClass {
 			$userlink = bp_core_get_userlink( $user_id );
 			
 			if($type=='topic-reply'){
-				if(VoterPluginClass::is_old_version())
+				if(VoterPluginClass::voter_is_old_version())
 				{		
 					$topic = bp_forums_get_topic_details( $item_id );
 					$topic_details= bp_forums_get_post( $secondary_item_id ); //reply	
@@ -170,7 +170,7 @@ class VoterBpNotifications extends VoterPluginClass {
 			{
 				$post_title = $topic_details->post_title;
 				$post_author = $topic_details->post_author;
-				if(VoterPluginClass::is_old_version())
+				if(VoterPluginClass::voter_is_old_version())
 				{	
 					$group = groups_get_group( array( 'group_id' => $topic->object_id ) );
 					$topic_link = trailingslashit( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug . '/' ).'/forum/topic/' . $topic->topic_slug . '/';
@@ -298,7 +298,7 @@ class VoterBpNotifications extends VoterPluginClass {
 		
 		if($component_action_type=='topic' || $component_action_type=='topic-reply')
 		{
-			if(VoterPluginClass::is_old_version())
+			if(VoterPluginClass::voter_is_old_version())
 			{			
 				$topic_details = bp_forums_get_topic_details( $post_id );
 			}else{
@@ -330,20 +330,21 @@ class VoterBpNotifications extends VoterPluginClass {
 		{
 			$post_title = $topic_details->post_title;
 			$post_author = $topic_details->post_author;
-			if(VoterPluginClass::is_old_version() && function_exists('groups_get_group'))
+			if(VoterPluginClass::voter_is_old_version() && function_exists('groups_get_group'))
 			{ 
 				$post_title = $topic_details->topic_title;
 				$group = groups_get_group( array( 'group_id' => $topic_details->object_id ) );
 				$topic_link = trailingslashit( bp_get_root_domain() . '/' . bp_get_groups_root_slug() . '/' . $group->slug . '/' ).'/forum/topic/' . $topic_details->topic_slug . '/';
 				$topic_post= bp_forums_get_post( $post_id );
 				$post_author = $topic_post->poster_id;
-			}else{
+			}elseif(function_exists('bbp_get_topic_permalink') && function_exists('bbp_get_reply_author')){
 				$topic_link = bbp_get_topic_permalink( $post_id );
 				$post_author = bbp_get_reply_author( $post_id );
 			} 
-			
-			$topic_link = '<a href="' . $topic_link .'">' . $post_title . '</a>';
-			$notification = "$voter_link likes your $component_action_type $topic_link";
+			if($topic_link && $post_title){
+				$topic_link = '<a href="' . $topic_link .'">' . $post_title . '</a>';
+				$notification = "$voter_link likes your $component_action_type $topic_link";
+			}
 			
 		}else{
 			$post = get_post($item_id);

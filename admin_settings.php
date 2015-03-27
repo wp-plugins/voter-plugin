@@ -150,7 +150,7 @@ class VoterAdminClass {
 					</td>
 				</tr>
 				<?php }?>
-				<?php if(function_exists('bbPress') || is_old_version()){?>
+				<?php if(function_exists('bbPress') || VoterPluginClass::voter_is_old_version()){?>
 				<tr valign="top">
 					<td>
 					<label for="aheadzen_voter_for_forum">
