@@ -699,7 +699,7 @@ class VoterPluginClass {
 	{
 		return $redirect_to = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 	}
-/**CLASS END**/	
+	/**CLASS END**/	
 }
 
 
@@ -713,15 +713,19 @@ class VoterPosts extends VoterPluginClass {
 	{
 		global $post,$wpdb;
 		$post_type = $post->post_type;
-		if(($post_type && get_option('aheadzen_voter_for_custom_posttype')) || ($post_type=='page' && get_option('aheadzen_voter_for_page')) || ($post_type=='post' && get_option('aheadzen_voter_for_post'))  || ($post_type=='product' && get_option('aheadzen_voter_for_product')))
-		{
-			if($post_type == "product"){
-				$component_name = "woocommerce";
-			}elseif($post_type == "page" || $post_type == "post"){
-				$component_name = "blog";
-			}else{
-				$component_name = "custompost";
-			}
+		
+		$component_name = '';
+		if($post_type=='page' && get_option('aheadzen_voter_for_page')){
+			$component_name = "blog";
+		}elseif($post_type=='post' && get_option('aheadzen_voter_for_post')){
+			$component_name = "blog";
+		}elseif($post_type=='product' && get_option('aheadzen_voter_for_product')){
+			$component_name = "woocommerce";
+		}elseif($post_type && get_option('aheadzen_voter_for_custom_posttype') && !in_array($post_type,array('page','post','product'))){
+			$component_name = "custompost";
+		}
+		
+		if($component_name!=''){
 			$params = array(
 				'component' => $component_name,
 				'type' => $post_type,

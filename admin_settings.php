@@ -83,32 +83,40 @@ class VoterAdminClass {
 				</tr>
 				<tr valign="top">
 					<td>
-					<label for="aheadzen_voter_for_custom_posttype">
-					<input type="checkbox" value="1" id="aheadzen_voter_for_custom_posttype" name="aheadzen_voter_for_custom_posttype" <?php if(get_option('aheadzen_voter_for_custom_posttype')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for all posts types/all custom post type pages','aheadzen');?>
-					</label>
+					<h3><?php _e('Enable On :','aheadzen');?></h3>
 					</td>
 				</tr>
 				<tr valign="top">
 					<td>
 					<label for="aheadzen_voter_for_page">
-					<input type="checkbox" value="1" id="aheadzen_voter_for_page" name="aheadzen_voter_for_page" <?php if(get_option('aheadzen_voter_for_page')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for content pages','aheadzen');?>
+					<input type="checkbox" value="1" id="aheadzen_voter_for_page" name="aheadzen_voter_for_page" <?php if(get_option('aheadzen_voter_for_page')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Pages','aheadzen');?>
 					</label>
 					</td>
 				</tr>
 				<tr valign="top">
 					<td>
 					<label for="aheadzen_voter_for_post">
-					<input type="checkbox" value="1" id="aheadzen_voter_for_post" name="aheadzen_voter_for_post" <?php if(get_option('aheadzen_voter_for_post')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for post pages','aheadzen');?></td>
+					<input type="checkbox" value="1" id="aheadzen_voter_for_post" name="aheadzen_voter_for_post" <?php if(get_option('aheadzen_voter_for_post')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Blog Posts','aheadzen');?></td>
 				</tr>
+				<?php global $woocommerce;
+				if($woocommerce){?>
 				<tr valign="top">
 					<td>
 					<label for="aheadzen_voter_for_product">
-					<input type="checkbox" value="1" id="aheadzen_voter_for_product" name="aheadzen_voter_for_product" <?php if(get_option('aheadzen_voter_for_product')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for product pages','aheadzen');?></td>
+					<input type="checkbox" value="1" id="aheadzen_voter_for_product" name="aheadzen_voter_for_product" <?php if(get_option('aheadzen_voter_for_product')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('WooCommerce Products','aheadzen');?></td>
+				</tr>
+				<?php }?>
+				<tr valign="top">
+					<td>
+					<label for="aheadzen_voter_for_custom_posttype">
+					<input type="checkbox" value="1" id="aheadzen_voter_for_custom_posttype" name="aheadzen_voter_for_custom_posttype" <?php if(get_option('aheadzen_voter_for_custom_posttype')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('All Custom Post Type','aheadzen');?>
+					</label>
+					</td>
 				</tr>
 				<tr valign="top">
 					<td>
 					<label for="aheadzen_voter_for_comments">
-					<input type="checkbox" value="1" id="aheadzen_voter_for_comments" name="aheadzen_voter_for_comments" <?php if(get_option('aheadzen_voter_for_comments')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for post comments','aheadzen');?>
+					<input type="checkbox" value="1" id="aheadzen_voter_for_comments" name="aheadzen_voter_for_comments" <?php if(get_option('aheadzen_voter_for_comments')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Comments','aheadzen');?>
 					</label>
 					</td>
 				</tr>
@@ -119,7 +127,7 @@ class VoterAdminClass {
 				<tr valign="top">
 					<td>
 					<label for="aheadzen_voter_for_activity">
-					<input type="checkbox" value="1" id="aheadzen_voter_for_activity" name="aheadzen_voter_for_activity" <?php if(get_option('aheadzen_voter_for_activity')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for buddypress activity listing page','aheadzen');?>
+					<input type="checkbox" value="1" id="aheadzen_voter_for_activity" name="aheadzen_voter_for_activity" <?php if(get_option('aheadzen_voter_for_activity')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Buddypress Activity','aheadzen');?>
 					</label>
 					</td>
 				</tr>
@@ -128,23 +136,23 @@ class VoterAdminClass {
 				<tr valign="top">
 					<td>
 					<label for="aheadzen_voter_for_group">
-					<input type="checkbox" value="1" id="aheadzen_voter_for_group" name="aheadzen_voter_for_group" <?php if(get_option('aheadzen_voter_for_group')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for buddypress groups detail pages','aheadzen');?>
+					<input type="checkbox" value="1" id="aheadzen_voter_for_group" name="aheadzen_voter_for_group" <?php if(get_option('aheadzen_voter_for_group')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Buddypress Groups','aheadzen');?>
 					</label>
 					</td>
 				</tr>
 				<tr valign="top">
 					<td>
 					<label for="aheadzen_voter_for_profile">
-					<input type="checkbox" value="1" id="aheadzen_voter_for_profile" name="aheadzen_voter_for_profile" <?php if(get_option('aheadzen_voter_for_profile')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for buddypress members profile page','aheadzen');?>
+					<input type="checkbox" value="1" id="aheadzen_voter_for_profile" name="aheadzen_voter_for_profile" <?php if(get_option('aheadzen_voter_for_profile')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Buddypress Members Profile','aheadzen');?>
 					</label>
 					</td>
 				</tr>
 				<?php }?>
-				<?php if(function_exists('bbPress')){?>
+				<?php if(function_exists('bbPress') || is_old_version()){?>
 				<tr valign="top">
 					<td>
 					<label for="aheadzen_voter_for_forum">
-					<input type="checkbox" value="1" id="aheadzen_voter_for_forum" name="aheadzen_voter_for_forum" <?php if(get_option('aheadzen_voter_for_forum')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for bbPress Posts/forum topic pages','aheadzen');?>
+					<input type="checkbox" value="1" id="aheadzen_voter_for_forum" name="aheadzen_voter_for_forum" <?php if(get_option('aheadzen_voter_for_forum')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('bbPress Posts','aheadzen');?>
 					</label>
 					</td>
 				</tr>

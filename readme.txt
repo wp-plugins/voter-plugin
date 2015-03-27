@@ -215,3 +215,7 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 * Added conditions for buddypress & bbpress options like it will display only if buddypress or bbpress activated.
 * Default up-down thumbs & button settings default set to -- disable.
 * Top voted widget - PHP error  - SOLVED.
+
+= 2.1.2 =
+* Plugin Settings - wp-admin >> correction of titles.
+* Buddpress & bbypress > problem of css - Correction done.
