@@ -30,7 +30,7 @@ add_filter('template_include',array('VoterPluginClass','aheadzen_voter_add_vote'
 add_action('bp_init',array('VoterPluginClass','aheadzen_voter_add_vote'), 99999);
 add_action('bp_init',array( 'VoterBpNotifications','aheadzen_bp_delete_topic'), 99);
 
-add_filter('the_content', array('VoterPosts','aheadzen_content_voting_links')); //posts & pages
+add_filter('the_content', array('VoterPosts','aheadzen_content_voting_links'),9999); //posts & pages
 add_filter('get_comment_text', array('VoterPostComments','aheadzen_comment_voting_links'),1,2); //comments
 add_action('bp_before_group_header', array('VoterBpGroups','aheadzen_bp_group_voting_links')); //groups
 add_action('bp_before_member_header', array('VoterBpMembers','aheadzen_bp_member_voting_links')); //member profile

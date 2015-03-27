@@ -724,7 +724,6 @@ class VoterPosts extends VoterPluginClass {
 		}elseif($post_type && get_option('aheadzen_voter_for_custom_posttype') && !in_array($post_type,array('page','post','product'))){
 			$component_name = "custompost";
 		}
-		
 		if($component_name!=''){
 			$params = array(
 				'component' => $component_name,
