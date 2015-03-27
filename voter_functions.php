@@ -207,8 +207,12 @@ class VoterPluginClass {
 				$total_up_votes = $total_votes_arr['total_up'];
 				$total_count = $total_votes_arr['total_count'];
 				$type = $params['type'];
+				$srch = array('groups','-','_');
+				$replace = array('group',' ',' ');
+				$type = str_replace($srch,$replace,$type);
+				
 				$votestr.= '<div id="aheadzen_voting_'.$params['secondary_item_id'].'_'.$params['item_id'].'_'.$params['component'].'" class="aheadzen_vote helpful_vote">';	
-				$votestr.= '<span>'.sprintf(__('Is this %s help you?','aheadzen'),$type).'<br /><small style="display: block;">'.sprintf(__('%s out of %s said Yes','aheadzen'),$total_up_votes,$total_count).'</small></span>';
+				$votestr.= '<span>'.sprintf(__('Is this %s helpful?','aheadzen'),$type).'<br /><small style="display: block;">'.sprintf(__('%s out of %s said Yes','aheadzen'),$total_up_votes,$total_count).'</small></span>';
 				$votestr.= '<a rel="nofollow" title="'.$title_up.'" class="aheadzen_voter_css ' . $class_up . '" href="' . $url_up . '">'.__('Yes','aheadzen').'</a>';
 				$disable_down_voter = get_option('aheadzen_disable_down_voter');
 				if($disable_down_voter==1){ }else{
@@ -712,6 +716,9 @@ class VoterPosts extends VoterPluginClass {
 	function aheadzen_content_voting_links($content)
 	{
 		global $post,$wpdb;
+		
+		if(!$post->ID){return $content;}
+		
 		$post_type = $post->post_type;
 		
 		$component_name = '';
@@ -724,6 +731,7 @@ class VoterPosts extends VoterPluginClass {
 		}elseif($post_type && get_option('aheadzen_voter_for_custom_posttype') && !in_array($post_type,array('page','post','product'))){
 			$component_name = "custompost";
 		}
+		
 		if($component_name!=''){
 			$params = array(
 				'component' => $component_name,

@@ -316,7 +316,7 @@ class VoterBpNotifications extends VoterPluginClass {
 		}elseif($component_action_type=='profile' || $component_action_type=='groups'  || $component_action_type=='activity')
 		{
 			$topic_link = '';
-			if($component_action_type=='groups' && function_exists('groups_get_groupgroups_get_group'))
+			if($component_action_type=='groups' && function_exists('groups_get_group'))
 			{
 				$post = groups_get_group( array( 'group_id' => $item_id ) );
 				$group_name = $post->name;
@@ -330,7 +330,7 @@ class VoterBpNotifications extends VoterPluginClass {
 		{
 			$post_title = $topic_details->post_title;
 			$post_author = $topic_details->post_author;
-			if(VoterPluginClass::is_old_version())
+			if(VoterPluginClass::is_old_version() && function_exists('groups_get_group'))
 			{ 
 				$post_title = $topic_details->topic_title;
 				$group = groups_get_group( array( 'group_id' => $topic_details->object_id ) );

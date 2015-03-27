@@ -140,6 +140,8 @@ class VoterAdminClass {
 					</label>
 					</td>
 				</tr>
+				<?php }?>
+				<?php if(function_exists('bp_is_active') && bp_is_active('xprofile')){?>
 				<tr valign="top">
 					<td>
 					<label for="aheadzen_voter_for_profile">
