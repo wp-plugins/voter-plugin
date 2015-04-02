@@ -219,3 +219,6 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 = 2.1.2 =
 * Plugin Settings - wp-admin >> correction of titles.
 * Buddpress & bbypress > problem of css - Correction done.
+
+= 2.1.3 =
+* Custom post type - notification display problem - SOLVED

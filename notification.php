@@ -24,6 +24,7 @@ class VoterBpNotifications extends VoterPluginClass {
 	function aheadzen_read_user_post_notifications($pid,$uid,$type)
 	{
 		global $wpdb,$table_prefix;
+		
 		if($type == 'activity')
 		{
 			$subsql = " and component_action like \"activity_%\"";
@@ -118,7 +119,7 @@ class VoterBpNotifications extends VoterPluginClass {
 			if($_REQUEST['user_id']){$user_id = $_REQUEST['user_id'];}
 			
 			$topic_id = $secondary_item_id;
-			$action_str = $type.'_'.$user_id.'_vote_' .$action;
+			$action_str = $type.'-+'.$user_id.'-+vote-+' .$action;
 			$userlink = bp_core_get_userlink( $user_id );
 			
 			if($type=='topic-reply'){
@@ -240,7 +241,7 @@ class VoterBpNotifications extends VoterPluginClass {
 				
 				if(!get_option('aheadzen_voter_disable_notification') && function_exists('bp_core_add_notification')){
 					/**Send Notification start**/
-					bp_core_add_notification( $_REQUEST['secondary_item_id'], $post_author, 'votes', $action_str,$_REQUEST['item_id']);
+					bp_core_add_notification($_REQUEST['secondary_item_id'], $post_author, 'votes', $action_str,$_REQUEST['item_id']);
 					/**Send Notification end**/
 				}
 			}			
@@ -275,6 +276,7 @@ class VoterBpNotifications extends VoterPluginClass {
 		$bp->votes = new BP_Component;
 		$bp->votes->notification_callback = 'VoterBpNotifications::aheadzen_voter_notification_title_format';
 		$bp->active_components['votes'] = '1';
+
 	}
 	
 	/*************************************************
@@ -284,10 +286,10 @@ class VoterBpNotifications extends VoterPluginClass {
 	   
 	   global $bp,$wp_query;
 	   $component_action_arr = explode('_',$component_action);
+	   if($component_action_arr && is_numeric($component_action_arr[1])){ }else{$component_action_arr = explode('-+',$component_action);}
 	   $component_action_type = $component_action_arr[0];
 	   $poster_user_id = (int)$component_action_arr[1];
-	   
-		$notifications = $bp->notifications->query_loop->notifications;
+	   $notifications = $bp->notifications->query_loop->notifications;
 		$notification = '';
 		$user_id = $poster_user_id;
 		$post_id = $secondary_item_id;
@@ -295,7 +297,8 @@ class VoterBpNotifications extends VoterPluginClass {
 		$display_name = bp_core_get_user_displayname( $user_id );
 		$url = bp_core_get_user_domain( $user_id );
 		$voter_link = $display_name;
-		
+		$archarr = array('-','_');
+		$rplarr = array(' ',' ');
 		if($component_action_type=='topic' || $component_action_type=='topic-reply')
 		{
 			if(VoterPluginClass::voter_is_old_version())
@@ -312,6 +315,7 @@ class VoterBpNotifications extends VoterPluginClass {
 			$topic_url = get_permalink($secondary_item_id);
 			$title = get_the_title($secondary_item_id);
 			$topic_link = '<a href="' . $topic_url . '">' . $title . '</a>';
+			$component_action_type = str_replace($archarr,$rplarr,$component_action_arr[0]);
 			$notification = "$voter_link likes your $component_action_type on  $topic_link";
 		}elseif($component_action_type=='profile' || $component_action_type=='groups'  || $component_action_type=='activity')
 		{
@@ -324,7 +328,8 @@ class VoterBpNotifications extends VoterPluginClass {
 				$topic_link = '<a href="' . bp_get_root_domain() . '/' . 'groups/' . $group_slug . '/">' . $group_name . '</a>';
 			}
 			$component_action_arr = explode('_',$component_action);
-			$component_action_type = $component_action_arr[0];
+			if($component_action_arr && is_numeric($component_action_arr[1])){ }else{$component_action_arr = explode('-+',$component_action);}
+			$component_action_type = str_replace($archarr,$rplarr,$component_action_arr[0]);
 			$notification = "$voter_link likes your $component_action_type $topic_link";
 		}elseif(($component_action_type=='topic' || $component_action_type=='topic-reply') && $topic_details)
 		{
@@ -343,6 +348,7 @@ class VoterBpNotifications extends VoterPluginClass {
 			} 
 			if($topic_link && $post_title){
 				$topic_link = '<a href="' . $topic_link .'">' . $post_title . '</a>';
+				$component_action_type = str_replace($archarr,$rplarr,$component_action_arr[0]);
 				$notification = "$voter_link likes your $component_action_type $topic_link";
 			}
 			
@@ -352,10 +358,10 @@ class VoterBpNotifications extends VoterPluginClass {
 			$title = get_the_title($item_id);
 			$topic_link = '<a href="' . $topic_url . '">' . $title . '</a>';
 			$component_action_arr = explode('_',$component_action);
-			$component_action_type = $component_action_arr[0];
+			if($component_action_arr && is_numeric($component_action_arr[1])){ }else{$component_action_arr = explode('-+',$component_action);}
+			$component_action_type = str_replace($archarr,$rplarr,$component_action_arr[0]);
 			$notification = "$voter_link likes your $component_action_type $topic_link";
 		}
-		
 		return $notification;
 
 	}
@@ -400,7 +406,4 @@ class VoterBpNotifications extends VoterPluginClass {
 		//echo "to : $to_email<br />, SUBJECT: $subject<br />, Message: $message<br />,Header : $headers";exit;
 		wp_mail($to_email, $subject, $message, $headers);
 	}
-
 }
-
-
