@@ -4,13 +4,20 @@ Plugin Name: Voter Plugin
 Plugin URI: http://aheadzen.com/
 Description: The plugin added votes option for pages, post, custom post types, comments, buddypress activity, groups, member profiles, woocommerce products etc. <br />You can control display option from <a href="options-general.php?page=voter" target="_blank"><b>Plugin Settings >></b></a>
 Author: Aheadzen Team  | <a href="options-general.php?page=voter" target="_blank">Manage Plugin Settings</a>
-Version: 2.1.3
 Author URI: http://aheadzen.com/
+Text Domain: aheadzen
+Domain Path: /language
+Version: 2.1.4
 
 Copyright: © 2014-2015 ASK-ORACLE.COM
 License: GNU General Public License v3.0
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 */
+
+/**************************
+Get translate your plugin to another language by google tutorial
+http://barry.coffeesprout.com/translating-po-files-using-google-translate/
+**************************/
 
 global $aheadzen_voter_plugin_version;
 $aheadzen_voter_plugin_version = '1.1.0.0';

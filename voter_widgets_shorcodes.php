@@ -20,7 +20,7 @@ if(!class_exists('aheadzen_voter_widget')){
 	class aheadzen_voter_widget extends WP_Widget {
 		function aheadzen_voter_widget() {
 		//Constructor
-			$widget_ops = array('classname' => 'widget aheadzen_voter widget_categories', 'description' => 'Display top voted posts,pages,products,groups,members etc...' );		
+			$widget_ops = array('classname' => 'widget aheadzen_voter widget_categories', 'description' => __('Display top voted posts,pages,products,groups,members etc...','aheadzen') );		
 			$this->WP_Widget('aheadzen_voter','Top Listings Voter Plugin', $widget_ops);
 		}
 		function widget($args, $instance) {

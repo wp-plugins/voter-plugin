@@ -64,7 +64,7 @@ class VoterAdminClass {
 					<label for="aheadzen_voter_display_options">
 					<p><?php _e('Voting Display Options','aheadzen');?> ::
 					<select name="aheadzen_voter_display_options" id="aheadzen_voter_display_options">
-					<option value=""><?php _e(' -- Select One -- ','aheadzen');?></option>
+					<option value=""><?php _e('-- Select One --','aheadzen');?></option>
 					<option value="likeunlike" <?php if($display_options=='likeunlike'){echo 'selected';}?>><?php _e('Simple Like/Unlike','aheadzen');?></option>
 					<option value="helpful" <?php if($display_options=='helpful'){echo 'selected';}?>><?php _e('Helpful? Yes/No','aheadzen');?></option>
 					<option value="thumbs" <?php if($display_options=='thumbs'){echo 'selected';}?>><?php _e('Thumbs up/down','aheadzen');?></option>
@@ -150,7 +150,9 @@ class VoterAdminClass {
 					</td>
 				</tr>
 				<?php }?>
-				<?php if(function_exists('bbPress') || VoterPluginClass::voter_is_old_version()){?>
+				<?php }?>
+				<?php 
+				if(function_exists('bbPress')){?>
 				<tr valign="top">
 					<td>
 					<label for="aheadzen_voter_for_forum">
@@ -159,16 +161,6 @@ class VoterAdminClass {
 					</td>
 				</tr>
 				<?php }?>
-				<?php }?>
-				<?php /*?>
-				<tr valign="top">
-					<td>
-					<label for="aheadzen_voter_for_messages">
-					<input type="checkbox" value="1" id="aheadzen_voter_for_messages" name="aheadzen_voter_for_messages" <?php if(get_option('aheadzen_voter_for_messages')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Enable vote for buddypress messages','aheadzen');?>
-					</label>
-					</td>
-				</tr>
-				<?php */?>
 				<tr valign="top">
 					<td>
 					<h3><?php _e('Notification Settings','aheadzen');?></h3>

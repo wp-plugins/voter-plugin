@@ -63,6 +63,7 @@ Any problems? [Contact Us](http://aheadzen.com/contact/)
 1. Unzip and upload plugin folder to your /wp-content/plugins/ directory  OR Go to wp-admin > plugins > Add new Plugin & Upload plugin zip.
 2. Go to wp-admin > Plugins(left menu) > Activate the plugin
 3. See the plugin option link with plugin description on plugin activation page or directly access from wp-admin > Settings(left menu) > VOTER
+4. Get translate your plugin to another language by google tutorial :: http://barry.coffeesprout.com/translating-po-files-using-google-translate/
 
 == Screenshots ==
 1. Plugin Activation
@@ -82,6 +83,8 @@ Any problems? [Contact Us](http://aheadzen.com/contact/)
 1. Go to wp-admin > Settings(left menu) > VOTER, manage settings as per you want.
 2. Default will be up & down voting system so you can change it to like/unlike voting
 3. new database table will be added to manage voting data, make sure you should add it manually in case of user security permission. 
+4. Get translate your plugin to another language by google tutorial :: http://barry.coffeesprout.com/translating-po-files-using-google-translate/
+
 
 == Changelog ==
 
@@ -222,3 +225,8 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 
 = 2.1.3 =
 * Custom post type - notification display problem - SOLVED
+
+= 2.1.4 =
+* Localization (multiple language) po & mo file added
+* Thumbs up & down - awaresome font added.
+* bbPress wp-admin settings hide while buddypress not activated - Problem solved.

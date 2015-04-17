@@ -1,9 +1,11 @@
 .aheadzen_voter_css{background-repeat:no-repeat;width: 150px; height:40px;display: block;padding:0;}
+/*
 #bbpress-forums div.bbp-topic-content a.thumbs_up_down,#bbpress-forums div.bbp-reply-content a.thumbs_up_down, .thumbs_up_down{background-image: url('../images/thumbs.png');width:38px;}
 #bbpress-forums div.bbp-topic-content a.vote-up-off.thumbs_up_down,#bbpress-forums div.bbp-reply-content a.vote-up-off.thumbs_up_down,.aheadzen_vote .vote-up-off.thumbs_up_down{background-position:0 0;}
 #bbpress-forums div.bbp-topic-content a.vote-up-on.thumbs_up_down,#bbpress-forums div.bbp-reply-content a.vote-up-on.thumbs_up_down,.aheadzen_vote  .vote-up-on.thumbs_up_down{background-position:0 -48px; }
 #bbpress-forums div.bbp-topic-content a.vote-down-off.thumbs_up_down,#bbpress-forums div.bbp-reply-content a.vote-down-off.thumbs_up_down,.aheadzen_vote  .vote-down-off.thumbs_up_down{background-position:-38px -11px;}
 #bbpress-forums div.bbp-topic-content a.vote-down-on.thumbs_up_down,#bbpress-forums div.bbp-reply-content a.vote-down-on.thumbs_up_down,.aheadzen_vote  .vote-down-on.thumbs_up_down{background-position:-38px -61px;}
+*/
 
 #bbpress-forums div.bbp-topic-content a.button_up_down,#bbpress-forums div.bbp-reply-content a.button_up_down,.button_up_down{background-image: url('../images/up-arrow.png');width:38px;}
 #bbpress-forums div.bbp-topic-content a.vote-up-off.button_up_down,#bbpress-forums div.bbp-reply-content a.vote-up-off.button_up_down,.aheadzen_vote .vote-up-off.button_up_down{background-position:-37px 0;}
@@ -38,3 +40,9 @@
 #aheadzen_voting_login p{color: #747373;font-size: 14px;font-style: normal;font-weight: 400;line-height: 20px; margin: 0.8em 0; padding: 0;vertical-align: baseline;}
 #aheadzen_voting_login label {display: block;margin-bottom: 5px;}
 #aheadzen_voting_login #user_login,#aheadzen_voting_login #user_pass {border-color: #e0dfdf;ransition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;font-size: 1em;height: 30px;}
+
+
+.thumbs_up_down .fa {font-size: 2.5em;}
+.thumbs_up_down.vote-up-on .fa{color:#3FAF47;}
+.thumbs_up_down.vote-down-on .fa{color:#CE160F;}
+.aheadzen_voter_css.thumbs_up_down {width: 40px;}

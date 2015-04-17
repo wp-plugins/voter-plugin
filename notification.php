@@ -166,7 +166,7 @@ class VoterBpNotifications extends VoterPluginClass {
 					$post_title = $bp->groups->current_group->name;
 					$post_author = $bp->groups->current_group->creator_id;
 				}
-				$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $_REQUEST['type'], $topic_link );
+				$action_content = sprintf( __( "%s likes %s %s", 'aheadzen' ), $userlink, $_REQUEST['type'], $topic_link );
 			}elseif(($_REQUEST['type']=='topic' || $_REQUEST['type']=='topic-reply') && $topic_details)
 			{
 				$post_title = $topic_details->post_title;
@@ -187,14 +187,14 @@ class VoterBpNotifications extends VoterPluginClass {
 				
 				$topic_link = '<a href="' . $topic_link .'">' . $post_title . '</a>';
 				if($_REQUEST['type']=='topic-reply'){$typestr = 'topic reply';}else{$typestr = 'topic';}
-				$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $typestr, $topic_link );
+				$action_content = sprintf( __( "%s likes %s %s", 'aheadzen' ), $userlink, $typestr, $topic_link );
 			}else{
 				$post = get_post($secondary_item_id);
 				$post_author = $post->post_author;
 				$post_title = $post->post_title;
 				$post_type = get_post_type($secondary_item_id);
 				$topic_link = '<a href="' . get_permalink($post->ID) .'">' . $post->post_title . '</a>';
-				$action_content = sprintf( __( "%s likes %s %s", 'buddypress' ), $userlink, $_REQUEST['type'], $topic_link );
+				$action_content = sprintf( __( "%s likes %s %s", 'aheadzen' ), $userlink, $_REQUEST['type'], $topic_link );
 			}
 			
 			if(!get_option('aheadzen_voter_disable_activity')){
@@ -220,7 +220,7 @@ class VoterBpNotifications extends VoterPluginClass {
 					$post_author = $wpdb->get_var("select user_id from $table_name where id=\"$topic_id\"");
 				}
 			}
-			
+			echo 'HELLO';exit;
 			if($post_author)
 			{
 				if(!get_option('aheadzen_voter_disable_email')){
