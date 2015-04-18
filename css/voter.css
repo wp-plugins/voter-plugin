@@ -29,11 +29,11 @@
 #aheadzen_voting_login #user_login,#aheadzen_voting_login #user_pass {border-color: #e0dfdf;ransition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;font-size: 1em;height: 30px;}
 
 
-.thumbs_up_down .fa {font-size: 2.5em;}
-.thumbs_up_down.vote-up-on .fa{color:#3FAF47;}
-.thumbs_up_down.vote-down-on .fa{color:#CE160F;}
-.aheadzen_voter_css.thumbs_up_down {width: 2em;padding: 0;}
-.thumbs_up_down .fa.fa-thumbs-down{transform: rotateY(180deg);}
+div.aheadzen_vote .thumbs_up_down .fa {font-size: 2.5em;}
+div.aheadzen_vote .thumbs_up_down.vote-up-on .fa{color:#3FAF47;}
+div.aheadzen_vote .thumbs_up_down.vote-down-on .fa{color:#CE160F;}
+div.aheadzen_vote .aheadzen_voter_css.thumbs_up_down {width: 2em;padding: 0;}
+div.aheadzen_vote .thumbs_up_down .fa.fa-thumbs-down{transform: rotateY(180deg);}
 
 div.aheadzen_vote a#voter_up.button_up_down,div.aheadzen_vote  a#voter_down.button_up_down {background-color: #ccc; -webkit-border-radius: 2em;-moz-border-radius: 2em;border-radius: 2em;height: 1.2em;line-height: 1.5em;margin: 0;padding: 0.8em;width: 1.2em;}
 div.aheadzen_vote  a#voter_up.button_up_down  i.fa,div.aheadzen_vote  a#voter_down.button_up_down  i.fa{color:#fff;}
