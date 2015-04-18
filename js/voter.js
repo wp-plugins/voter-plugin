@@ -19,7 +19,7 @@ jQuery('.aheadzen_voter_css').live("click",function(){
 		}
 		
 		var voter_div_id = '#aheadzen_voting_'+data_object.secondary_item_id+'_'+data_object.item_id+'_'+data_object.component;
-		jQuery(voter_div_id+' .vote-count-post').addClass(" ajaxloading ");
+		jQuery(voter_div_id+' .vote-ajax-preloader').show();
 		jQuery.ajax({
 			type: 'GET',
 			url: ajaxurl,
@@ -27,7 +27,7 @@ jQuery('.aheadzen_voter_css').live("click",function(){
 			success: function(data)
 			{				
 				jQuery(voter_div_id).html(data);
-				jQuery(voter_div_id+' .vote-count-post').removeClass(" ajaxloading ");
+				jQuery(voter_div_id+' .vote-ajax-preloader').hide();
 			}
 		});
 	return false;

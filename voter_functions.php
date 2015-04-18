@@ -45,7 +45,7 @@ class VoterPluginClass {
 		</script>
 	<?php
 		$voting_options = get_option('aheadzen_voter_display_options');
-		if($voting_options=='thumbs'){
+		if($voting_options=='thumbs' || $voting_options=='buttons'){
 			echo '<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">';
 		}
 	}
@@ -186,6 +186,7 @@ class VoterPluginClass {
 			}else{
 				$votestr.= '<a rel="nofollow" title="'.$title_up.'" class="aheadzen_voter_css ' . $class_up . '" href="' . $url_up . '">'.__('Like','aheadzen').' <span>('.$total_votes.')</span></a>';
 			}
+			$votestr.= '<span class="vote-ajax-preloader" style="display:none;"></span>';
 			$votestr.= '</div>';
 		}else{
 			if($is_voted!=''){
@@ -225,6 +226,7 @@ class VoterPluginClass {
 				$votestr.= '<span class="vote-count-post">';
 				//$votestr.= $total_votes;
 				$votestr.= '</span>';
+				$votestr.= '<span class="vote-ajax-preloader" style="display:none;"></span>';
 				$votestr.= '</div>';
 			}else{
 				$votestr.= '<div id="aheadzen_voting_'.$params['secondary_item_id'].'_'.$params['item_id'].'_'.$params['component'].'" class="aheadzen_vote">';	
@@ -238,6 +240,15 @@ class VoterPluginClass {
 						$thumbicon2 = '<i class="fa fa-thumbs-down"></i>';
 					}
 					
+				}else if($voting_options=='buttons')
+				{
+					if(strstr($class_up,'vote-up-on') || strstr($class_up,'vote-up-off')){
+						$thumbicon1 = '<i class="fa fa-caret-up"></i>';
+					}
+					if(strstr($class_down,'vote-down-on') || strstr($class_down,'vote-down-off')){
+						$thumbicon2 = '<i class="fa fa-caret-down"></i>';
+					}
+					
 				}
 				$votestr.= '<a rel="nofollow" title="'.$title_up.'" class="aheadzen_voter_css ' . $class_up . '" href="' . $url_up . '">'.$thumbicon1.'</a>';
 				
@@ -249,8 +260,8 @@ class VoterPluginClass {
 				if($disable_down_voter==1){ }else{
 					$votestr.= '<a rel="nofollow" title="'.$title_down.'" class="aheadzen_voter_css ' . $class_down . '" href="' . $url_down . '">'.$thumbicon2.'</a>';
 				}
-				
-				$votestr.= '</div>';
+				$votestr.= '<span class="vote-ajax-preloader" style="display:none;"></span>';
+				$votestr.= '</div>';				
 			}
 		}
 		
