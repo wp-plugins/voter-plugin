@@ -247,10 +247,9 @@ class VoterPluginClass {
 					}
 					if(strstr($class_down,'vote-down-on') || strstr($class_down,'vote-down-off')){
 						$thumbicon2 = '<i class="fa fa-caret-down"></i>';
-					}
-					
+					}					
 				}
-				$votestr.= '<a rel="nofollow" title="'.$title_up.'" class="aheadzen_voter_css ' . $class_up . '" href="' . $url_up . '">'.$thumbicon1.'</a>';
+				$votestr.= '<a id="voter_up" rel="nofollow" title="'.$title_up.'" class="aheadzen_voter_css ' . $class_up . '" href="' . $url_up . '">'.$thumbicon1.'</a>';
 				
 				$votestr.= '<span class="vote-count-post">';
 				$votestr.= $total_votes;
@@ -258,7 +257,7 @@ class VoterPluginClass {
 				
 				$disable_down_voter = get_option('aheadzen_disable_down_voter');
 				if($disable_down_voter==1){ }else{
-					$votestr.= '<a rel="nofollow" title="'.$title_down.'" class="aheadzen_voter_css ' . $class_down . '" href="' . $url_down . '">'.$thumbicon2.'</a>';
+					$votestr.= '<a id="voter_down" rel="nofollow" title="'.$title_down.'" class="aheadzen_voter_css ' . $class_down . '" href="' . $url_down . '">'.$thumbicon2.'</a>';
 				}
 				$votestr.= '<span class="vote-ajax-preloader" style="display:none;"></span>';
 				$votestr.= '</div>';				
