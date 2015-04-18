@@ -35,7 +35,6 @@
 
 a.button_up_down {background-color: #ccc;border-radius: 2em;height: 1.2em;line-height: 1.5em;margin: 0;padding: 0.8em;width: 1.2em;}
 .button_up_down i.fa {font-size: 2em;line-height: 0.5em;}
-.aheadzen_vote .vote-up-off.button_up_down{}
 .aheadzen_vote  .vote-up-on.button_up_down {background-color: #3FAF47;color: #fff;}
-.aheadzen_vote  .vote-down-off.button_up_down{}
 .aheadzen_vote  .vote-down-on.button_up_down{background-color: #CE160F;color: #fff;}
+a.aheadzen_voter_css{color:#ccc;}
