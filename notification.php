@@ -220,7 +220,6 @@ class VoterBpNotifications extends VoterPluginClass {
 					$post_author = $wpdb->get_var("select user_id from $table_name where id=\"$topic_id\"");
 				}
 			}
-			echo 'HELLO';exit;
 			if($post_author)
 			{
 				if(!get_option('aheadzen_voter_disable_email')){
