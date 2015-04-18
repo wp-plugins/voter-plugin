@@ -6,8 +6,9 @@
 #bbpress-forums div.bbp-topic-content .aheadzen_vote.helpful_vote a.aheadzen_voter_css,#bbpress-forums div.bbp-reply-content .aheadzen_vote.helpful_vote a.aheadzen_voter_css,.aheadzen_vote.helpful_vote a.aheadzen_voter_css{ line-height: 2em; margin-right: 10px;margin-top: 6px;font-size: 80%; border: 1px solid #ccc;height: auto;text-align: center;width:3em;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;}
 .aheadzen_vote.helpful_vote .aheadzen_vote.helpful_vote a.aheadzen_voter_css {font-size:80%;}
 .aheadzen_vote.helpful_vote .vote-count-post{min-width:0;padding:1px;}
-#bbpress-forums div.bbp-topic-content .aheadzen_vote.helpful_vote a.vote-up-on,#bbpress-forums div.bbp-reply-content .aheadzen_vote.helpful_vote a.vote-up-on,.aheadzen_vote.helpful_vote a.vote-up-on{background-color: #a4c346;color: white;}
-.aheadzen_vote.helpful_vote a.vote-down-on{ background-color: #b72121;color: #fff;}
+/*#bbpress-forums div.bbp-topic-content .aheadzen_vote.helpful_vote a#voter_up.vote-up-on,#bbpress-forums div.bbp-reply-content .aheadzen_vote.helpful_vote a#voter_up.vote-up-on,.aheadzen_vote.helpful_vote a#voter_up.vote-up-on{background-color: #a4c346;color:#FFFFFF;}*/
+.aheadzen_vote.helpful_vote a#voter_up.vote-up-on,.aheadzen_vote.helpful_vote a#voter_down.vote-up-on{background-color: #a4c346;color:#FFFFFF;}
+.aheadzen_vote.helpful_vote a#voter_up.vote-down-on,.aheadzen_vote.helpful_vote a#voter_down.vote-down-on{ background-color: #b72121;color: #FFFFFF;}
 
 .aheadzen_vote{width:100%;line-height: 50px;display: inline-block;}
 .aheadzen_vote a.aheadzen_voter_css, .aheadzen_vote  a.aheadzen_vote{ float:left; border: medium none;text-decoration: none;}
@@ -34,9 +35,9 @@
 .aheadzen_voter_css.thumbs_up_down {width: 2em;padding: 0;}
 .thumbs_up_down .fa.fa-thumbs-down{transform: rotateY(180deg);}
 
-a#voter_up.button_up_down,a#voter_down.button_up_down {background-color: #ccc; -webkit-border-radius: 2em;-moz-border-radius: 2em;border-radius: 2em;height: 1.2em;line-height: 1.5em;margin: 0;padding: 0.8em;width: 1.2em;}
-a#voter_up.button_up_down  i.fa,a#voter_down.button_up_down  i.fa{color:#fff;}
-a#voter_up.button_up_down i.fa,a#voter_down.button_up_down i.fa {font-size: 2em;line-height: 0.5em;}
-.aheadzen_vote  a#voter_up.vote-up-on.button_up_down,.aheadzen_vote  a#voter_down.vote-up-on.button_up_down {background-color: #3FAF47;color: #fff;}
-.aheadzen_vote  a#voter_up.vote-down-on.button_up_down,.aheadzen_vote  a#voter_down.vote-down-on.button_up_down{background-color: #CE160F;color: #fff;}
-a.aheadzen_voter_css i.fa{color:#ccc;}
+div.aheadzen_vote a#voter_up.button_up_down,div.aheadzen_vote  a#voter_down.button_up_down {background-color: #ccc; -webkit-border-radius: 2em;-moz-border-radius: 2em;border-radius: 2em;height: 1.2em;line-height: 1.5em;margin: 0;padding: 0.8em;width: 1.2em;}
+div.aheadzen_vote  a#voter_up.button_up_down  i.fa,div.aheadzen_vote  a#voter_down.button_up_down  i.fa{color:#fff;}
+div.aheadzen_vote  a#voter_up.button_up_down i.fa,div.aheadzen_vote  a#voter_down.button_up_down i.fa {font-size: 2em;line-height: 0.5em;}
+div.aheadzen_vote  a#voter_up.vote-up-on.button_up_down,div.aheadzen_vote  a#voter_down.vote-up-on.button_up_down {background-color: #3FAF47;color: #fff;}
+div.aheadzen_vote  a#voter_up.vote-down-on.button_up_down,div.aheadzen_vote  a#voter_down.vote-down-on.button_up_down{background-color: #CE160F;color: #fff;}
+div.aheadzen_vote  a.aheadzen_voter_css i.fa{color:#ccc;}

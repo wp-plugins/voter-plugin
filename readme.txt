@@ -231,6 +231,9 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 * Thumbs up & down - awaresome font added.
 * bbPress wp-admin settings hide while buddypress not activated - Problem solved.
 
-= 2.1.4 =
+= 2.1.5 =
 * Css changes for thumb up & down.
 * button up & down font style added instead of background image.
+
+= 2.1.5.1 =
+* voting buttons css style problem solved.

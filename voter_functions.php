@@ -179,12 +179,12 @@ class VoterPluginClass {
 			if($is_voted!=''){
 				if($is_voted=='up')
 				{
-					$votestr.= '<a rel="nofollow" title="'.$title_up.'" class="aheadzen_voter_css ' . $class_up . '" href="' . $url_up . '">'.__('Unlike','aheadzen').' <span>('.$total_votes.')</span></a>';
+					$votestr.= '<a id="voter_down" rel="nofollow" title="'.$title_up.'" class="aheadzen_voter_css ' . $class_up . '" href="' . $url_up . '">'.__('Unlike','aheadzen').' <span>('.$total_votes.')</span></a>';
 				}else{
-					$votestr.= '<a rel="nofollow" title="'.$title_up.'" class="aheadzen_voter_css ' . $class_up . '" href="' . $url_up . '">'.__('Like','aheadzen').' <span>('.$total_votes.')</span></a>';
+					$votestr.= '<a id="voter_up" rel="nofollow" title="'.$title_up.'" class="aheadzen_voter_css ' . $class_up . '" href="' . $url_up . '">'.__('Like','aheadzen').' <span>('.$total_votes.')</span></a>';
 				}
 			}else{
-				$votestr.= '<a rel="nofollow" title="'.$title_up.'" class="aheadzen_voter_css ' . $class_up . '" href="' . $url_up . '">'.__('Like','aheadzen').' <span>('.$total_votes.')</span></a>';
+				$votestr.= '<a id="voter_up" rel="nofollow" title="'.$title_up.'" class="aheadzen_voter_css ' . $class_up . '" href="' . $url_up . '">'.__('Like','aheadzen').' <span>('.$total_votes.')</span></a>';
 			}
 			$votestr.= '<span class="vote-ajax-preloader" style="display:none;"></span>';
 			$votestr.= '</div>';
@@ -218,10 +218,10 @@ class VoterPluginClass {
 				
 				$votestr.= '<div id="aheadzen_voting_'.$params['secondary_item_id'].'_'.$params['item_id'].'_'.$params['component'].'" class="aheadzen_vote helpful_vote">';	
 				$votestr.= '<span>'.sprintf(__('Is this %s helpful?','aheadzen'),$type).'<br /><small style="display: block;">'.sprintf(__('%s out of %s said Yes','aheadzen'),$total_up_votes,$total_count).'</small></span>';
-				$votestr.= '<a rel="nofollow" title="'.$title_up.'" class="aheadzen_voter_css ' . $class_up . '" href="' . $url_up . '">'.__('Yes','aheadzen').'</a>';
+				$votestr.= '<a id="voter_up" rel="nofollow" title="'.$title_up.'" class="aheadzen_voter_css ' . $class_up . '" href="' . $url_up . '">'.__('Yes','aheadzen').'</a>';
 				$disable_down_voter = get_option('aheadzen_disable_down_voter');
 				if($disable_down_voter==1){ }else{
-					$votestr.= '<a rel="nofollow" title="'.$title_down.'" class="aheadzen_voter_css ' . $class_down . '" href="' . $url_down . '">'.__('No','aheadzen').'</a>';
+					$votestr.= '<a id="voter_down" rel="nofollow" title="'.$title_down.'" class="aheadzen_voter_css ' . $class_down . '" href="' . $url_down . '">'.__('No','aheadzen').'</a>';
 				}
 				$votestr.= '<span class="vote-count-post">';
 				//$votestr.= $total_votes;
