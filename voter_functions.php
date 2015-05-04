@@ -581,6 +581,7 @@ class VoterPluginClass {
 	{
 		$type = $arg['type'];
 		$num = $arg['num'];
+		$period = $arg['period'];
 		
 		if($type=='profile' || $type=='groups')
 		{
@@ -602,7 +603,8 @@ class VoterPluginClass {
 			}else{
 				$component = 'blog';
 			}
-			$arg = array('component'=>$component,'type'=>$type,'num'=>$num);
+			$arg = array('component'=>$component,'type'=>$type,'num'=>$num,'period'=>$period);
+			
 			$voterplugin = new VoterPluginClass();
 			return $voterplugin->aheadzen_top_voted_list_default($arg);
 		}
@@ -618,9 +620,22 @@ class VoterPluginClass {
 		$component = $arg['component'];
 		$type = $arg['type'];
 		$num = $arg['num'];
+		$period = intval($arg['period']);
 		
+		$subsql = '';
+		if($period>0){
+			$mtime = mktime (0,0,0,date('m'),date('d')-$period,date('Y'));
+			$start_date = date('Y-m-d',$mtime);
+			$end_date = date('Y-m-d');
+			$subsql = " and date_recorded between \"$start_date\" AND \"$end_date\" ";
+		}
+		
+		if($component)
+		{
+			$componentsql = " and component=\"$component\" ";
+		}
 		//$sql = "select secondary_item_id,count(action) as count from `".$table_prefix."ask_votes` where component=\"$component\" and type=\"$type\" group by secondary_item_id order by count desc limit $num";
-		$sql = "select secondary_item_id,count(action) as count from `".$table_prefix."ask_votes` where component=\"$component\" group by secondary_item_id order by count desc limit $num";
+		$sql = "select secondary_item_id,count(action) as count from `".$table_prefix."ask_votes` where 1 $componentsql $subsql group by secondary_item_id order by count desc limit $num";
 		$res =  $wpdb->get_results($sql);
 		if($res)
 		{
@@ -737,7 +752,7 @@ class VoterPosts extends VoterPluginClass {
 	/*************************************************
 	Voting link for post,pages,products, etc...
 	*************************************************/
-	function aheadzen_content_voting_links($content)
+	function aheadzen_content_voting_links($content='')
 	{
 		global $post,$wpdb;
 		

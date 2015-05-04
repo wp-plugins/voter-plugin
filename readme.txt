@@ -57,6 +57,17 @@ shortcode for profile :   [voter_plugin_top_voted type=profile num=5]
 shortcode for groups :    [voter_plugin_top_voted type=groups num=5]
 shortcode for members :   [voter_plugin_top_voted type=profile num=5]`
 
+New option added after version : 2.2.0 =======
+shotcode period option :: [voter_plugin_top_voted type=post num=5 period=7days] 
+	where period from :: 7days,15days,30days,90days,180days,365days 
+
+	
+<h4>Voting Shotcode</h4>
+The shortcode which can be added in any post,product,page or cutom post type content.
+`Get shortcode examples ::<br />
+[voter]
+
+
 Any problems? [Contact Us](http://aheadzen.com/contact/)
 
 == Installation ==
@@ -237,3 +248,11 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 
 = 2.1.5.1 =
 * voting buttons css style problem solved.
+
+= 2.2.0 =
+* New shortcode added which can be added in any post,product,page or cutom post type content.
+	The shotcode :: [voter]
+* New shortcode to display top voted list.
+	shotcode :: [voter_plugin_top_voted type=post num=5 period=7days] 
+	where period from :: 7days,15days,30days,90days,180days,365days 
+* New select "period" option added for top voted widget.
