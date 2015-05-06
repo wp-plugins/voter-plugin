@@ -256,3 +256,6 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 	shotcode :: [voter_plugin_top_voted type=post num=5 period=7days] 
 	where period from :: 7days,15days,30days,90days,180days,365days 
 * New select "period" option added for top voted widget.
+
+= 2.2.1 =
+* New voting shotcode not working properly - SOLVED.

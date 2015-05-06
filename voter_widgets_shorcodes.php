@@ -133,13 +133,13 @@ function aheadzen_voter_plugin_shortcode($atts) {
 	global $post,$wpdb;		
 	$post_type = $post->post_type;
 	$component_name = '';
-	if($post_type=='page' && get_option('aheadzen_voter_for_page')){
+	if($post_type=='page'){
 		$component_name = "blog";
-	}elseif($post_type=='post' && get_option('aheadzen_voter_for_post')){
+	}elseif($post_type=='post'){
 		$component_name = "blog";
-	}elseif($post_type=='product' && get_option('aheadzen_voter_for_product')){
+	}elseif($post_type=='product'){
 		$component_name = "woocommerce";
-	}elseif($post_type && get_option('aheadzen_voter_for_custom_posttype') && !in_array($post_type,array('page','post','product'))){
+	}elseif($post_type && !in_array($post_type,array('page','post','product'))){
 		$component_name = "custompost";
 	}
 	$item_id = 0;
