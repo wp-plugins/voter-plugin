@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Voter Plugin v2.1.3\n"
+"Project-Id-Version: Voter Plugin v2.2.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2015-04-08 09:34:53+0000\n"
+"PO-Revision-Date: 2015-05-18 05:39:40+0000\n"
 "Last-Translator: admin <admin@localhost.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -105,88 +105,88 @@ msgstr "المجموعات Buddypress"
 msgid "Buddypress Members Profile"
 msgstr "Buddypress الأعضاء الملف الشخصي"
 
-#: admin_settings.php:157
+#: admin_settings.php:159
 #@ aheadzen
 msgid "bbPress Posts"
 msgstr "bbPress المشاركات"
 
-#: admin_settings.php:174
+#: admin_settings.php:166
 #@ aheadzen
 msgid "Notification Settings"
 msgstr "إعدادات الإخطار"
 
-#: admin_settings.php:182
+#: admin_settings.php:174
 #@ aheadzen
 msgid "Disable alert by Activity?"
 msgstr "تعطيل التنبيه عن طريق آخر؟"
 
-#: admin_settings.php:190
+#: admin_settings.php:182
 #@ aheadzen
 msgid "Disable alert by Notification?"
 msgstr "تعطيل التنبيه من قبل الإعلام؟"
 
-#: admin_settings.php:198
+#: admin_settings.php:190
 #@ aheadzen
 msgid "Disable alert by Email?"
 msgstr "تعطيل تنبيه عبر البريد الإلكتروني؟"
 
-#: admin_settings.php:205
+#: admin_settings.php:197
 #@ aheadzen
 msgid "Login Popup Settings"
 msgstr "تسجيل الدخول إعدادات قافزة"
 
-#: admin_settings.php:214
+#: admin_settings.php:206
 #@ aheadzen
 msgid "Popup Title"
 msgstr "قافزة عنوان"
 
-#: admin_settings.php:226
+#: admin_settings.php:218
 #@ aheadzen
 msgid "Popup Content"
 msgstr "المحتوى منبثقة"
 
-#: admin_settings.php:238
+#: admin_settings.php:230
 #@ aheadzen
 msgid "Login URL"
 msgstr "URL الدخول"
 
-#: admin_settings.php:240
-#: admin_settings.php:253
+#: admin_settings.php:232
+#: admin_settings.php:245
 #@ aheadzen
 msgid "default:"
 msgstr "الافتراضي:"
 
-#: admin_settings.php:251
+#: admin_settings.php:243
 #@ aheadzen
 msgid "Registration URL"
 msgstr "URL تسجيل"
 
-#: admin_settings.php:261
+#: admin_settings.php:253
 #@ aheadzen
 msgid "Display Login Form?"
 msgstr "عرض نموذج تسجيل الدخول؟"
 
-#: admin_settings.php:262
+#: admin_settings.php:254
 #@ aheadzen
 msgid "By selecting the option it will display the login form with popup."
 msgstr "عن طريق اختيار الخيار أنه سيتم عرض نموذج تسجيل الدخول مع المنبثقة."
 
-#: admin_settings.php:269
+#: admin_settings.php:261
 #@ aheadzen
 msgid "Do you want to disable login box js (jquery-ui.js)?"
 msgstr "هل تريد تعطيل شبيبة مربع الدخول (مسج-ui.js)؟"
 
-#: admin_settings.php:270
+#: admin_settings.php:262
 #@ aheadzen
 msgid "The plugin including \"http://code.jquery.com/ui/1.10.3/jquery-ui.js\" for login dialog box In case your website already included and may creating conflict you can disable/remove it by this option."
 msgstr "البرنامج المساعد بما في ذلك  \"HTTP: //code.jquery.com/ui/1.10.3/jquery-ui.js \" مربع الحوار تسجيل الدخول لفي حالة موقع الويب الخاص بك تضمن بالفعل ويمكن أن تخلق الصراع يمكنك تعطيل / إزالة من قبل هذا الخيار."
 
-#: admin_settings.php:278
+#: admin_settings.php:270
 #@ aheadzen
 msgid "Select the page template to disable voter plugin"
 msgstr "حدد قالب الصفحة لتعطيل البرنامج المساعد الناخبين"
 
-#: admin_settings.php:293
+#: admin_settings.php:285
 #@ aheadzen
 msgid "Please select the template if you want to disable the voter plugin for it."
 msgstr "يرجى اختيار قالب إذا كنت ترغب في تعطيل البرنامج المساعد الناخبين لذلك."
@@ -205,7 +205,7 @@ msgstr "%s likes comment on %s's %s %s"
 msgid "%s likes %s %s"
 msgstr "%s likes %s %s"
 
-#: notification.php:402
+#: notification.php:401
 #, php-format
 #@ aheadzen
 msgid "To disable these notifications please log in and go to: %s"
@@ -236,117 +236,111 @@ msgstr "الخيار المساعد أضاف الأصوات للصفحات، و�
 msgid "Aheadzen Team  | <a href=\"options-general.php?page=voter\" target=\"_blank\">Manage Plugin Settings</a>"
 msgstr "Aheadzen فريق العمل | <a href=\"options-general.php؟page=voter\" target=\"_blank\"> إدارة إعدادات البرنامج المساعد </A>"
 
-#. translators: plugin header field 'Version'
-#: voter.php:0
-#@ aheadzen
-msgid "2.1.3"
-msgstr "2.1.3"
-
 #: voter_db_settings.php:26
 #@ aheadzen
 msgid "This site is free and open to everyone, but our registered users get extra privileges like commenting, and voting."
 msgstr "هذا الموقع هو مجاني ومفتوح للجميع، ولكن مستخدمين المسجلين لدينا الحصول على امتيازات إضافية مثل التعليق والتصويت."
 
-#: voter_functions.php:153
+#: voter_functions.php:157
 #@ aheadzen
 msgid "click to vote"
 msgstr "انقر على التصويت"
 
-#: voter_functions.php:167
+#: voter_functions.php:171
 #@ aheadzen
 msgid "please login to vote"
 msgstr "الرجاء تسجيل الدخول للتصويت"
 
-#: voter_functions.php:178
+#: voter_functions.php:182
 #@ aheadzen
 msgid "Unlike"
 msgstr "على خلاف"
 
-#: voter_functions.php:180
-#: voter_functions.php:183
+#: voter_functions.php:184
+#: voter_functions.php:187
 #@ aheadzen
 msgid "Like"
 msgstr "مثل"
 
-#: voter_functions.php:192
+#: voter_functions.php:197
 #@ aheadzen
 msgid "already voted, click to remove"
 msgstr "بالفعل صوت، انقر فوق لإزالة"
 
-#: voter_functions.php:198
+#: voter_functions.php:203
 #@ aheadzen
 msgid "already voted"
 msgstr "بالتصويت بالفعل"
 
-#: voter_functions.php:215
+#: voter_functions.php:220
 #, php-format
 #@ aheadzen
 msgid "Is this %s helpful?"
 msgstr "%sل هذه %s helpful?"
 
-#: voter_functions.php:215
+#: voter_functions.php:220
 #, php-format
 #@ aheadzen
 msgid "%s out of %s said Yes"
 msgstr "%s out of %s said Yes"
 
-#: voter_functions.php:216
+#: voter_functions.php:221
 #@ aheadzen
 msgid "Yes"
 msgstr "نعم يا"
 
-#: voter_functions.php:219
+#: voter_functions.php:224
 #@ aheadzen
 msgid "No"
 msgstr "لا"
 
-#: voter_functions.php:386
+#: voter_functions.php:410
 #@ aheadzen
 msgid "Wrong User"
 msgstr "العضو خطأ"
 
-#: voter_functions.php:391
+#: voter_functions.php:415
 #@ aheadzen
 msgid "Unknown Post"
 msgstr "غير معروف المشاركة"
 
-#: voter_functions.php:394
+#: voter_functions.php:418
 #@ aheadzen
 msgid "Invalid Post ID"
 msgstr "غير صالح ID المشاركة"
 
-#: voter_functions.php:507
+#: voter_functions.php:531
 #@ aheadzen
 msgid "Please Login"
 msgstr "الرجاء تسجيل الدخول"
 
-#: voter_functions.php:518
+#: voter_functions.php:542
 #@ aheadzen
 msgid "Username"
 msgstr "يوزر نيم"
 
-#: voter_functions.php:522
+#: voter_functions.php:546
 #@ aheadzen
 msgid "Password"
 msgstr "الرقم السرى"
 
-#: voter_functions.php:526
+#: voter_functions.php:550
 #@ aheadzen
 msgid "Remember Me"
 msgstr "تذكرني"
 
-#: voter_functions.php:528
+#: voter_functions.php:552
 #@ aheadzen
 msgid "Log In"
 msgstr "تسجيل الدخول"
 
-#: voter_functions.php:530
-#: voter_functions.php:542
+#: voter_functions.php:554
+#: voter_functions.php:566
 #@ aheadzen
 msgid "Register"
 msgstr "تسجيل"
 
-#: voter_functions.php:539
+#: voter_functions.php:563
 #@ aheadzen
 msgid "Login"
 msgstr "تسجيل دخول"
@@ -356,62 +350,63 @@ msgstr "تسجيل دخول"
 msgid "Display top voted posts,pages,products,groups,members etc..."
 msgstr "عرض أعلى صوت المشاركات، وصفحات، والمنتجات، مجموعات، الخ الأعضاء ..."
 
-#: voter_widgets_shorcodes.php:58
+#: voter_widgets_shorcodes.php:60
 #@ aheadzen
 msgid "Widget Title"
 msgstr "عنوان القطعة"
 
-#: voter_widgets_shorcodes.php:60
+#: voter_widgets_shorcodes.php:62
 #@ aheadzen
 msgid "Number of Records"
 msgstr "عدد من السجلات"
 
-#: voter_widgets_shorcodes.php:61
+#: voter_widgets_shorcodes.php:63
 #@ aheadzen
 msgid "eg: default is : 5"
 msgstr "على سبيل المثال: الافتراضي هو: 5"
 
-#: voter_widgets_shorcodes.php:63
+#: voter_widgets_shorcodes.php:65
 #@ aheadzen
 msgid "Select Type"
 msgstr "حدد نوع"
 
-#: voter_widgets_shorcodes.php:67
+#: voter_widgets_shorcodes.php:69
 #@ aheadzen
 msgid " -- Select One --"
 msgstr " - اختر واحدا -"
 
-#: voter_widgets_shorcodes.php:68
+#: voter_widgets_shorcodes.php:70
 #@ aheadzen
 msgid "Top voted posts"
 msgstr "أعلى صوت المشاركات"
 
-#: voter_widgets_shorcodes.php:69
+#: voter_widgets_shorcodes.php:71
 #@ aheadzen
 msgid "Top voted pages"
 msgstr "أعلى صوت الصفحات"
 
-#: voter_widgets_shorcodes.php:74
+#: voter_widgets_shorcodes.php:75
 #@ aheadzen
 msgid "Top voted topic"
 msgstr "أعلى صوتت الموضوع"
 
-#: voter_widgets_shorcodes.php:76
+#: voter_widgets_shorcodes.php:77
 #@ aheadzen
 msgid "Top voted members"
 msgstr "أعلى صوت أعضاء"
 
-#: voter_widgets_shorcodes.php:77
+#: voter_widgets_shorcodes.php:78
 #@ aheadzen
 msgid "Top voted groups"
 msgstr "مجموعات أعلى صوت"
 
-#: voter_widgets_shorcodes.php:81
+#: voter_widgets_shorcodes.php:82
 #@ aheadzen
 msgid "Top voted product"
 msgstr "أعلى صوت المنتج"
 
-#: voter_widgets_shorcodes.php:84
+#: voter_widgets_shorcodes.php:85
+#: voter_widgets_shorcodes.php:100
 #@ aheadzen
 msgid "eg: default : post."
 msgstr "على سبيل المثال: الافتراضي: آخر."
@@ -420,4 +415,60 @@ msgstr "على سبيل المثال: الافتراضي: آخر."
 #@ aheadzen
 msgid "-- Select One --"
 msgstr "- اختر واحدا -"
+
+#: notification.php:318
+#: notification.php:332
+#: notification.php:351
+#: notification.php:362
+#: notification.php:397
+#, php-format
+#@ aheadzen
+msgid "%s likes your %s on  %s"
+msgstr ""
+
+#. translators: plugin header field 'Version'
+#: voter.php:0
+#@ aheadzen
+msgid "2.2.1"
+msgstr ""
+
+#: voter_widgets_shorcodes.php:88
+#@ aheadzen
+msgid "Select Period"
+msgstr ""
+
+#: voter_widgets_shorcodes.php:92
+#@ aheadzen
+msgid " -- All time --"
+msgstr ""
+
+#: voter_widgets_shorcodes.php:93
+#@ aheadzen
+msgid "Last 7 days"
+msgstr ""
+
+#: voter_widgets_shorcodes.php:94
+#@ aheadzen
+msgid "Last 15 days"
+msgstr ""
+
+#: voter_widgets_shorcodes.php:95
+#@ aheadzen
+msgid "Last 30 days"
+msgstr ""
+
+#: voter_widgets_shorcodes.php:96
+#@ aheadzen
+msgid "Last 90 days"
+msgstr ""
+
+#: voter_widgets_shorcodes.php:97
+#@ aheadzen
+msgid "Last 180 days"
+msgstr ""
+
+#: voter_widgets_shorcodes.php:98
+#@ aheadzen
+msgid "Last 365 days"
+msgstr ""
 

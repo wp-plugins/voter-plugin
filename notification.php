@@ -315,7 +315,7 @@ class VoterBpNotifications extends VoterPluginClass {
 			$title = get_the_title($secondary_item_id);
 			$topic_link = '<a href="' . $topic_url . '">' . $title . '</a>';
 			$component_action_type = str_replace($archarr,$rplarr,$component_action_arr[0]);
-			$notification = "$voter_link likes your $component_action_type on  $topic_link";
+			$notification = sprintf(__('%s likes your %s on  %s','aheadzen'),$voter_link,$component_action_type,$topic_link);
 		}elseif($component_action_type=='profile' || $component_action_type=='groups'  || $component_action_type=='activity')
 		{
 			$topic_link = '';
@@ -329,7 +329,7 @@ class VoterBpNotifications extends VoterPluginClass {
 			$component_action_arr = explode('_',$component_action);
 			if($component_action_arr && is_numeric($component_action_arr[1])){ }else{$component_action_arr = explode('-+',$component_action);}
 			$component_action_type = str_replace($archarr,$rplarr,$component_action_arr[0]);
-			$notification = "$voter_link likes your $component_action_type $topic_link";
+			$notification = sprintf(__('%s likes your %s on  %s','aheadzen'),$voter_link,$component_action_type,$topic_link);
 		}elseif(($component_action_type=='topic' || $component_action_type=='topic-reply') && $topic_details)
 		{
 			$post_title = $topic_details->post_title;
@@ -348,7 +348,7 @@ class VoterBpNotifications extends VoterPluginClass {
 			if($topic_link && $post_title){
 				$topic_link = '<a href="' . $topic_link .'">' . $post_title . '</a>';
 				$component_action_type = str_replace($archarr,$rplarr,$component_action_arr[0]);
-				$notification = "$voter_link likes your $component_action_type $topic_link";
+				$notification = sprintf(__('%s likes your %s on  %s','aheadzen'),$voter_link,$component_action_type,$topic_link);
 			}
 			
 		}else{
@@ -359,7 +359,7 @@ class VoterBpNotifications extends VoterPluginClass {
 			$component_action_arr = explode('_',$component_action);
 			if($component_action_arr && is_numeric($component_action_arr[1])){ }else{$component_action_arr = explode('-+',$component_action);}
 			$component_action_type = str_replace($archarr,$rplarr,$component_action_arr[0]);
-			$notification = "$voter_link likes your $component_action_type $topic_link";
+			$notification = sprintf(__('%s likes your %s on  %s','aheadzen'),$voter_link,$component_action_type,$topic_link);
 		}
 		return $notification;
 
@@ -394,7 +394,7 @@ class VoterBpNotifications extends VoterPluginClass {
 		
 		$notification = str_replace($arg['type'],'your '.$arg['type'],$like_msg);
 		
-		$subject = "$user_display_name likes your $component_action_type on $title_msg";
+		$subject = sprintf(__('%s likes your %s on  %s','aheadzen'),$user_display_name,$component_action_type,$title_msg);
 		$notification_link = $bp->bp_nav['notifications']['link'];
 		$settings_link = '<a href="'.$bp->bp_nav['settings']['link'].'notifications/"> member settings</a>';
 		$message =  $notification.'<br /><br />To view all of your pending notifications: <a href="'.$notification_link.'">Click the link</a> <br /><br />Click to view '.$voter_link.'\'s profile.';

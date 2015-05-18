@@ -259,3 +259,6 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 
 = 2.2.1 =
 * New voting shotcode not working properly - SOLVED.
+
+= 2.2.1.1 =
+* some words missed in po file - ADDED.
