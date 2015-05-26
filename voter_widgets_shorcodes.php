@@ -30,12 +30,13 @@ if(!class_exists('aheadzen_voter_widget')){
 			$type = empty($instance['type']) ? 'post' : apply_filters('widget_aheadzen_voter_type', $instance['type']);
 			$num = empty($instance['num']) ? '5' : apply_filters('widget_aheadzen_voter_num', intval($instance['num']));
 			$period = empty($instance['period']) ? '' : apply_filters('widget_aheadzen_voter_period', $instance['period']);
+			$display = empty($instance['display']) ? 'title' : apply_filters('widget_aheadzen_voter_display', $instance['display']);
 			global $members_template,$table_prefix, $wpdb;
 			
 			echo $before_widget;
 			
 			if($title){ echo $before_title.$title.$after_title; }
-			$arg = array('type'=>$type,'num'=>$num,'period'=>$period);
+			$arg = array('type'=>$type,'num'=>$num,'period'=>$period,'display'=>$display);
 			$voterplugin = new VoterPluginClass();
 			echo $voterplugin->aheadzen_top_voted_list_all($arg);
 			
@@ -56,6 +57,7 @@ if(!class_exists('aheadzen_voter_widget')){
 			$num = strip_tags($instance['num']);
 			$type = ($instance['type']);
 			$period = ($instance['period']);
+			$display = ($instance['display']);
 			?>
 			<p><label for="<?php  echo $this->get_field_id('title'); ?>"><?php _e('Widget Title','aheadzen');?>: <input class="widefat" id="<?php  echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></label>
 			</p>  
@@ -99,14 +101,27 @@ if(!class_exists('aheadzen_voter_widget')){
 			</select>
 			<small><?php _e('eg: default : post.','aheadzen');?></small>
 			</p>
+			
+			
+			<p><label for="<?php echo $this->get_field_id('display'); ?>"><?php _e('Display Type','aheadzen');?>: 
+			</label>			
+			<select class="widefat" id="<?php  echo $this->get_field_id('display'); ?>" name="<?php echo $this->get_field_name('display'); ?>">
+			<option value="title" <?php if($display=='title'){echo 'selected';}?>><?php _e('Title','aheadzen');?></option>
+			<option value="image" <?php if($display=='image'){echo 'selected';}?>><?php _e('Image','aheadzen');?></option>
+			<option value="titleimage" <?php if($display=='titleimage'){echo 'selected';}?>><?php _e('Title & Image','aheadzen');?></option>
+			</select>
+			<small><?php _e('eg: default : post.','aheadzen');?></small>
+			</p>
+			
 			<?php
 		}
 	}
 }
 
 /*******************************
-shotcode :: [voter_plugin_top_voted type=post num=5 period=7days] 
+shotcode :: [voter_plugin_top_voted type=post num=5 display=title period=7days] 
 where period from :: 7days,15days,30days,90days,180days,365days
+display from : title,image,titleimage
 ****************************/
 function aheadzen_top_voter_plugin_shortcode($atts) {
 	$atts['shortcode']=1;
@@ -116,9 +131,9 @@ function aheadzen_top_voter_plugin_shortcode($atts) {
 	
 	if($type==''){$type='post';}
 	if(!$num){$num=5;}
-	$arg = array('type'=>$type,'num'=>$num,'period'=>$period);
+	$arg = array('type'=>$type,'num'=>$num,'period'=>$period,'display'=>$atts['display']);
 	$voterplugin = new VoterPluginClass();
-	$content = $voterplugin->aheadzen_top_voted_list_all($arg);	
+	$content = '<div class="top_voter_shortcode">'.$voterplugin->aheadzen_top_voted_list_all($arg).'</div>';	
 	return $content;
 }
 add_shortcode('voter_plugin_top_voted', 'aheadzen_top_voter_plugin_shortcode');

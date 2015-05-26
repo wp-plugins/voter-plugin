@@ -58,8 +58,9 @@ shortcode for groups :    [voter_plugin_top_voted type=groups num=5]
 shortcode for members :   [voter_plugin_top_voted type=profile num=5]`
 
 New option added after version : 2.2.0 =======
-shotcode period option :: [voter_plugin_top_voted type=post num=5 period=7days] 
+shotcode period option :: [voter_plugin_top_voted type=post display=title num=5 period=7days] 
 	where period from :: 7days,15days,30days,90days,180days,365days 
+	new option(after version:2.2.2) name is "display" and value may be title/image/titleimage -- default is "title"
 
 	
 <h4>Voting Shotcode</h4>
@@ -152,6 +153,7 @@ shortcode for products :  [voter_plugin_top_voted type=product num=5]<br />
 shortcode for profile :   [voter_plugin_top_voted type=profile num=5]<br />
 shortcode for groups :    [voter_plugin_top_voted type=groups num=5]<br />
 shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
+
 
 
 = 1.1.0.1 =
@@ -262,3 +264,10 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 
 = 2.2.1.1 =
 * some words missed in po file - ADDED.
+
+= 2.2.2 =
+* NEW option added for top voted widget and shortcode.
+	the option name is "display" and value may be title/image/titleimage
+	So new shortcode with image will be:
+	shotcode :: [voter_plugin_top_voted type=post num=5 display=image period=7days] 
+

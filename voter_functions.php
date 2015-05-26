@@ -13,7 +13,7 @@ class VoterPluginClass {
 		load_plugin_textdomain('aheadzen', false, basename( dirname( __FILE__ ) ) . '/languages');
 		if ( current_user_can( 'delete_posts' ) )
 		{
-			add_action( 'delete_post', 'aheadzen_delete_post_related_data', 10 );
+			add_action('delete_post',array('VoterBpNotifications','aheadzen_delete_post_related_data'),10);
 		}
 	}
 	
@@ -534,7 +534,7 @@ class VoterPluginClass {
 		 $login_link = esc_url( site_url( 'wp-login.php', 'login_post' ) );
 	}
 	?>
-	<div id="aheadzen_voting_login" title="<?php echo $login_title;?>">
+	<div id="aheadzen_voting_login" style="background-color:#fff;display:none;" title="<?php echo $login_title;?>">
 	<?php echo $login_desc;?>
 	<?php if($login_frm){?>
 	<form name="loginform" id="loginform" action="<?php echo $login_link; ?>" method="post">
@@ -603,7 +603,10 @@ class VoterPluginClass {
 			}else{
 				$component = 'blog';
 			}
-			$arg = array('component'=>$component,'type'=>$type,'num'=>$num,'period'=>$period);
+			$arg['component'] = $component;
+			$arg['type'] = $type;
+			$arg['num'] = $num;
+			$arg['period'] = $period;
 			
 			$voterplugin = new VoterPluginClass();
 			return $voterplugin->aheadzen_top_voted_list_default($arg);
@@ -619,15 +622,14 @@ class VoterPluginClass {
 		$return = '';
 		$component = $arg['component'];
 		$type = $arg['type'];
-		$num = $arg['num'];
+		$num = intval($arg['num'])*3;
 		$period = intval($arg['period']);
-		
 		$subsql = '';
 		if($period>0){
 			$mtime = mktime (0,0,0,date('m'),date('d')-$period,date('Y'));
 			$start_date = date('Y-m-d',$mtime);
 			$end_date = date('Y-m-d');
-			$subsql = " and date_recorded between \"$start_date\" AND \"$end_date\" ";
+			$subsql = " and (DATE_FORMAT(date_recorded,'%Y-%m-%d') >= \"$start_date\" AND DATE_FORMAT(date_recorded,'%Y-%m-%d') <= \"$end_date\") ";
 		}
 		
 		if($component)
@@ -636,15 +638,27 @@ class VoterPluginClass {
 		}
 		//$sql = "select secondary_item_id,count(action) as count from `".$table_prefix."ask_votes` where component=\"$component\" and type=\"$type\" group by secondary_item_id order by count desc limit $num";
 		$sql = "select secondary_item_id,count(action) as count from `".$table_prefix."ask_votes` where 1 $componentsql $subsql group by secondary_item_id order by count desc limit $num";
+		
 		$res =  $wpdb->get_results($sql);
 		if($res)
 		{
-			$return .= '<ul class="voter_top_list list_'.$type.'">';
+			$return .= '<ul class="voter_top_list list_'.$type.' '.$arg['display'].'">';
+			$counter=0;
 			foreach($res as $resobj)
 			{
 				$title = get_the_title($resobj->secondary_item_id);
 				$link = get_permalink($resobj->secondary_item_id);
-				$return .=  '<li><a href="'.$link.'">'.$title.'</a></li>';					
+				if($arg['display']=='titleimage'){
+					$thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id($resobj->secondary_item_id));
+					if($thumbnail){$return .=  '<li><a href="'.$link.'"><img src="'.$thumbnail[0].'" alt="" /><div>'.$title.'</div></a></li>';}
+				}elseif($arg['display']=='image'){
+					$thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id($resobj->secondary_item_id));
+					if($thumbnail){$return .=  '<li><a href="'.$link.'"><img src="'.$thumbnail[0].'" alt="" /></a></li>';}
+				}else{
+					if($title){$return .=  '<li><a href="'.$link.'">'.$title.'</a></li>';}
+				}
+				$counter++;
+				if($arg['num']<$counter){break;}
 			}
 			$return .= '</ul>';				
 		}
@@ -765,6 +779,33 @@ class VoterPosts extends VoterPluginClass {
 			$component_name = "blog";
 		}elseif($post_type=='post' && get_option('aheadzen_voter_for_post')){
 			$component_name = "blog";
+		}elseif($post_type && get_option('aheadzen_voter_for_custom_posttype') && !in_array($post_type,array('page','post','product'))){
+			$component_name = "custompost";
+		}
+		
+		if($component_name!=''){
+			$params = array(
+				'component' => $component_name,
+				'type' => $post_type,
+				'item_id' => 0,
+				'secondary_item_id' => $post->ID
+				);
+			$voting_links = VoterBpNotifications::aheadzen_get_voting_link($params);
+		}
+		return $content.$voting_links;
+	}
+	
+	function aheadzen_content_voting_links_product()
+	{
+		global $post,$wpdb;
+		
+		$post_type = $post->post_type;
+		
+		$component_name = '';
+		if($post_type=='page' && get_option('aheadzen_voter_for_page')){
+			$component_name = "blog";
+		}elseif($post_type=='post' && get_option('aheadzen_voter_for_post')){
+			$component_name = "blog";
 		}elseif($post_type=='product' && get_option('aheadzen_voter_for_product')){
 			$component_name = "woocommerce";
 		}elseif($post_type && get_option('aheadzen_voter_for_custom_posttype') && !in_array($post_type,array('page','post','product'))){
@@ -780,7 +821,7 @@ class VoterPosts extends VoterPluginClass {
 				);
 			$voting_links = VoterBpNotifications::aheadzen_get_voting_link($params);
 		}
-		return $content.$voting_links;
+		echo $voting_links;
 	}
 }
 
