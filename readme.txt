@@ -270,4 +270,7 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 	the option name is "display" and value may be title/image/titleimage
 	So new shortcode with image will be:
 	shotcode :: [voter_plugin_top_voted type=post num=5 display=image period=7days] 
+	
+= 2.2.3 =
+* Thumb down css problem - SOLVED
 
