@@ -274,3 +274,7 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 = 2.2.3 =
 * Thumb down css problem - SOLVED
 
+
+= 2.2.4 =
+* CSS problem on alert popup in top menu - SOLVED
+

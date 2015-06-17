@@ -43,6 +43,10 @@ class VoterPluginClass {
 		var current_user_id = '<?php echo $current_user->ID;?>';
 		var current_post_id = '<?php echo get_the_id();?>';
 		</script>
+		<style>
+		ul#wp-admin-bar-bp-notifications-default li{}
+		ul#wp-admin-bar-bp-notifications-default li a{padding: 0!important; display: inline !important;height: auto !important;line-height: 0;min-width: 40px;}
+		</style>
 	<?php
 		$voting_options = get_option('aheadzen_voter_display_options');
 		if($voting_options=='thumbs' || $voting_options=='buttons'){
