@@ -119,9 +119,10 @@ if(!class_exists('aheadzen_voter_widget')){
 }
 
 /*******************************
-shotcode :: [voter_plugin_top_voted type=post num=5 display=title period=7days] 
+shotcode :: [voter_plugin_top_voted type=post num=5 display=title period=7days cats=10,11] 
 where period from :: 7days,15days,30days,90days,180days,365days
 display from : title,image,titleimage
+cats :: comma seperated category ID like ::10,11
 ****************************/
 function aheadzen_top_voter_plugin_shortcode($atts) {
 	$atts['shortcode']=1;
@@ -131,7 +132,7 @@ function aheadzen_top_voter_plugin_shortcode($atts) {
 	
 	if($type==''){$type='post';}
 	if(!$num){$num=5;}
-	$arg = array('type'=>$type,'num'=>$num,'period'=>$period,'display'=>$atts['display']);
+	$arg = array('type'=>$type,'num'=>$num,'period'=>$period,'display'=>$atts['display'],'cats'=>$atts['cats']);
 	$voterplugin = new VoterPluginClass();
 	$content = '<div class="top_voter_shortcode">'.$voterplugin->aheadzen_top_voted_list_all($arg).'</div>';	
 	return $content;

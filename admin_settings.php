@@ -1,5 +1,6 @@
 <?php
 class VoterAdminClass {
+	
 	/*************************************************
 	Admin Settings For voter plugin menu function
 	*************************************************/
@@ -38,7 +39,17 @@ class VoterAdminClass {
 			update_option('aheadzen_voter_disable_activity',$_POST['aheadzen_voter_disable_activity']);
 			update_option('aheadzen_voter_disable_notification',$_POST['aheadzen_voter_disable_notification']);
 			update_option('aheadzen_voter_disable_email',$_POST['aheadzen_voter_disable_email']);
-
+			
+			update_option('aheadzen_voter_display_options_page',$_POST['aheadzen_voter_display_options_page']);
+			update_option('aheadzen_voter_display_options_post',$_POST['aheadzen_voter_display_options_post']);
+			update_option('aheadzen_voter_display_options_product',$_POST['aheadzen_voter_display_options_product']);
+			update_option('aheadzen_voter_display_options_posttype',$_POST['aheadzen_voter_display_options_posttype']);
+			update_option('aheadzen_voter_display_options_comments',$_POST['aheadzen_voter_display_options_comments']);
+			update_option('aheadzen_voter_display_options_activity',$_POST['aheadzen_voter_display_options_activity']);
+			update_option('aheadzen_voter_display_options_group',$_POST['aheadzen_voter_display_options_group']);
+			update_option('aheadzen_voter_display_options_profile',$_POST['aheadzen_voter_display_options_profile']);
+			update_option('aheadzen_voter_display_options_forum',$_POST['aheadzen_voter_display_options_forum']);
+			
 			echo '<script>window.location.href="'.admin_url().'options-general.php?page=voter&msg=success";</script>';
 			exit;
 		}
@@ -58,17 +69,13 @@ class VoterAdminClass {
 			<table class="form-table">
 				<tr valign="top">
 					<td>
-					<?php
-					$display_options = get_option('aheadzen_voter_display_options');
-					?>
 					<label for="aheadzen_voter_display_options">
 					<p><?php _e('Voting Display Options','aheadzen');?> ::
 					<select name="aheadzen_voter_display_options" id="aheadzen_voter_display_options">
-					<option value=""><?php _e('-- Select One --','aheadzen');?></option>
-					<option value="likeunlike" <?php if($display_options=='likeunlike'){echo 'selected';}?>><?php _e('Simple Like/Unlike','aheadzen');?></option>
-					<option value="helpful" <?php if($display_options=='helpful'){echo 'selected';}?>><?php _e('Helpful? Yes/No','aheadzen');?></option>
-					<option value="thumbs" <?php if($display_options=='thumbs'){echo 'selected';}?>><?php _e('Thumbs up/down','aheadzen');?></option>
-					<option value="buttons" <?php if($display_options=='buttons'){echo 'selected';}?>><?php _e('Up/Down Button','aheadzen');?></option>
+					<?php 
+					$display_options = get_option('aheadzen_voter_display_options');
+					echo voting_display_dl($display_options);
+					?>
 					</select>
 					</p>
 					</label>
@@ -91,19 +98,57 @@ class VoterAdminClass {
 					<label for="aheadzen_voter_for_page">
 					<input type="checkbox" value="1" id="aheadzen_voter_for_page" name="aheadzen_voter_for_page" <?php if(get_option('aheadzen_voter_for_page')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Pages','aheadzen');?>
 					</label>
+					<label for="aheadzen_voter_display_options_page">
+					<p><?php _e('Voting Display Options','aheadzen');?> ::
+					<select name="aheadzen_voter_display_options_page" id="aheadzen_voter_display_options_page">
+					<?php 
+					$display_options = get_option('aheadzen_voter_display_options_page');
+					echo voting_display_dl($display_options);
+					?>
+					</select>
+					</p>
+					</label>
+					
 					</td>
 				</tr>
 				<tr valign="top">
 					<td>
 					<label for="aheadzen_voter_for_post">
-					<input type="checkbox" value="1" id="aheadzen_voter_for_post" name="aheadzen_voter_for_post" <?php if(get_option('aheadzen_voter_for_post')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Blog Posts','aheadzen');?></td>
+					<input type="checkbox" value="1" id="aheadzen_voter_for_post" name="aheadzen_voter_for_post" <?php if(get_option('aheadzen_voter_for_post')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Blog Posts','aheadzen');?>
+					</label>
+					
+					<label for="aheadzen_voter_display_options_post">
+					<p><?php _e('Voting Display Options','aheadzen');?> ::
+					<select name="aheadzen_voter_display_options_post" id="aheadzen_voter_display_options_post">
+					<?php 
+					$display_options = get_option('aheadzen_voter_display_options_post');
+					echo voting_display_dl($display_options);
+					?>
+					</select>
+					</p>
+					</label>
+					</td>						
 				</tr>
 				<?php global $woocommerce;
 				if($woocommerce){?>
 				<tr valign="top">
 					<td>
 					<label for="aheadzen_voter_for_product">
-					<input type="checkbox" value="1" id="aheadzen_voter_for_product" name="aheadzen_voter_for_product" <?php if(get_option('aheadzen_voter_for_product')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('WooCommerce Products','aheadzen');?></td>
+					<input type="checkbox" value="1" id="aheadzen_voter_for_product" name="aheadzen_voter_for_product" <?php if(get_option('aheadzen_voter_for_product')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('WooCommerce Products','aheadzen');?>
+					</label>
+					
+					<label for="aheadzen_voter_display_options_product">
+					<p><?php _e('Voting Display Options','aheadzen');?> ::
+					<select name="aheadzen_voter_display_options_product" id="aheadzen_voter_display_options_product">
+					<?php 
+					$display_options = get_option('aheadzen_voter_display_options_product');
+					echo voting_display_dl($display_options);
+					?>
+					</select>
+					</p>
+					</label>
+					
+					</td>
 				</tr>
 				<?php }?>
 				<tr valign="top">
@@ -111,6 +156,18 @@ class VoterAdminClass {
 					<label for="aheadzen_voter_for_custom_posttype">
 					<input type="checkbox" value="1" id="aheadzen_voter_for_custom_posttype" name="aheadzen_voter_for_custom_posttype" <?php if(get_option('aheadzen_voter_for_custom_posttype')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('All Custom Post Type','aheadzen');?>
 					</label>
+					
+					<label for="aheadzen_voter_display_options_posttype">
+					<p><?php _e('Voting Display Options','aheadzen');?> ::
+					<select name="aheadzen_voter_display_options_posttype" id="aheadzen_voter_display_options_posttype">
+					<?php 
+					$display_options = get_option('aheadzen_voter_display_options_posttype');
+					echo voting_display_dl($display_options);
+					?>
+					</select>
+					</p>
+					</label>
+					
 					</td>
 				</tr>
 				<tr valign="top">
@@ -118,6 +175,18 @@ class VoterAdminClass {
 					<label for="aheadzen_voter_for_comments">
 					<input type="checkbox" value="1" id="aheadzen_voter_for_comments" name="aheadzen_voter_for_comments" <?php if(get_option('aheadzen_voter_for_comments')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Comments','aheadzen');?>
 					</label>
+					
+					<label for="aheadzen_voter_display_options_comments">
+					<p><?php _e('Voting Display Options','aheadzen');?> ::
+					<select name="aheadzen_voter_display_options_comments" id="aheadzen_voter_display_options_comments">
+					<?php 
+					$display_options = get_option('aheadzen_voter_display_options_comments');
+					echo voting_display_dl($display_options);
+					?>
+					</select>
+					</p>
+					</label>
+					
 					</td>
 				</tr>
 				<?php if (class_exists('BuddyPress')){
@@ -129,6 +198,18 @@ class VoterAdminClass {
 					<label for="aheadzen_voter_for_activity">
 					<input type="checkbox" value="1" id="aheadzen_voter_for_activity" name="aheadzen_voter_for_activity" <?php if(get_option('aheadzen_voter_for_activity')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Buddypress Activity','aheadzen');?>
 					</label>
+					
+					<label for="aheadzen_voter_display_options_activity">
+					<p><?php _e('Voting Display Options','aheadzen');?> ::
+					<select name="aheadzen_voter_display_options_activity" id="aheadzen_voter_display_options_activity">
+					<?php 
+					$display_options = get_option('aheadzen_voter_display_options_activity');
+					echo voting_display_dl($display_options);
+					?>
+					</select>
+					</p>
+					</label>
+					
 					</td>
 				</tr>
 				<?php }?>
@@ -138,6 +219,18 @@ class VoterAdminClass {
 					<label for="aheadzen_voter_for_group">
 					<input type="checkbox" value="1" id="aheadzen_voter_for_group" name="aheadzen_voter_for_group" <?php if(get_option('aheadzen_voter_for_group')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Buddypress Groups','aheadzen');?>
 					</label>
+					
+					<label for="aheadzen_voter_display_options_group">
+					<p><?php _e('Voting Display Options','aheadzen');?> ::
+					<select name="aheadzen_voter_display_options_group" id="aheadzen_voter_display_options_group">
+					<?php 
+					$display_options = get_option('aheadzen_voter_display_options_group');
+					echo voting_display_dl($display_options);
+					?>
+					</select>
+					</p>
+					</label>
+					
 					</td>
 				</tr>
 				<?php }?>
@@ -147,6 +240,18 @@ class VoterAdminClass {
 					<label for="aheadzen_voter_for_profile">
 					<input type="checkbox" value="1" id="aheadzen_voter_for_profile" name="aheadzen_voter_for_profile" <?php if(get_option('aheadzen_voter_for_profile')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Buddypress Members Profile','aheadzen');?>
 					</label>
+					
+					<label for="aheadzen_voter_display_options_profile">
+					<p><?php _e('Voting Display Options','aheadzen');?> ::
+					<select name="aheadzen_voter_display_options_profile" id="aheadzen_voter_display_options_profile">
+					<?php 
+					$display_options = get_option('aheadzen_voter_display_options_profile');
+					echo voting_display_dl($display_options);
+					?>
+					</select>
+					</p>
+					</label>
+					
 					</td>
 				</tr>
 				<?php }?>
@@ -158,6 +263,18 @@ class VoterAdminClass {
 					<label for="aheadzen_voter_for_forum">
 					<input type="checkbox" value="1" id="aheadzen_voter_for_forum" name="aheadzen_voter_for_forum" <?php if(get_option('aheadzen_voter_for_forum')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('bbPress Posts','aheadzen');?>
 					</label>
+					
+					<label for="aheadzen_voter_display_options_forum">
+					<p><?php _e('Voting Display Options','aheadzen');?> ::
+					<select name="aheadzen_voter_display_options_forum" id="aheadzen_voter_display_options_forum">
+					<?php 
+					$display_options = get_option('aheadzen_voter_display_options_forum');
+					echo voting_display_dl($display_options);
+					?>
+					</select>
+					</p>
+					</label>
+					
 					</td>
 				</tr>
 				<?php }?>
@@ -303,3 +420,21 @@ class VoterAdminClass {
 		}
 	}
 }
+
+function voting_display_dl($selected='')
+{
+	$return = '';
+	$data_arr = array(
+		''			=>__('-- Select One --','aheadzen'),
+		'likeunlike'=>__('Simple Like/Unlike','aheadzen'),
+		'helpful'	=>__('Helpful? Yes/No','aheadzen'),
+		'thumbs'	=>__('Thumbs up/down','aheadzen'),
+		'buttons'	=>__('Up/Down Button','aheadzen'),
+		);
+		foreach($data_arr as $key=>$val){
+			if($selected==$key){$selected_str='selected';}else{$selected_str='';}
+			$return .= '<option value="'.$key.'" '.$selected_str.'>'.$val.'</option>';
+		}
+	return $return;
+}
+

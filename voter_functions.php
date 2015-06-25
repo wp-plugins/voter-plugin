@@ -49,7 +49,20 @@ class VoterPluginClass {
 		</style>
 	<?php
 		$voting_options = get_option('aheadzen_voter_display_options');
-		if($voting_options=='thumbs' || $voting_options=='buttons'){
+		
+		$voting_page = get_option('aheadzen_voter_display_options_page');
+		$voting_post = get_option('aheadzen_voter_display_options_post');
+		$voting_product = get_option('aheadzen_voter_display_options_product');
+		$voting_posttype = get_option('aheadzen_voter_display_options_posttype');
+		$voting_comments = get_option('aheadzen_voter_display_options_comments');
+		$voting_activity = get_option('aheadzen_voter_display_options_activity');
+		$voting_groups = get_option('aheadzen_voter_display_options_group');
+		$voting_profile = get_option('aheadzen_voter_display_options_profile');
+		$voting_forum = get_option('aheadzen_voter_display_options_forum');
+		
+		$votingsarr = array('thumbs','buttons');
+		if(in_array($voting_options,$votingsarr) || in_array($voting_page,$votingsarr) || in_array($voting_post,$votingsarr) || in_array($voting_product,$votingsarr) || in_array($voting_posttype,$votingsarr)	|| in_array($voting_comments,$votingsarr) || in_array($voting_activity,$votingsarr) || in_array($voting_groups,$votingsarr) || in_array($voting_profile,$votingsarr) || in_array($voting_forum,$votingsarr))		
+		{
 			echo '<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">';
 		}
 	}
@@ -147,8 +160,18 @@ class VoterPluginClass {
 		$votestr = '';
 		$the_result = $params['result'];
 		unset($params['result']);
-		
+				
 		$voting_options = get_option('aheadzen_voter_display_options');
+		
+		$post_type_arr = array('page','post','product','custompost','comment','activity','profile','groups','topic','topic-reply');
+		if($params['type'] && in_array($params['type'],$post_type_arr)){
+			if($params['type']=='topic-reply' || $params['type']=='topic'){
+				$voting_options = get_option('aheadzen_voter_display_options_forum');
+			}else{
+				$voting_options = get_option('aheadzen_voter_display_options_'.$params['type']);
+			}			
+		}
+		
 		if($voting_options=='thumbs'){$votetype = ' thumbs_up_down ';}elseif($voting_options=='buttons'){$votetype = ' button_up_down ';}
 		if(strlen($voting_options)<3){$voting_options='likeunlike';}
 		$post_id = $params['item_id'];
@@ -628,6 +651,7 @@ class VoterPluginClass {
 		$type = $arg['type'];
 		$num = intval($arg['num'])*3;
 		$period = intval($arg['period']);
+		$cats = $arg['cats'];
 		$subsql = '';
 		if($period>0){
 			$mtime = mktime (0,0,0,date('m'),date('d')-$period,date('Y'));
@@ -640,8 +664,11 @@ class VoterPluginClass {
 		{
 			$componentsql = " and component=\"$component\" ";
 		}
+		if($cats){
+			$catssubsql = "and secondary_item_id in (select tr.object_id from $wpdb->term_relationships tr join $wpdb->term_taxonomy tt on tt.term_taxonomy_id=tr.term_taxonomy_id where tt.term_id in ($cats))";
+		}
 		//$sql = "select secondary_item_id,count(action) as count from `".$table_prefix."ask_votes` where component=\"$component\" and type=\"$type\" group by secondary_item_id order by count desc limit $num";
-		$sql = "select secondary_item_id,count(action) as count from `".$table_prefix."ask_votes` where 1 $componentsql $subsql group by secondary_item_id order by count desc limit $num";
+		$sql = "select secondary_item_id,count(action) as count from `".$table_prefix."ask_votes` where 1 $componentsql $catssubsql $subsql group by secondary_item_id order by count desc limit $num";
 		
 		$res =  $wpdb->get_results($sql);
 		if($res)

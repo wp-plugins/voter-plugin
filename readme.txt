@@ -63,6 +63,16 @@ shotcode period option :: [voter_plugin_top_voted type=post display=title num=5 
 	new option(after version:2.2.2) name is "display" and value may be title/image/titleimage -- default is "title"
 
 	
+New option added after version : 2.2.5 =======	
+[voter_plugin_top_voted type=post num=5 cats=6,7,8]
+
+To display top voted of specific category "type" & "cats" both should added in shortcode otherwise it will not work.
+
+where "cats" is category id related to "post" like you can add category id for products and other post type and taxonomy....
+
+eg : [voter_plugin_top_voted type=products num=5 cats=200,195,220]
+where cats=200,195,220 -- is the category ID of products
+	
 <h4>Voting Shotcode</h4>
 The shortcode which can be added in any post,product,page or cutom post type content.
 `Get shortcode examples ::<br />
@@ -278,3 +288,6 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 = 2.2.4 =
 * CSS problem on alert popup in top menu - SOLVED
 
+= 2.2.5 =
+* Category wise top voted added in Shortcode. 
+* Different voting display type selection for different places. Like different voting display for all post pages, different on comments and so on...
