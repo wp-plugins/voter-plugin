@@ -291,3 +291,6 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 = 2.2.5 =
 * Category wise top voted added in Shortcode. 
 * Different voting display type selection for different places. Like different voting display for all post pages, different on comments and so on...
+
+= 2.2.6 =
+* Voter get api PHP error - SOLVED

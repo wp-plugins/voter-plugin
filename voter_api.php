@@ -39,7 +39,7 @@ function aheadzen_voter_add_vote_api($template)
 			'user_error'=>$user_error,
 			'type'=>$_GET['type'],
 			);
-		echo aheadzen_get_post_all_vote_details($arg);
+		echo VoterPluginClass::aheadzen_get_post_all_vote_details($arg);
 		header('Content-Type: application/json; charset=UTF-8', true);
 		exit;
 	}
