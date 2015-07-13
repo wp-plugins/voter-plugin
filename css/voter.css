@@ -50,3 +50,8 @@ div.aheadzen_vote  a.aheadzen_voter_css i.fa{color:#ccc;}
 .top_voter_shortcode ul.voter_top_list.title li {display: inline-block;margin-right: 2%;width: 45%;}
 .top_voter_shortcode  ul.voter_top_list.titleimage  li,.top_voter_shortcode  ul.voter_top_list.image  li{ display: inline-block;width: 19%;margin-right: 1%;text-align: center;margin-bottom: 2%;}
 .top_voter_shortcode  ul.voter_top_list li img{max-width:100%;height:auto;margin: 0 auto;}
+
+#view_voter_list_link{background-color: #f4f4f4;border: 1px solid #f9f9f9;cursor: pointer;display: inline-block;float: right;padding: 5px 10px;}
+#voted_users_list{border: 1px solid #f1f1f1;display: inline-block;list-style: outside none none;margin: 0;padding: 0;width: 100%;}
+#voted_users_list li{float: left;margin: 1% 1% 0.5% 0.5%;width: 18%;}
+#voted_users_list li span{color: #999;display: inline-block;font-size: 10px;line-height: 0;width: 100%;}

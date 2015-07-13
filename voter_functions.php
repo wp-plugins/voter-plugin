@@ -289,6 +289,7 @@ class VoterPluginClass {
 				$votestr.= '<span class="vote-ajax-preloader" style="display:none;"></span>';
 				$votestr.= '</div>';				
 			}
+			
 		}
 		
 		if($_REQUEST['rtype']=='json')
@@ -300,9 +301,41 @@ class VoterPluginClass {
 			$return_arr['url_down'] = $url_down;
 			return $return_arr;
 		}else{
+			if(get_option('aheadzen_enable_voter')){
+				global $wpdb,$table_prefix;
+				$component = $params['component'];
+				$type = $params['type'];
+				$item_id = $params['item_id'];
+				$secondary_item_id = $params['secondary_item_id'];
+				$users = $wpdb->get_results("select user_id,date_recorded from `".$table_prefix."ask_votes` where component=\"$component\" and type=\"$type\" and item_id=\"$item_id\" and secondary_item_id=\"$secondary_item_id\" order by date_recorded desc limit 20");
+				$user_return_arr = array();
+				if($users){
+					foreach($users as $usersobj)
+					{
+						$uid = $usersobj->user_id;
+						$date_recorded = date('d M,Y',strtotime($usersobj->date_recorded));
+						$name = '';
+						$name = trim(get_usermeta($uid,'first_name',true).' '.get_usermeta($uid,'last_name',true));
+						$name .= '<span>'.$date_recorded.'</span>';
+						$user_return_arr[] = $name;
+					}
+				}
+				if($user_return_arr){
+					$votestr .= '<div id="view_voter_list_link" onclick="voter_view();">'.__('view voters','aheadzen').'</div>';
+					$votestr .= '<ul id="voted_users_list" style="display:none;">';
+					$votestr .= '<li>'.implode('</li><li>',$user_return_arr).'</li>';
+					$votestr .= '</ul>';
+					$votestr .= '<script>function voter_view(){
+						jQuery( "#voted_users_list" ).toggle( "slow", function() {
+							// Animation complete.
+						  });
+						}</script>';
+				}
+			}
 			return $votestr;
 		}
 	}
+	
 	
 	/*************************************************
 	Get Total votes of particulate item 

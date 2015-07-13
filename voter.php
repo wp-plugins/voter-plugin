@@ -7,7 +7,7 @@ Author: Aheadzen Team  | <a href="options-general.php?page=voter" target="_blank
 Author URI: http://aheadzen.com/
 Text Domain: aheadzen
 Domain Path: /language
-Version: 2.2.6
+Version: 2.2.7
 
 Copyright: © 2014-2015 ASK-ORACLE.COM
 License: GNU General Public License v3.0
@@ -45,7 +45,6 @@ add_action('bp_before_group_header', array('VoterBpGroups','aheadzen_bp_group_vo
 add_action('bp_before_member_header', array('VoterBpMembers','aheadzen_bp_member_voting_links')); //member profile
 add_action('bbp_theme_after_reply_content', array('VoterBpTopics','aheadzen_bp_forum_topic_reply_voting_links')); //topic & topic reply
 add_action('bp_activity_entry_content', array('VoterBpActivitys','aheadzen_bp_activity_voting_links'));
-//add_action('bp_after_message_content', 'aheadzen_display_voting_links');
 
 add_action('wp_footer',array('VoterPluginClass','aheadzen_voting_login_dialog'),999);
 add_action('wp_footer',array('VoterBpNotifications','aheadzen_update_user_notification'),999);

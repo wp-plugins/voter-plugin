@@ -37,6 +37,7 @@ Voting options:
 <li>ShortCodes for promoting top content</li>
 <li>Fast and Lightweight. Works on shared hosting.</li>
 <li>Enable or disable voting option for specifict area like posts, pages, BuddyPress activity, groups, member profiles, WooCommerce products etc...</li>
+<li>Display latest 20 voter list.</li>
 <li>Optimum css & js code.</li>
 <li>Localisation ready.</li>
 </ul>
@@ -294,3 +295,8 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 
 = 2.2.6 =
 * Voter get api PHP error - SOLVED
+
+= 2.2.7 =
+* New Feature to display last 20 voters with voter link.
+* Option to display/hide the voter list.
+

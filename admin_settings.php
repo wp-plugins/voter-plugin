@@ -22,6 +22,7 @@ class VoterAdminClass {
 			update_option('aheadzen_voter_for_product',$_POST['aheadzen_voter_for_product']);
 			update_option('aheadzen_voter_for_custom_posttype',$_POST['aheadzen_voter_for_custom_posttype']);
 			update_option('aheadzen_disable_down_voter',$_POST['aheadzen_disable_down_voter']);
+			update_option('aheadzen_enable_voter',$_POST['aheadzen_enable_voter']);
 			update_option('aheadzen_voter_for_comments',$_POST['aheadzen_voter_for_comments']);
 			update_option('aheadzen_voter_for_activity',$_POST['aheadzen_voter_for_activity']);
 			update_option('aheadzen_voter_for_group',$_POST['aheadzen_voter_for_group']);
@@ -85,6 +86,13 @@ class VoterAdminClass {
 					<td>
 					<label for="aheadzen_disable_down_voter">
 					<input type="checkbox" value="1" id="aheadzen_disable_down_voter" name="aheadzen_disable_down_voter" <?php if(get_option('aheadzen_disable_down_voter')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Hide down votes completely?','aheadzen');?>
+					</label>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td>
+					<label for="aheadzen_enable_voter">
+					<input type="checkbox" value="1" id="aheadzen_enable_voter" name="aheadzen_enable_voter" <?php if(get_option('aheadzen_enable_voter')){echo "checked=checked";}?>/>&nbsp;&nbsp;&nbsp;<?php _e('Display Voter List with voter link?','aheadzen');?>
 					</label>
 					</td>
 				</tr>
