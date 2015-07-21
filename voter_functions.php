@@ -75,6 +75,7 @@ class VoterPluginClass {
 	{
 		global $post, $bp, $thread_template, $bbP, $forum_id, $wpdb, $table_prefix,$current_user;
 		$user_id = $current_user->ID;
+		if($_REQUEST['user_id']){$user_id = $_REQUEST['user_id'];}
 		if(!$user_id){return false;}
 		
 		$item_id = $params['item_id'];
@@ -82,6 +83,7 @@ class VoterPluginClass {
 		$type = $params['type'];
 		$secondary_item_id = $params['secondary_item_id'];
 		$voteed_action = $wpdb->get_results("SELECT id,action FROM `".$table_prefix."ask_votes` WHERE user_id=\"$user_id\" AND item_id=\"$item_id\" AND component=\"$component_name\" AND type=\"$type\" AND secondary_item_id=\"$secondary_item_id\"");
+		
 		if($voteed_action)
 		{
 			if($return=='action')
@@ -297,6 +299,8 @@ class VoterPluginClass {
 			$return_arr = array();
 			$return_arr['result'] = $the_result;
 			$return_arr['total_votes'] = $total_votes;
+			$return_arr['total_up'] = $total_votes_arr['total_up'];
+			$return_arr['total_down'] = $total_votes_arr['total_down'];			
 			$return_arr['url_up'] = $url_up;
 			$return_arr['url_down'] = $url_down;
 			return $return_arr;
@@ -387,7 +391,7 @@ class VoterPluginClass {
 					'item_id' => $_REQUEST['item_id'],
 					'secondary_item_id' => $_REQUEST['secondary_item_id']
 					);
-					
+				
 				$is_voted = VoterPluginClass::aheadzen_is_voted($params,'all');
 				if($is_voted){
 					$voted_id = $is_voted->id;

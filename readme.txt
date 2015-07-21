@@ -300,3 +300,7 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 * New Feature to display last 20 voters with voter link.
 * Option to display/hide the voter list.
 
+= 2.2.8 =
+* Voting like/unlike total up & down added in return of API.
+* Voting like/unlike not working as API - Solved.
+
