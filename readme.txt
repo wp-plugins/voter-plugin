@@ -304,3 +304,5 @@ shortcode for members :   [voter_plugin_top_voted type=profile num=5]<br />
 * Voting like/unlike total up & down added in return of API.
 * Voting like/unlike not working as API - Solved.
 
+= 2.2.9 =
+* CSS chagnes.

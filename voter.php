@@ -7,7 +7,7 @@ Author: Aheadzen Team  | <a href="options-general.php?page=voter" target="_blank
 Author URI: http://aheadzen.com/
 Text Domain: aheadzen
 Domain Path: /language
-Version: 2.2.8
+Version: 2.2.9
 
 Copyright: © 2014-2015 ASK-ORACLE.COM
 License: GNU General Public License v3.0

@@ -53,5 +53,5 @@ div.aheadzen_vote  a.aheadzen_voter_css i.fa{color:#ccc;}
 
 #view_voter_list_link{background-color: #f4f4f4;border: 1px solid #f9f9f9;cursor: pointer;display: inline-block;float: right;padding: 5px 10px;}
 #voted_users_list{border: 1px solid #f1f1f1;display: inline-block;list-style: outside none none;margin: 0;padding: 0;width: 100%;}
-#voted_users_list li{float: left;margin: 1% 1% 0.5% 0.5%;width: 18%;}
+#voted_users_list li{float: left;margin: 1% 1% 0.5% 0.5%;width: 18%;font-size: 0.5em;}
 #voted_users_list li span{color: #999;display: inline-block;font-size: 10px;line-height: 0;width: 100%;}
