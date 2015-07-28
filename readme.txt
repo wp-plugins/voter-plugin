@@ -53,6 +53,10 @@ Shortcode for top voted listing for posts,pages,products,profile & groups.<br />
 shortcode for posts :     [voter_plugin_top_voted type=post num=5]
 shortcode for pages :     [voter_plugin_top_voted type=page num=5]
 shortcode for custom:     [voter_plugin_top_voted type=custom_post_type num=5]
+						where:: "custom_post_type" will be your custom post type like "movie",'ads','listing'
+						you will get from wp-admin url like: "wp-admin/edit.php?post_type=movie"
+						"post_type=movie" is your custom type you should user here.
+						
 shortcode for products :  [voter_plugin_top_voted type=product num=5]
 shortcode for profile :   [voter_plugin_top_voted type=profile num=5]
 shortcode for groups :    [voter_plugin_top_voted type=groups num=5]

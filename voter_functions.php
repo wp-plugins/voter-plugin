@@ -664,8 +664,10 @@ class VoterPluginClass {
 				$component = 'woocommerce';
 			}elseif($type=='topic'){
 				$component = 'forum';
-			}else{
+			}elseif($type=='page' || $type=='post'){
 				$component = 'blog';
+			}else{
+				$component = 'custompost';
 			}
 			$arg['component'] = $component;
 			$arg['type'] = $type;
@@ -700,6 +702,9 @@ class VoterPluginClass {
 		if($component)
 		{
 			$componentsql = " and component=\"$component\" ";
+			if($component == 'custompost'){
+				$componentsql .= " and type=\"$type\"";
+			}
 		}
 		if($cats){
 			$catssubsql = "and secondary_item_id in (select tr.object_id from $wpdb->term_relationships tr join $wpdb->term_taxonomy tt on tt.term_taxonomy_id=tr.term_taxonomy_id where tt.term_id in ($cats))";
